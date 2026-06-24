@@ -1,0 +1,604 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+
+<%
+	Dim objADO, iloop, iloop_pupop
+	Dim SQL_BF, aryBoardBF
+	Dim SQL_CL, aryBoardCL
+	Dim SQL_popup, arr_popup
+
+	Set objADO = new clsADO
+
+	SQL_BF = ""
+	SQL_BF = SQL_BF & "SELECT "
+	SQL_BF = SQL_BF & "	TOP 4 "
+	SQL_BF = SQL_BF & "	BD.CD_BOARDID "
+	SQL_BF = SQL_BF & "	,BD.NM_TITLE "
+	SQL_BF = SQL_BF & "	,BD.NM_CONTENTS, BD.NM_FIELD_1 "
+	SQL_BF = SQL_BF & "	,BAIV.CD_BEFOREAFTER_ID, BAIV.BEFORE_IMG, BAIV.AFTER_IMG "
+	SQL_BF = SQL_BF & "FROM "
+	SQL_BF = SQL_BF & "	T_BOARDDETAIL AS BD "
+	SQL_BF = SQL_BF & "	INNER JOIN T_BOARDMAST AS BM "
+	SQL_BF = SQL_BF & "		ON BM.CD_BOARDCD = BD.CD_BOARDCD "
+	SQL_BF = SQL_BF & "		OUTER APPLY ( "
+	SQL_BF = SQL_BF & "			SELECT TOP 1 "
+	SQL_BF = SQL_BF & "				BAI.CD_BEFOREAFTER_ID, BAI.BEFORE_IMG, BAI.AFTER_IMG "
+	SQL_BF = SQL_BF & "			FROM T_BEFORE_AFTER_IMG AS BAI "
+	SQL_BF = SQL_BF & "			WHERE BAI.CD_BOARDID = BD.CD_BOARDID "
+	SQL_BF = SQL_BF & "			ORDER BY BAI.CD_BEFOREAFTER_ID ASC "
+	SQL_BF = SQL_BF & "		) AS BAIV "
+	'SQL_BF = SQL_BF & "	INNER JOIN T_CODE AS CD	"
+	'SQL_BF = SQL_BF & "		ON CD.CD_CODE = BD.NM_FIELD_1 "
+	'SQL_BF = SQL_BF & "		AND CD.CD_GUBUN = 'BEFORE_AFTER_TYPE' AND CD.YN_USE = 'Y' "
+	SQL_BF = SQL_BF & "WHERE "
+	SQL_BF = SQL_BF & "	BD.YN_USE = 'Y' AND BD.YN_DISPLAY = 'Y' "
+	SQL_BF = SQL_BF & "	AND BD.CD_BOARDCD = '1004' "
+	SQL_BF = SQL_BF & "	AND BD.NO_BOARD_DEPTH = '1' AND BD.NO_BOARD_SEQ = '1' "
+	SQL_BF = SQL_BF & "ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY DESC, BD.NO_BOARD_SEQ ASC "
+
+	objADO.setSql(SQL_BF)
+	aryBoardBF = objADO.getArrRs()
+
+
+
+	SQL_CL = ""
+	SQL_CL = SQL_CL & "SELECT "
+	SQL_CL = SQL_CL & "	TOP 8 "
+	SQL_CL = SQL_CL & "	BD.CD_BOARDID "
+	SQL_CL = SQL_CL & "	,BD.NM_TITLE "
+	SQL_CL = SQL_CL & "	,BD.NM_CONTENTS, BD.NM_FIELD_1 "
+	SQL_CL = SQL_CL & "	,BD.DT_INSYSDATE "
+	SQL_CL = SQL_CL & "FROM "
+	SQL_CL = SQL_CL & "	T_BOARDDETAIL AS BD "
+	SQL_CL = SQL_CL & "	INNER JOIN T_BOARDMAST AS BM "
+	SQL_CL = SQL_CL & "		ON BM.CD_BOARDCD = BD.CD_BOARDCD "
+	SQL_CL = SQL_CL & "WHERE "
+	SQL_CL = SQL_CL & "	BD.YN_USE = 'Y' AND BD.YN_DISPLAY = 'Y' "
+	SQL_CL = SQL_CL & "	AND BD.CD_BOARDCD = '1009' "
+	SQL_CL = SQL_CL & "	AND BD.NO_BOARD_DEPTH = '1' AND BD.NO_BOARD_SEQ = '1' "
+	SQL_CL = SQL_CL & "ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY DESC, BD.NO_BOARD_SEQ ASC "
+
+	objADO.setSql(SQL_CL)
+	aryBoardCL = objADO.getArrRs()
+
+
+	SQL_popup = ""
+	SQL_popup = SQL_popup & "SELECT B.CD_BOARDID, B.NM_TITLE, NM_CONTENTS, B.NM_FIELD_1, B.NM_FIELD_2, B.NM_FIELD_3, B.NM_FIELD_4, B.NM_FIELD_5, B.NM_FIELD_6, B.NM_FIELD_7, B.NM_FIELD_8, B.NM_FIELD_9, B.NM_FIELD_10, B.NM_FIELD_11 "
+	SQL_popup = SQL_popup & "FROM T_BOARDDETAIL B "
+	SQL_popup = SQL_popup & "WHERE B.CD_BOARDCD = 1001 "
+	SQL_popup = SQL_popup & "	AND B.YN_USE = 'Y' "
+	SQL_popup = SQL_popup & "	AND B.YN_DISPLAY = 'Y' "
+	SQL_popup = SQL_popup & "	AND B.NM_FIELD_4 <= '" & Left(Now(), 10) & "' "
+	SQL_popup = SQL_popup & "	AND B.NM_FIELD_5 >= '" & Left(Now(), 10) & "' "
+	SQL_popup = SQL_popup & "ORDER BY B.CD_BOARDID DESC	"
+
+	objADO.setSql(SQL_popup)
+	arr_popup = objADO.getArrRs()
+
+	Set objADO = Nothing
+%>
+
+<%'--------------------- 팝업 UI 시작 ---------------------%>
+<style type="text/css">
+	.main_pop {position: absolute;left: 100px;top: 100px;z-index:310;display: none;}
+	.main_pop img {display: block;float: left;max-height: 680px;}
+	.main_pop .cont {border: 5px solid #5290cd;overflow: hidden;border-bottom: 0;}
+	.main_pop div.close {background: #5290cd;color: #fff;text-align: right;padding: 5px 10px;}
+	.main_pop div.close label {cursor: pointer;padding-left: 30px;}
+	.main_pop div.close span input[type=checkbox] + label:before {font-size: 20px;top:2px;}
+	.main_pop div.close span input[type=checkbox]:checked + label:before{color:#fff;}
+	.main_pop div.close span.close span {border: 1px solid #717171;border-radius: 3px;padding: 3px;font-size: .7em;background: #fff;color: #777;cursor: pointer;}
+	.main_pop div.close span.close{ cursor: pointer;}
+
+
+	@media screen and (max-width: 1378px) {
+		.main_pop {position: fixed;height: auto;left:5%;margin-left:0;z-index:310;}
+		.main_pop img {max-width: 100%;max-height: 580px;}
+	}
+	@media screen and (max-width: 767px) {
+		.main_pop div.close span input[type=checkbox] + label:before{top: 0px;}
+		.main_pop{max-width:90%;position: absolute; left:5% !important;}
+		.main_pop img {max-width: 100%; width:100%; max-height:10000px;}
+	}
+</style>
+<%
+If IsArray(arr_popup) Then
+%>
+<%
+	For iloop_pupop = 0 To UBound(arr_popup, 2)
+%>
+<div class="main_pop" id="popup_<%=arr_popup(0, iloop_pupop)%>"
+  data-top_mobile="<%=arr_popup(11, iloop_pupop)%>" data-top_pc="<%=arr_popup(9, iloop_pupop)%>"
+  style="position: absolute; left: <%=arr_popup(8, iloop_pupop)%>px;">
+  <div class="cont" style="border-color: <%=arr_popup(12, iloop_pupop)%>">
+    <%If arr_popup(4, iloop_pupop) <> "" Then%>
+    <a href="<%=arr_popup(4, iloop_pupop)%>" target="_<%=arr_popup(5, iloop_pupop)%>">
+      <img src="/file/board/<%=arr_popup(3, iloop_pupop)%>"  alt="">
+    </a>
+  <%Else%>
+    <img src="/file/board/<%=arr_popup(3, iloop_pupop)%>"  alt="">
+  <%End If %>
+  </div>
+  <div class="close" style=" background-color: <%=arr_popup(13, iloop_pupop)%>">
+    <form method="post" action="" name="pop_form">
+      <span class="checked"><input type="checkbox" name="chkbox" id="chkday_<%=arr_popup(0, iloop_pupop)%>" value="popup_<%=arr_popup(0, iloop_pupop)%>" />
+      <label for="chkday_<%=arr_popup(0, iloop_pupop)%>" >하루동안 보지 않기</label></span>
+      <span class="close"><i class="demo-icon icon-close"></i></span>
+    </form>
+  </div>
+</div>
+<%
+		If iloop_pupop = 0 Then
+%>
+			<div id="popdim"></div>
+<%
+		End If
+%>
+<%
+	Next
+%>
+<%
+End If
+%>
+<%'--------------------- 팝업 UI 종료 ---------------------%>
+
+<div id="main">
+	<link rel="stylesheet" type="text/css" href="../css/main_style.css" />
+
+	<!-- S : main_visual -->
+
+	<section>
+<!--<div style="padding:56.25% 0 0 0;position:relative;">
+
+			<iframe src="https://player.vimeo.com/video/560342150??autoplay=1&loop=1&autopause=0&background=1&muted=1;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="main_video.mp4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script> -->
+		<div class="video_visual">
+			<div class="no_hover pc">
+			</div>
+			<div class="auto_height" >
+				<iframe src="https://player.vimeo.com/video/561161329?autoplay=1&loop=1&muted=1&controls=false&background=true" width="640" height="360" frameborder="0"webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+					<!-- <div id="player"></div> -->
+				<!-- <iframe width="500" height="300" src="https://www.youtube.com/embed/rg4_Qqrd_tI?amp;autoplay=1&amp;mute=1&amp;playlist=rg4_Qqrd_tI&amp;loop=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe> -->
+			</div>
+		</div>
+		<!-- <div class="main_visual">
+
+		<div class="owl-carousel owl-theme">
+				<div class="item visual_01">
+          <a href="">
+            <div class="text ">
+              <h4>정확한 위치에<br class="mobile"> 빠르고 안전하게 심으세요</h4>
+              <h2><span  class="color_gold">네비게이션</span> <span class="fontw_300">임플란트</span></h2>
+              <p>full size CBCT, 구강스캐너 등
+                최고 수준의 장비를 구비하여<br>
+                더 정확한 치료 예측 및  치료 계획 수립이 가능합니다
+              </p>
+            </div>
+						<div class="img_wrap">
+							<img src="images/visual_01_img1.png" alt="">
+							<img src="images/visual_01_img2.png" alt="">
+						</div>
+            <div class="img">
+              <div style="background-image: url(images/visual_01.jpg)"></div>
+            </div>
+          </a>
+        </div>
+
+				<div class="item visual_02">
+					<a href="">
+						<div class="text ">
+							<h4>내집처럼 편안한 <br class="mobile">공간에서 진료받자</h4>
+							<h2><span  class="color_gold">연세하이브</span>치과</h2>
+							<p><%=m_client_name%>는 항상 환자를 생각하는<br class="mobile">
+								마음으로<br class="pc">
+								언제나 편안함을 느끼실 수 있는<br class="mobile">
+								최적의 시설을 갖추고 있습니다
+							</p>
+						</div>
+						<div class="img">
+							<div style="background-image: url(images/visual_02.jpg)"></div>
+						</div>
+					</a>
+				</div>
+				<div class="item visual_03">
+					<a href="">
+						<div class="text ">
+							<h4>소중한 내치아   </h4>
+							<h2>자연치아 살리는</h2>
+							<h2>연세하이브치과!</h2>
+							<p>다양한 수술방법을 통해  <br class="mobile">병소를 완벽히 제거하고 <br>
+								자연치아의 보존을 위해서 <br class="mobile">최선을 다해 노력합니다
+							</p>
+						</div>
+						<div class="img">
+							<div style="background-image: url(images/visual_03.jpg)"></div>
+						</div>
+					</a>
+				</div>
+
+
+			</div>
+		</div>-->
+
+
+		<script>
+			$('.main_visual .owl-carousel').owlCarousel({
+				items: 1,
+				loop: true,
+				margin: 0,
+				nav: true,
+				dots: true,
+				autoplay: true,
+				autoplayTimeout: 8000,
+				// onInitialized: counter,
+				// onTranslate: resetcounter,
+				// onTranslated: counter
+			});
+		</script>
+
+
+		<!-- 실제로 영상이 나올 부분 -->
+
+<!-- 아래 코드가 실행되면 player div 위에 iframe 이 덮입혀짐 -->
+
+
+
+<script src="https://www.youtube.com/iframe_api"></script><!-- 아래 원문에서 복잡하게 기술되었던 부분 -->
+
+<script>
+
+
+  var player;
+
+  function onYouTubeIframeAPIReady(){
+
+    player = new YT.Player('player',{
+
+      width:'100%',
+
+      videoId:'<iframe width="500" height="300" src="https://www.youtube.com/embed?autoplay=1&amp;mute=1&amp;playlist=rg4_Qqrd_tI&amp;loop=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>',
+
+      playerVars:{
+				'autoplay':1,
+				'controls': 0,
+				'loop':1,
+				//'playlist':'rg4_Qqrd_tI'
+				// 'playsinline':1
+			},
+
+      events:{
+				'onReady':onPlayerReady,
+				// 'onPlaybackQualityChange': onPlayerPlaybackQualityChange,
+	      // 'onStateChange': onPlayerStateChange,
+	      // 'onError': onPlayerError
+		 }
+
+    });
+
+  }
+
+  function onPlayerReady(e){
+
+    e.target.mute();
+    e.target.playVideo();
+		e.target.loop();
+
+  }
+
+
+	// function onYouTubeIframeAPIReady() {
+	//   var player;
+	//   player = new YT.Player('player', {
+	//     width: 1280,
+	//     height: 720,
+	//     videoId: 'M7lc1UVf-VE',
+	//     events: {
+	//       'onReady': onPlayerReady,
+	//       'onPlaybackQualityChange': onPlayerPlaybackQualityChange,
+	//       'onStateChange': onPlayerStateChange,
+	//       'onError': onPlayerError
+	//     }
+	//   });
+	// }
+	//
+	// function onPlayerReady(event) {
+	//   event.target.setVolume(100);
+	//   event.target.playVideo();
+	// }
+
+</script>
+
+
+
+	</section>
+	<!-- E : main_visual -->
+
+	<div class="con_wrap">
+		<!--S : line_banner -->
+		<section class="center line_banner">
+			<h3 data-aos="fade-up">흔들림 없는 임플란트, <br class="mobile"> <span><%=m_client_name%>가 만들어 갑니다</span></h3>
+			<p  data-aos="fade-up" data-aos-delay="100">&nbspYONSEI HIVE DENTAL CLINIC</p>
+		</section>
+		<!--E : line_banner -->
+
+		<!--S : implant_clinic -->
+		<section class="center implant_clinic"  data-aos="fade-up" >
+			<div class="inwrap pen_wrap ">
+				<div class="title " data-aos="fade-up">
+					<h5>“ 어려울수록 자신있습니다 ”</h5>
+					<h2><span>고난이도 임플란트</span> 클리닉</h2>
+				</div>
+
+				<ul class="four">
+				<li data-aos="fade-up" data-aos-delay="100">
+					<div>
+          <a href="../implant/sub_01.html">
+						<h4>네비게이션 <br><span>임플란트</span></h4>
+						<p>수술 전 3D 컴퓨터로 모의 수술을 통해<br>정확하고 안전하게 시술</p>
+	        </a>
+					<img src="images/implant_clinic_1.jpg" alt="네비게이션 임플란트">
+
+					</div>
+  	    </li>
+				<li data-aos="fade-up" data-aos-delay="200">
+					<div>
+          <a href="../implant/sub_02.html">
+						<h4>뼈이식 <br><span>임플란트</span></h4>
+						<p>뼈이식 노하우를 통해 <br>치아를 복원하는 임플란트 치료</p>
+	        </a>
+					<img src="images/implant_clinic_2.jpg" alt="뼈이식 임플란트">
+
+					</div>
+  	    </li>
+				<li data-aos="fade-up" data-aos-delay="300">
+					<div>
+          <a href="../implant/sub_03.html">
+						<h4>상악동 <br><span>임플란트</span></h4>
+						<p>부비동 중 하나로 코 주변에 있는<br>상악동을 올리고 뼈를 이식하다</p>
+	        </a>
+					<img src="images/implant_clinic_3.jpg" alt="상악동 임플란트">
+					</div>
+  	    </li>
+				<li data-aos="fade-up" data-aos-delay="400">
+					<div>
+          <a href="../implant/sub_05.html">
+						<h4>무치악 <br><span>임플란트</span></h4>
+						<p>치아를 모두 상실한 경우<br> 필요한 만큼의 임플란트를 식립 </p>
+	        </a>
+					<img src="images/implant_clinic_4.jpg" alt="무치악 임플란트">
+					</div>
+  	    </li>
+			</ul>
+
+			</div>
+		</section>
+		<!--E : implant_clinic -->
+
+		<!-- S : medical_subject -->
+		<!-- <section class="medical_subject center">
+			<div class="title " data-aos="fade-up">
+				<h5><span class="fontw_600">YEONSEI HIVE</span> <span class="fontw_300">MEDICAL SUBJECT</span></h5>
+				<h2><%=m_client_name%> 진료과목</h2>
+			</div>
+			<ul>
+				<li  data-aos="fade-up" data-aos-delay="100">
+					<h3>임플란트</h3>
+					<h6>붓기, 통증, <br>출혈 걱정은 NO!</h6>
+					<a href="../implant/sub_01.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="200">
+					<h3>치아교정</h3>
+					<h6>건강한 치아와<br> 아름다운 얼굴을<br> 위한 선택</h6>
+					<a href="../ort/sub_01.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="300">
+					<h3>사랑니발치</h3>
+					<h6>난이도 높은<br> 매복 사랑니도<br> 안전하게!</h6>
+					<a href="../general/sub_05.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="400">
+					<h3>충치치료</h3>
+					<h6>치아의 건강을<br> 책임집니다.</h6>
+					<a href="../general/sub_01.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="500">
+					<h3 class="color_fff">자연치아 <br>살리기</h3>
+					<h6 class="color_fff">꼭 발치해야 할까요?</h6>
+					<a href="../tooth/sub_01.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="600">
+					<h3>심미치료</h3>
+					<h6>자연스러운 <br>치아 재연으로<br> 자신있게!!</h6>
+					<a href="../beauty/sub_01.html">GO</a>
+				</li>
+				<li data-aos="fade-up" data-aos-delay="700">
+					<h3 class="color_fff">잇몸치료</h3>
+					<h6 class="color_fff">시리고 붓고 아픈 <br>치주질환 걱정 끝!</h6>
+					<a href="../general/sub_02.html">GO</a>
+				</li>
+
+			</ul>
+		</section> -->
+		<!--E : medical_subject -->
+
+
+		<!-- S : medical_subject -->
+		<section class="main_ort center">
+			<div class="title " data-aos="fade-up">
+				<h5><span class="fontw_600">YEONSEI HIVE</span> <span class="fontw_300">MEDICAL SUBJECT</span></h5>
+				<h2><%=m_client_name%> 진료과목</h2>
+			</div>
+
+			<ul>
+          <li data-aos="fade-up" data-aos-delay="200" >
+            <div>
+              <div>
+                <svg>
+                  <circle class="bg" r="120" cx="130" cy="130"></circle>
+                </svg>
+              </div>
+              <img src="images/main_ort_01.jpg" alt="">
+            </div>
+            <h6>임플란트</h6>
+            <p> 붓기, 통증, 출혈 걱정은 NO!</p>
+            <a href="../implant/sub_01.html">more</a>
+          </li>
+          <li data-aos="fade-up" data-aos-delay="300" >
+            <div>
+              <div>
+                <svg>
+                  <circle class="bg" r="120" cx="130" cy="130"></circle>
+                </svg>
+              </div>
+              <img src="images/main_ort_03.jpg" alt="">
+            </div>
+            <h6>치아교정</h6>
+            <p>아름다운 얼굴을 위한 선택</p>
+            <a href="../ort/sub_01.html">more</a>
+          </li>
+          <li data-aos="fade-up" data-aos-delay="400" >
+            <div>
+              <div>
+                <svg>
+                  <circle class="bg" r="120" cx="130" cy="130"></circle>
+                </svg>
+              </div>
+              <img src="images/main_ort_02.jpg" alt="">
+            </div>
+            <h6>심미치료</h6>
+            <p>자연스러운 치아 재연</p>
+            <a href="../beauty/sub_01.html">more</a>
+          </li>
+          <li data-aos="fade-up" data-aos-delay="500" >
+            <div>
+              <div>
+                <svg>
+                  <circle class="bg" r="120" cx="130" cy="130"></circle>
+                </svg>
+              </div>
+              <img src="images/main_ort_05.jpg" alt="">
+            </div>
+						<h6>충치치료</h6>
+            <p>치아의 건강을 책임집니다</p>
+            <a href="../general/sub_01.html">more</a>
+
+
+          </li>
+          <li data-aos="fade-up" data-aos-delay="600" >
+            <div>
+              <div>
+                <svg>
+                  <circle class="bg" r="120" cx="130" cy="130"></circle>
+                </svg>
+              </div>
+              <img src="images/main_ort_04.jpg" alt="">
+            </div>
+						<h6>잇몸치료</h6>
+            <p>시리고 붓고 아픈 치주질환!</p>
+            <a href="../general/sub_02.html">more</a>
+          </li>
+        </ul>
+		</section>
+		<!--E : medical_subject -->
+
+
+		<!-- S : doctor -->
+
+		<section class="doctor color_fff"  data-aos="fade-up" >
+				<div class="text">
+					<h3 data-aos="fade-up" data-aos-delay="100">연세대학교 치과대학 출신</h3>
+					<h1 data-aos="fade-up" data-aos-delay="200">전문의가 진료합니다</h1>
+					<h4 class="color_gold" data-aos="fade-up" data-aos-delay="300">임플란트, <br class="mobile">실력있는 의료진에게 하세요!</h4>
+					<!-- <h4 data-aos="fade-up" data-aos-delay="400">수준높은 진료, 연세하이브치과에서</h4> -->
+					<ul class="four">
+						<li data-aos="fade-up" data-aos-delay="500"><div><h6>연세대학교<br>치과대학, 대학원<br>졸업</h6></div></li>
+						<li data-aos="fade-up" data-aos-delay="600"><div><h6>연세대학교<br>치과대학<br>치주과학교실<br>외래교수</h6></div></li>
+						<li data-aos="fade-up" data-aos-delay="700"><div><h6>연세대학교<br>치과대학<br>원내생 임상지도<br>교수</h6></div></li>
+						<li data-aos="fade-up" data-aos-delay="800"><div><h6>대한치과의사협회<br>치주과<br>전문의</h6></div></li>
+					</ul>
+				</div>
+			<img src="images/doctor_img.png" alt="" data-aos="fade-up" data-aos-delay="100">
+			<img src="images/doctor_logo.png" alt="" data-aos="fade-up" data-aos-delay="100" class="doctor_logo">
+
+
+			<!-- <span class="counter">2009</span> -->
+		</section>
+
+
+
+	</div>
+
+<%'--------------------- 팝업 script 시작 ---------------------%>
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		var showPopupCnt = 0;
+<%
+If IsArray(arr_popup) Then
+	For iloop_pupop = 0 To UBound(arr_popup, 2)
+%>
+		if ($.cookie('popup_<%=arr_popup(0, iloop_pupop)%>') != undefined && $.cookie('popup_<%=arr_popup(0, iloop_pupop)%>') == 'Y') {
+			$('#popup_<%=arr_popup(0, iloop_pupop)%>').hide();
+		} else {
+			showPopupCnt++;
+			var popup_obj = $('#popup_<%=arr_popup(0, iloop_pupop)%>');
+			var top_mobile = popup_obj.data('top_mobile');
+			var top_pc = popup_obj.data('top_pc');
+
+			//console.log($(window).width() + ', top_mobile: ' + top_mobile + ', top_pc: ' + top_pc);
+
+			if ($(window).width() >= 768) {
+				popup_obj.css({'top': top_pc + 'px'});
+			} else {
+				popup_obj.css({'top': top_mobile + 'px'});
+			}
+
+			popup_obj.fadeIn();
+		}
+<%
+	Next
+End If
+%>
+		if (showPopupCnt > 0) {
+			$("#popdim").fadeIn();
+		}
+
+		$(".main_pop span.checked").click(function() {
+			//couponClose();
+			$.cookie($(this).find('input[type=checkbox]').val(), 'Y', { expires: 1, path: '/' });
+			$('#'+$(this).find('input[type=checkbox]').val()).fadeOut(function() {
+				if ($('.main_pop:visible').length == 0) {
+					$("#popdim").hide();
+				}
+			});
+		});
+
+		//$(".main_pop span.close, #popdim").click(function() {
+		//	$(".main_pop, #popdim").fadeOut();
+		//});
+
+		$("#popdim").click(function() {
+			$(".main_pop, #popdim").fadeOut();
+		});
+
+		$(".main_pop span.close").click(function() {
+			$(this).parent().parent().parent('.main_pop').fadeOut();
+
+			//console.log($('.main_pop:visible').length);
+			if ($('.main_pop:visible').length == 1) {
+				$("#popdim").hide();
+			}
+		});
+	});
+</script>
+<%'--------------------- 팝업 script 종료 ---------------------%>
+
+	<script src="../js/waypoints.min.js"></script>
+	<script src="../js/counterup.min.js"></script>
+	<script>
+		$('.counter').countUp();
+	</script>
+	<!--E : main__review -->
+
+</div>
+
+<!-- #include virtual = "/html/inc/footer.html" -->

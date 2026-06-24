@@ -1,0 +1,226 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_PageNavigation.asp"-->
+
+<%
+	Dim iloop, jloop, SQL
+	Dim CD_BOARDCD : CD_BOARDCD = 1010
+	Dim aryBoard
+	Dim CD_BOARDID, NM_TITLE, NM_FIELD_1, DT_INSYSDATE, DT_INSYSDATE_to_int, RowNo
+	Dim st : st = ReqQ("st")
+	Dim sq : sq = ReqQ("sq")
+	Dim mt : mt = ReqQ("mt")
+
+	Dim mtCodeList : mtCodeList = fn_CodeInfo("MEDICAL_TYPE")
+
+	Function getCodeName(aryCode, codeValue)
+		Dim k
+		If IsArray(aryCode) Then
+			For k = 0 To UBound(aryCode, 2)
+				If aryCode(1, k) = codeValue Then
+					getCodeName = aryCode(2, k)
+					Exit Function
+				End If
+			Next
+		End If
+		getCodeName = codeValue
+	End Function
+
+	If mt <> "" Then
+		SQL = SQL & " and BD.NM_FIELD_1 = '" & Replace(mt, "'", "''") & "' "
+	End If
+
+	If st = "tc" And sq <> "" Then
+		SQL = SQL & " and (BD.NM_TITLE LIKE concat('%','" & sq & "','%') or BD.NM_CONTENTS LIKE concat('%','" & sq & "','%')) "
+	ElseIf st = "t" And sq <> "" Then
+		SQL = SQL & " and BD.NM_TITLE LIKE concat('%','" & sq & "','%') "
+	ElseIf st = "c" And sq <> "" Then
+		SQL = SQL & " and BD.NM_CONTENTS LIKE concat('%','" & sq & "','%') "
+	End If
+
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 15
+	Dim setsize
+
+	If isMobile() Then
+		setsize = 5
+	Else
+		setsize = 10
+	End If
+
+	If IsNumeric(ReqQ("page")) = False then
+		page=1
+		startpage=1
+	Else
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then
+				startpage=page-setsize + 1
+			Else
+				startpage=int(page/setsize)*setsize + 1
+			End If
+	End If
+
+	aryBoard = fn_BoardList_paging (CD_BOARDCD, page , pgsize, SQL)
+
+	If IsArray(aryBoard) Then
+		tn =  aryBoard(0,0)
+		pgcount = - INT( - ( tn/pgsize ) )
+		If (page>pgcount) Then page=pgcount End If
+
+		prevPage = page - ((page-1) Mod setsize) - setsize
+		IF prevPage < 1 THEN
+			prevPage = 0
+		END IF
+		nextPage = page - ((page-1) Mod setsize) + setsize
+		IF nextPage > pgcount THEN
+			nextPage = 0
+		END If
+	Else
+		tn = 0
+		pgcount = 0
+	End If
+
+	Dim newIconDate : newIconDate = int(Replace(Left(dateadd("d",-3,now()), 10),"-",""))
+%>
+
+
+<!-- S : sub -->
+<div id="sub" class="faq">
+  <section>
+    <!-- S : sub_visual -->
+    <!-- #include virtual = "/html/inc/board_left.html" -->
+
+		<div class="sub_tit">
+      <div>
+        <!-- <h5><span class="pc"><%=m_client_name%>에서</span> 모든 궁금증을 확인해 보세요</h5> -->
+      	<h1>자주 묻는 <span>질문</span></h1>
+				<p class="en">&nbsp;<%=m_client_en%></p>
+      </div>
+    </div>
+    <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+
+    <section class="section_01">
+      <div class="inwrap">
+			<nav class="board_cate ">
+				<ul>
+					<li class="<%=getBoolean(mt="","active","")%>"><a href="FAQ.html?page=1&st=<%=clearXSSdefault(st)%>&sq=<%=clearXSS(sq,"")%>">전체</a></li>
+					<%
+					If IsArray(mtCodeList) Then
+						For jloop = 0 To UBound(mtCodeList, 2)
+					%>
+					<li class="<%=getBoolean(mt=mtCodeList(1,jloop),"active","")%>"><a href="FAQ.html?page=1&mt=<%=mtCodeList(1,jloop)%>&st=<%=clearXSSdefault(st)%>&sq=<%=clearXSS(sq,"")%>"><%=mtCodeList(2,jloop)%></a></li>
+					<%
+						Next
+					End If
+					%>
+				</ul>
+			</nav>
+
+			<table class="line list m_t_50">
+				<colgroup>
+					<col class="num pc">
+					<col class="sort">
+					<col>
+					<col class="date pc">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th class="pc">번호</th>
+						<th>분류</th>
+						<th>제목</th>
+						<th class="pc">날짜</th>
+					</tr>
+<%
+If IsArray(aryBoard) Then
+	For iloop = 0 To UBound(aryBoard,2)
+		RowNo        = aryBoard(24,iloop)
+		CD_BOARDID   = aryBoard(2,iloop)
+		NM_TITLE     = clearXSSdefault(aryBoard(10,iloop))
+		NM_FIELD_1   = aryBoard(12,iloop)
+		DT_INSYSDATE = aryBoard(23,iloop)
+		DT_INSYSDATE_to_int = int(Replace(Left(DT_INSYSDATE, 10),"-",""))
+%>
+					<tr style="cursor:pointer;" onclick="goView('<%=CD_BOARDID%>')">
+						<td class="pc"><%=RowNo%></td>
+						<td><span class="box box2"><%=getCodeName(mtCodeList, NM_FIELD_1)%></span></td>
+						<td class="left_align">
+							<%=NM_TITLE%>
+							<%If newIconDate <= DT_INSYSDATE_to_int Then Response.write "<b>NEW</b>" End If%>
+						</td>
+						<td class="pc"><%=Replace(Left(DT_INSYSDATE, 10), "-", ".")%></td>
+					</tr>
+<%
+	Next
+Else
+%>
+					<tr>
+						<td colspan="4">조회된 게시글이 없습니다.</td>
+					</tr>
+<%
+End If
+%>
+				</tbody>
+			</table>
+
+<%If IsArray(aryBoard) Then%>
+	<ul class="paging m_t_50">
+		<%Call PageNavigation_front("FAQ.html","mt="&clearXSSdefault(mt)&"&st="&clearXSSdefault(st)&"&sq="&clearXSSdefault(sq), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+	</ul>
+<%End If%>
+
+			<div class="list_search center pc">
+				<label class="select pc">
+					<select name="st" id="st">
+					<option value="">선택</option>
+					<option value="t" <%=getBoolean(clearXSSdefault(st)="t","selected='selected'","")%>>제목</option>
+					<option value="c" <%=getBoolean(clearXSSdefault(st)="c","selected='selected'","")%>>내용</option>
+					<option value="tc" <%=getBoolean(clearXSSdefault(st)="tc","selected='selected'","")%>>제목+내용</option>
+					</select>
+				</label>
+				<input type="text" name="sq" id="sq" value="<%=clearXSSdefault(sq)%>" placeholder="" autocomplete="off">
+				<input type="submit" value="Search" onclick="doSearch(); return false;">
+			</div>
+
+
+      </div>
+    </section>
+  </div>
+  <!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+  <!-- #include virtual = "/html/inc/footer.html" -->
+
+<script>
+$(function() {
+	$(document).on('keyup', '#sq', function(e) {
+		if (e.keyCode == 13) {
+			doSearch();
+		}
+	});
+});
+
+function goView(CD_BOARDID) {
+	var mt = encodeURIComponent('<%=clearXSSdefault(mt)%>');
+	var st = encodeURIComponent($("#st option:selected").val());
+	var sq = encodeURIComponent($("#sq").val());
+	document.location.href = "FAQ_view.html?CD_BOARDID="+CD_BOARDID+"&page=<%=clearXSSdefault(page)%>&mt="+mt+"&st="+st+"&sq="+sq;
+}
+
+function doSearch() {
+	var st = encodeURIComponent($("#st option:selected").val());
+	var sq = encodeURIComponent($("#sq").val());
+
+	if (st == '') {
+		alert('검색 구분을 선택해주세요.');
+		$('#st').focus();
+		return;
+	}
+
+	document.location.href = "?page=1&mt=<%=clearXSSdefault(mt)%>&st="+st+"&sq="+sq;
+}
+</script>

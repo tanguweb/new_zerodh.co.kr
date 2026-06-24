@@ -1,0 +1,11 @@
+User-agent:*
+Allow:/
+Disallow:/manager/
+Disallow:/file/
+Disallow:/ckeditor/
+Disallow:/api/
+Disallow:/class/
+Disallow:/function/
+Disallow:/Include/
+Disallow:/js/
+Sitemap:https://zerodh.co.kr/sitemap.xml

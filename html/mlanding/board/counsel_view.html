@@ -1,0 +1,196 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_BoardCnt.asp" -->
+<%
+	Dim aryList, SQL
+	Dim arybefore
+	Dim aryafter
+	Dim objADO
+	Dim arrRsNotice
+
+
+	Dim CD_BOARDCD : CD_BOARDCD = 1003
+	Dim CD_BOARDID : CD_BOARDID = ReqF("CD_BOARDID")
+	Dim page : page = ReqF("page")
+	Dim pwd : pwd = ReqF("pwd")
+
+	'Response.write CD_BOARDID
+
+	If CD_BOARDID = "" Then
+		Response.write "<script>alert('잘못된 접근입니다.');history.back();</script>"
+		Response.End
+	End If
+
+	aryList = fn_BoardView(CD_BOARDID)
+
+	if isarray(aryList) then
+
+		If aryList(16,0) <> "" Then
+			If pwd <> aryList(16,0) Then
+				Response.write "<script>alert('비밀번호가 일치하지 않습니다.');history.back();</script>"
+				Response.End
+			End If
+		End If
+
+		'arybefore = fn_BoardBefore(CD_BOARDCD, CD_BOARDID)
+		'aryafter = fn_BoardAfter(CD_BOARDCD, CD_BOARDID)
+
+
+		' 답변
+		Set objADO = new clsADO
+		SQL = ""
+		SQL = SQL & "SELECT top 1 CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, NM_FIELD_3, NM_FIELD_4, NM_FIELD_5, NM_FIELD_6, NM_FIELD_7, NM_FIELD_8, DT_INSYSDATE	"
+		SQL = SQL & "FROM T_BOARDDETAIL	"
+		SQL = SQL & "WHERE CD_BOARDCD = '"&CD_BOARDCD&"' AND CD_BOARDKEY = '" & CD_BOARDID & "' AND NO_BOARD_DEPTH = 2 AND YN_USE = 'Y' AND YN_DISPLAY = 'Y'	"
+		SQL = SQL & "ORDER BY CD_BOARDID DESC	"
+
+		objADO.setSql(SQL)
+		arrRsNotice = objADO.getArrRs()
+
+		Set objADO = Nothing
+
+	else
+		response.write "<script>history.back();</script>"
+		response.end
+	end if
+
+'	if isarray(aryList) then
+'		arybefore = fn_BoardBefore(CD_BOARDCD, CD_BOARDID)
+'		aryafter = fn_BoardAfter(CD_BOARDCD, CD_BOARDID)
+'	else
+'		response.write "<script>history.back();</script>"
+'		response.end
+'	end If
+
+	fn_BoardCnt (CD_BOARDID)
+
+%>
+
+<!-- S : sub -->
+<div id="sub" class="board_01">
+  <section>
+    <!-- S : sub_visual -->
+		<!-- #include virtual = "/html/inc/board_left.html" -->
+		<div class="sub_tit">
+			<div>
+				<!-- <h5><span class="pc">무엇이든 물어보세요!</span> 궁금증을 빠르게 해결해드립니다</h5> -->
+				<h1><%=m_client_name_s%> <span>온라인 상담</span></h1>
+				<p class="en">&nbsp;<%=m_client_en%></p>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$('.sub_nav li:nth-child(1)').addClass('active');
+		</script>
+  <!-- E : sub_visual -->
+  </section>
+
+  <div class="content_wrap ">
+
+    <section class="section_01">
+      <div class="inwrap" id="counsel_view" style="display: none;">
+        <!-- <div class="title">
+          <h2><span>온</span>라인 상담 <em></em></h2>
+          <h3>무엇이든 물어보세요! <br class="mobile">궁금증을 빠르게 해결해드립니다.</h3>
+        </div> -->
+
+
+        <table class="line view">
+			<!-- <colgroup><col width="100"><col width="140"><col width="*"><col width="100"><col width="140"><col width="120"></colgroup> -->
+			<tbody><tr>
+				<th><%=clearXSSdefault(aryList(8,0))%> <p class="pc"><span>작성일 | <%=Replace(Left(aryList(21,0),10),"-",".")%> </span>  <span>작성자 | <%=clearXSSdefault(aryList(10,0))%></span></p></th>
+			</tr>
+			<tr>
+				<td class="board_con">
+				<%=aryList(9,0)%>
+
+							<%If aryList(14,0) <> "" Then%>
+								<br />
+								<br />
+								<strong>사진1</strong>
+								<br />
+								<img src="/file/board/<%=aryList(14,0)%>" />
+							<%End If%>
+
+							<%If aryList(15,0) <> "" Then%>
+								<br />
+								<br />
+								<strong>사진2</strong>
+								<br />
+								<img src="/file/board/<%=aryList(15,0)%>" />
+							<%End If%>
+
+
+
+
+				</td>
+			</tr>
+			<tr>
+				<td  class="board_con">
+				<!-- <div>답변내용</div> -->
+				<%
+					If IsArray(arrRsNotice) Then
+						Response.write arrRsNotice(2,0)
+					End If
+					%>
+				</td>
+			</tr>
+		</tbody>
+  </table>
+
+  <p class="btn_wrap m_t_40">
+  			<a href="javascript:doModify()" class="btn btn_gray">수정</a> <a href="javascript:void(0)" onclick="javascript:doRemove()" class="btn btn_green ">삭제</a> <a href="counsel.html" class="btn btn_red">목록</a>
+  		</p>
+
+      </div>
+    </section>
+
+
+  </div>
+
+<form id="frm">
+	<input type="hidden" id="CD_BOARDID" name="CD_BOARDID" value="" />
+	<input type="hidden" id="page" name="page" value="<%=clearXSSdefault(page)%>" />
+	<input type="hidden" id="pwd" name="pwd" value="" />
+</form>
+
+<form id="frmDel">
+	<input type="hidden" id="CD_BOARDID" name="CD_BOARDID" value="" />
+	<input type="hidden" id="page" name="page" value="<%=clearXSSdefault(page)%>" />
+	<input type="hidden" id="pwd" name="pwd" value="" />
+	<input type="hidden" id="MODE" name="MODE" value="D" />
+</form>
+<script>
+$(document).ready(function() {
+	<%If pwd = aryList(16,0) Then%>
+	$('#counsel_view').show();
+	<%end if%>
+});
+function doModify() {
+
+	$("#frm #CD_BOARDID").val("<%=CD_BOARDID%>");
+	$("#frm #pwd").val("<%=pwd%>");
+	$("#frm").attr({
+		"method" : "post"
+		, "action" : "counsel_write.html"
+	}).submit();
+}
+
+function doRemove() {
+	if (confirm("삭제하시겠습니까?")) {
+		$("#frmDel #CD_BOARDID").val("<%=CD_BOARDID%>");
+		$("#frmDel #pwd").val("<%=pwd%>");
+		$("#frmDel").attr({
+			"method" : "post"
+			, "enctype": "multipart/form-data"
+			, "action" : "counsel_proc.asp"
+		}).submit();
+	}
+}
+</script>
+<!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->

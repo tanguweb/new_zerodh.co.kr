@@ -1,0 +1,61 @@
+<!-- #include virtual = "/html/inc/main_top.html" -->
+<!-- #include virtual = "/html/inc/quick_menu.html" -->
+
+<!-- S:wrap -->
+<div id="wrap">
+  <header>
+    <div class="inwrap">
+      <div class="menu_wrap">
+          <a href="#" id="menu_but" class=""><span></span></a>
+      </div>
+
+      <h1>
+        <a href="../main/">
+          <img src="../images/logo.png" alt="logo">
+        </a>
+      </h1>
+
+    <nav>
+      <div class="inwrap">
+        <ul class="lnb">
+          <!-- #include virtual = "/html/inc/menu.html" -->
+        </ul>
+
+        <!-- <ul class="mobile sns">
+          <li><a href="https://www.youtube.com/channel/UCNpufwV9NI3RNhe1KUhhGGA" target="_blank"><span>유투브</span></a></li>
+          <li><a href="https://www.instagram.com/misosmilebp" target="_blank"><span>인스타그램</span></a></li>
+          <li><a href="https://blog.naver.com/misosmilebp" target="_blank"><span>블로그</span></a></li>
+          <li><a href="https://www.facebook.com/pg/misosmilebp" target="_blank"><span>페이스북</span></a></li>
+        </ul> -->
+      </div>
+    </nav>
+
+    <div class="top_call " id="top_call">
+      <div  class="tel">
+        <span class="pc"><%=m_client_tel%></span>
+        <a href="tel:<%=m_client_tel%>" ></a>
+      </div>
+      <div class="add pc">
+         북부시장 사거리쪽
+      </div>
+    </div>
+
+
+  </div>
+
+
+    <script type="text/javascript">
+        if (screen.width > 767) {
+      $("#top_call > div:gt(0)").hide();
+      setInterval(function() {
+        $('#top_call > div:first')
+          .fadeIn(500)
+          .next()
+          .fadeOut(500)
+          .end()
+          .appendTo('#top_call');
+      }, 3000);
+     }
+
+    </script>
+  </header>

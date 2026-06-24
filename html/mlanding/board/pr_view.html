@@ -1,0 +1,120 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_BoardCnt.asp" -->
+<%
+	Dim aryList
+	Dim arybefore
+	Dim aryafter
+
+	Dim CD_BOARDCD : CD_BOARDCD = 1010
+	Dim CD_BOARDID : CD_BOARDID = Req("CD_BOARDID")
+	Dim page : page = Req("page")
+	Dim searchType : searchType =Req("searchType")
+	Dim keyword : keyword =Req("keyword")
+
+	If CD_BOARDID = "" Then
+		Response.write "<script>alert('잘못된 접근입니다.');history.back();</script>"
+		Response.End
+	End If
+
+	aryList = fn_BoardView(CD_BOARDID)
+
+	if isarray(aryList) then
+		arybefore = fn_BoardBefore(CD_BOARDCD, CD_BOARDID)
+		aryafter = fn_BoardAfter(CD_BOARDCD, CD_BOARDID)
+	else
+		response.write "<script>history.back();</script>"
+		response.end
+	end if
+
+	fn_BoardCnt (CD_BOARDID)
+%>
+
+<!-- S : sub -->
+<div id="sub" class="pr_view">
+	<section>
+		<!-- S : sub_visual -->
+		<!-- #include virtual = "/html/inc/board_left.html" -->
+		<div class="sub_tit">
+			<div>
+				<!-- <h5><span class="pc"><%=m_client_name%>의 </span> 환자분들이 말하는 진료후기를 확인해보세요</h5> -->
+				<h1><%=m_client_name_s%> <span>보도자료</span></h1>
+				<p class="en">&nbsp;<%=m_client_en%></p>
+			</div>
+		</div>
+	<!-- E : sub_visual -->
+	<script type="text/javascript">
+		$('.sub_top_menu li:nth-child(3)').addClass('active');
+	</script>
+	</section>
+
+
+  <div class="content_wrap ">
+
+    <section class="">
+      <div class="inwrap">
+        <div class="sub_title ">
+					<h2>보도자료 <p>언론이 소개하는 <%=m_client_name%>를 만나보세요</p></h2>
+        </div>
+
+
+        <table class="line view">
+			<!-- <colgroup><col width="100"><col width="140"><col width="*"><col width="100"><col width="140"><col width="120"></colgroup> -->
+			<tbody><tr>
+				<th><%=clearXSSdefault(aryList(8,0))%> <p class="pc"><span>작성일 | <%=Replace(Left(aryList(21,0), 10), "-", ".")%> </span>  <span>작성자 | 관리자</span></p></th>
+			</tr>
+			<tr>
+				<td class="board_con">
+					<%=aryList(9,0)%>
+				</td>
+			</tr>
+		</tbody>
+  </table>
+
+  <p class="btn_wrap m_t_40">
+  			<a href="javascript:goList()" class="btn btn_green">목록</a>
+  		</p>
+      <table class="line m_t_50">
+      			<tbody><tr>
+				<th>이전글</th>
+				<td class="TextL">
+				<%If isarray(arybefore) Then%>
+					<a href="pr_view.html?CD_BOARDID=<%=arybefore(0, 0)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(arybefore(8, 0))%></a> <span class="right pc"><%=Replace(Left(arybefore(21,0), 10), "-", ".")%></span>
+				<%Else%>
+					이전 게시글이 없습니다.
+				<%End If%>
+				</td>
+			</tr>
+			<tr>
+				<th>다음글</th>
+				<td class="TextL">
+				<%If isarray(aryafter) Then%>
+					<a href="pr_view.html?CD_BOARDID=<%=aryafter(0, 0)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(aryafter(8, 0))%></a> <span class="right pc"><%=Replace(Left(aryafter(21,0), 10), "-", ".")%></span>
+				<%Else%>
+					다음 게시글이 없습니다.
+				<%End If%>
+				</td>
+			</tr>
+		</tbody></table>
+
+
+
+
+
+      </div>
+    </section>
+
+
+  </div>
+	<!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->
+
+<script>
+function goList() {
+	document.location.href = "pr.html?page=<%=page%>&searchType=<%=searchType%>&keyword=<%=keyword%>";
+}
+</script>

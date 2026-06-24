@@ -1,0 +1,601 @@
+<%
+	Dim objADO_notice_footer, iloop_notice_footer, SQL_notice_footer
+	Dim aryBoard_notice_footer
+	Set objADO_notice_footer = new clsADO
+
+	SQL_notice_footer = ""
+	SQL_notice_footer = SQL_notice_footer & "SELECT TOP 5 CD_BOARDID, NM_TITLE, DT_INSYSDATE	"
+	SQL_notice_footer = SQL_notice_footer & "FROM T_BOARDDETAIL	"
+	SQL_notice_footer = SQL_notice_footer & "WHERE	"
+	SQL_notice_footer = SQL_notice_footer & "	YN_USE = 'Y' AND YN_DISPLAY = 'Y'	"
+	SQL_notice_footer = SQL_notice_footer & "	AND CD_BOARDCD = '1002'	"
+	SQL_notice_footer = SQL_notice_footer & "	AND NO_BOARD_DEPTH = '1' AND NO_BOARD_SEQ = '1'	"
+	SQL_notice_footer = SQL_notice_footer & "ORDER BY CD_BOARDID DESC	"
+
+	objADO_notice_footer.setSql(SQL_notice_footer)
+	aryBoard_notice_footer = objADO_notice_footer.getArrRs()
+
+	Set objADO_notice_footer = Nothing
+%>
+
+
+
+<footer>
+
+	<!-- S : foot_board -->
+	<div class="foot_board">
+		<ul class="three">
+			<li>
+				<h5>공지사항<span></span></h5>
+
+				<ul>
+<%
+If IsArray(aryBoard_notice_footer) Then
+For iloop_notice_footer = 0 To UBound(aryBoard_notice_footer, 2)
+%>
+					<li>
+						<a href="/html/board/news_view.html?CD_BOARDID=<%=aryBoard_notice_footer(0, iloop_notice_footer)%>">
+							<%=clearXSSdefault(CheckLength2(aryBoard_notice_footer(1, iloop_notice_footer),26,".."))%>
+							<span class="right"><%=Left(aryBoard_notice_footer(2, iloop_notice_footer), 10)%></span>
+						</a>
+					</li>
+					<%
+    Next
+  End If
+  %>
+					<%
+					'<li><a href="#">설날연휴 정상진료합니다. <span>2020.02.02</span></a></li>
+					'<li><a href="">2019 치과위생사 신입 공개 채용 안내 <span>2020.02.02</span></a></li>
+					'<li><a href="">개천절(10/3일) '정상진료' <span>2020.02.02</span></a></li>
+					'<li><a href="">추석연휴(9/12, 9/14) '정상진료' <span>2020.02.02</span></a></li>
+					'<li><a href=""> 일요일/공휴일 진료안내 <span>2020.02.02</span></a></li>
+					%>
+				</ul>
+			</li>
+			<li>
+				<h5>간편상담<span></span></h5>
+
+				<form class="" id="frmQuickCounsel" method="post" autocomplete="off">
+
+					<input type="hidden" id="HTTP_REFERER_quick" name="HTTP_REFERER_quick" value="<%=Request.ServerVariables("HTTP_REFERER")%>">
+					<input type="hidden" id="HTTP_USER_AGENT_quick" name="HTTP_USER_AGENT_quick" value="<%=Request.ServerVariables("HTTP_USER_AGENT")%>">
+					<input type="hidden" id="HTTP_DEVICE_TYPE_quick" name="HTTP_DEVICE_TYPE_quick" value="<%=getDeviceType()%>">
+					<input type="hidden" id="HTTP_MEDIA_TYPE_quick" name="HTTP_MEDIA_TYPE_quick" value="<%=getMediaType()%>">
+
+					<div class="name">
+						<input type="text" name="quickCounselUserName" id="quickCounselUserName" value="" autocomplete="off" placeholder="이름">
+					</div>
+					<div class="phone">
+						<input type="text" name="quickCounselPhone" id="quickCounselPhone" value="" autocomplete="off" placeholder="연락처" maxlength="15">
+					</div>
+					<div class="textarea">
+						<textarea name="quickCounselContent" id="quickCounselContent" rows="" cols="" placeholder="상담내용을 입력해주시면
+상담을 받으실 수 있습니다."></textarea>
+					</div>
+
+					<button type="button" name="button" onclick="doQuickCounsel()">신청<br>하기</button>
+					<div><input type="checkbox" id="quickCounselagree_quick" checked="checked"><label for="quickCounselagree_quick">개인정보취급방침 동의 <a href="../board/personal_info.html">[자세히보기]</a></label></div>
+				</form>
+			</li>
+			<li>
+				<h5>오시는길<span></span></h5>
+				<a href="../introduce/contact.html"><div id="map"></div></a>
+			</li>
+		</ul>
+	</div>
+	<!-- E : foot_board -->
+	<script>
+		$(window).load(function() {
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+				mapOption = {
+					center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+					level: 4 // 지도의 확대 레벨
+				};
+
+			// 지도를 생성합니다
+			var map = new kakao.maps.Map(mapContainer, mapOption);
+
+			// 주소-좌표 변환 객체를 생성합니다
+			var geocoder = new kakao.maps.services.Geocoder();
+
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch('<%=m_client_address1%>', function(result, status) {
+
+				// 정상적으로 검색이 완료됐으면
+				if (status === kakao.maps.services.Status.OK) {
+
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+					// 결과값으로 받은 위치를 마커로 표시합니다
+					var marker = new kakao.maps.Marker({
+						map: map,
+						position: coords
+					});
+
+					// 인포윈도우로 장소에 대한 설명을 표시합니다
+					var infowindow = new kakao.maps.InfoWindow({
+						content: '<div class="map_marker"><p><%=m_client_name%></p></div>'
+					});
+					infowindow.open(map, marker);
+
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+					map.setCenter(coords);
+				}
+			});
+		});
+	</script>
+
+
+	<div class="copy">
+		<div class="inwrap">
+			<div>
+			<h5><img src="../images/foot_logo.png" alt=""></h5>
+			<address>
+
+				상호명 : <%=m_client_name%>의원<span class="pc"></span><br class="mobile"> 대표자 : <%=m_client_owner%><br>
+				<%=m_client_address1%> <%=m_client_address2%><br>
+
+
+				TEL : <%=m_client_tel%> <br>사업자등록번호 : <%=m_client_business_no%>
+
+			</address>
+			<p><%=m_client_site_copyright%></p>
+			</div>
+			<ul class="foot_lnb">
+				<!-- #include virtual = "/html/inc/menu.html" -->
+			</ul>
+
+			<ul class="sns">
+				<li>
+					<span id="charge_but">의료수가표</span>
+				</li>
+				<!-- <li><a href="<%=m_client_insta%>" target="_blank"><span>인스타그램</span></a></li>
+				<li><a href="<%=m_client_naver_blog%>" target="_blank"><span>블로그</span></a></li>
+				<li><a href="<%=m_client_facebook%>" target="_blank"><span>페이스북</span></a></li>
+				<li><a href="<%=m_client_kakao%>" target="_blank"><span>카카오톡</span></a></li> -->
+			</ul>
+
+		</div>
+	</div>
+</footer>
+</div>
+<!-- E : main / sub -->
+
+<div class=" charge_layer_pop">
+	<div class="password gallery_pass">
+
+		<h4>의료수가표 <span id="charge_close" class="icon-close"></span></h4>
+
+		<div class="charge">
+			<table>
+				<tbody>
+          <tr>
+            <th rowspan="5">임플란트</th>
+						<td>오스템SOI 임플란트</td>
+						<td>99만원</td>
+					</tr>
+					<tr>
+						<td>오스템 BA 임플란트</td>
+						<td>89만원</td>
+					</tr>
+					<!-- <tr>
+						<td>덴티움 임플란트</td>
+						<td>79만원</td>
+					</tr> -->
+					<tr>
+						<td>포인트 SLA 임플란트</td>
+						<td>69만원</td>
+					</tr>
+          <tr>
+						<td>포인트 UV 임플란트</td>
+						<td>79만원</td>
+					</tr>
+					<tr>
+						<td>원데이 임플란트</td>
+						<td>69만원</td>
+					</tr>
+          <!-- <tr>
+            <td>디오 임플란트 </td>
+            <td>89만원</td>
+          </tr> -->
+          <!-- <tr>
+            <td>아이두 임플란트</td>
+            <td>59만원</td>
+          </tr> -->
+					
+					
+					<tr>
+						<th rowspan="2">상악동거상술</th>
+						<td>외측 접근법</td>
+						<td>50만원</td>
+					</tr>
+					<tr>
+						<td>치조정 접근법</td>
+						<td>30만원</td>
+					</tr>
+					<tr>
+						<th rowspan="2">뼈이식</th>
+						<td>수입산_뼈이식술</td>
+						<td>30만원</td>
+					</tr>
+					<tr>
+						<td>국산_뼈이식술</td>
+						<td>20만원</td>
+					</tr>
+
+					<tr>
+						<th rowspan="7">보존치료</th>
+						<td>레진코어</td>
+						<td>5만원</td>
+					</tr>
+					<tr>
+						<td>인레이(저스트스캔)</td>
+						<td>25만원</td>
+					</tr>
+					<tr>
+						<td>레진(소구치)</td>
+						<td>10만원</td>
+					</tr>
+          <tr>
+						<td>레진(대구치)</td>
+						<td>15만원</td>
+					</tr>
+          <tr>
+						<td>레진(전치부)</td>
+						<td>20만원</td>
+					</tr>
+					<tr>
+						<td>레진치료 (치경부)</td>
+						<td>7만원</td>
+					</tr>
+					
+          <tr>
+						<td>치아고정장치 (Splint)</td>
+						<td>20만원</td>
+					</tr>
+
+					<tr>
+						<th rowspan="5">보철 치료</th>
+						<td>지르코니아 크라운</td>
+						<td>45만원</td>
+					</tr>
+          <tr>
+						<td>PFM 크라운</td>
+						<td>40만원</td>
+					</tr>
+          <tr>
+						<td>지르코니아 Pontic</td>
+						<td>40만원</td>
+					</tr>
+          <tr>
+						<td>PFM Pontic</td>
+						<td>35만원</td>
+					</tr>
+					<tr>
+						<td>임시 치아</td>
+						<td>5만원</td>
+					</tr>
+					
+
+					<tr>
+						<th rowspan="5">소아치료</th>
+						<td>소아 레진</td>
+						<td>5만원</td>
+					</tr>
+					<tr>
+						<td>SS Crown</td>
+						<td>20만원</td>
+					</tr>
+					<tr>
+						<td>Band(Crown) & Loop</td>
+						<td>20만원</td>
+					</tr>
+					<tr>
+						<td>치아 홈 메우기</td>
+						<td>4만원</td>
+					</tr>
+					<tr>
+						<td>불소 도포</td>
+						<td>5만원</td>
+					</tr>
+					
+
+					<tr>
+						<th rowspan="7">틀니치료</th>
+						<td>부분 틀니</td>
+						<td>140만원</td>
+					</tr>
+					<tr>
+						<td>전체틀니</td>
+						<td>140만원</td>
+					</tr>
+					<tr>
+						<td>틀니수리</td>
+						<td>10만원</td>
+					</tr>
+					<tr>
+						<td>틀니개상</td>
+						<td>30만원</td>
+					</tr>
+          <tr>
+						<td>틀니 똑딱이 단추(Locator)</td>
+						<td>70만원</td>
+					</tr>
+					<tr>
+						<td>임시틀니</td>
+						<td>20만원</td>
+					</tr>
+          
+          <tr>
+						<td>플리퍼 </td>
+						<td>10만원</td>
+					</tr>
+
+					<tr>
+						<th rowspan="7">기타치료</th>
+						<td>이갈이 장치</td>
+						<td>60만원</td>
+					</tr>
+					<tr>
+						<td>스플린트</td>
+						<td>60만원</td>
+					</tr>
+					<tr>
+						<td>스케일링 (비보험)</td>
+						<td>5만원</td>
+					</tr>
+					<tr>
+						<td>치관확장술</td>
+						<td>10만원</td>
+					</tr>
+					<tr>
+						<td>치근첨절제술</td>
+						<td>15만원</td>
+					</tr>
+					<tr>
+						<td>충치깊을경우(bass)</td>
+						<td>10만원</td>
+					</tr>
+					<tr>
+						<td>기타치료</td>
+						<td>10만원</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		$("#charge_but").click(function() {
+			$(".charge_layer_pop, .dim_bg").fadeIn();
+		});
+		$("#charge_close, .dim_bg").click(function() {
+			$(".charge_layer_pop, .dim_bg").fadeOut();
+		});
+	});
+</script>
+<!-- E : wrap -->
+
+<script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+<script type="text/javascript">
+	var isQuickCounselSubmit = false;
+
+	function doQuickCounsel() {
+
+		kakaoPixel('919778158732657933').pageView('underconsulting');
+
+		if ($.trim($("#quickCounselUserName").val()) == "") {
+			alert("이름을 입력해 주세요.");
+			$("#quickCounselUserName").focus();
+			return;
+		}
+
+		if ($("#quickCounselUserName").val().length < 2) {
+			alert("이름을 2글자 이상 입력해 주세요.");
+			$("#quickCounselUserName").focus();
+			return;
+		}
+
+		if ($.trim($("#quickCounselPhone").val()) == "") {
+			alert("연락처를 입력해 주세요.");
+			$("#quickCounselPhone").focus();
+			return;
+		}
+
+		if (ValPhone_V3($("#quickCounselPhone").val(), "", true) == false && ValNumber_V3($("#quickCounselPhone").val(), "", true) == false) {
+			alert("올바른 연락처 형식이 아닙니다.\n\r연락처를 확인해주세요.");
+			$("#quickCounselPhone").focus();
+			return;
+		}
+
+		if ($.trim($("#quickCounselContent").val()) == "") {
+			alert("문의내용을 입력해 주세요.");
+			$("#quickCounselContent").focus();
+			return;
+		}
+
+		if ($("#quickCounselContent").val().length < 2) {
+			alert("문의내용을 2글자 이상 입력해 주세요.");
+			$("#quickCounselContent").focus();
+			return;
+		}
+
+
+		if ($("#quickCounselagree_quick").is(":checked") == false) {
+			alert("개인정보취급방침에 동의해주세요.");
+			$("#quickCounselagree_quick").focus();
+			return;
+		}
+
+		if (isMainCounselSubmit == false) {
+			$.ajax({
+				type: "post",
+				url: "/controller/quickCounselController.asp",
+				dataType: "json",
+				data: $("#frmQuickCounsel").serialize(),
+				async: false,
+				beforeSend: function() {
+					isMainCounselSubmit = true;
+				},
+				success: function(data) {
+					//alert(data.toString());
+					//alert(JSON.stringify(data));
+					//return;
+
+					if (data.result == "SUCCESS") {
+						alert("등록 되었습니다.");
+						document.location.reload();
+						return;
+					} else {
+						isMainCounselSubmit = false;
+						alert("등록에 실패하였습니다.");
+						return;
+					}
+				},
+				error: function(data, status, err) {
+					isMainCounselSubmit = false;
+					alert("서버와의 통신이 실패했습니다.");
+					console.log("서버와의 통신이 실패했습니다. data : " + data + ", status : " + status + ", err : " + err);
+				},
+				complete: function() {
+					isMainCounselSubmit = false;
+				}
+			});
+		}
+	}
+</script>
+
+<div class="bottom_fixed_box">
+	<form class="bfb_frm" id="frmBottomFixedCounsel" method="post" autocomplete="off">
+		<input type="hidden" id="HTTP_REFERER_bottomFixedCounsel" name="HTTP_REFERER_bottomFixedCounsel" value="<%=Request.ServerVariables("HTTP_REFERER")%>">
+		<input type="hidden" id="HTTP_USER_AGENT_bottomFixedCounsel" name="HTTP_USER_AGENT_bottomFixedCounsel" value="<%=Request.ServerVariables("HTTP_USER_AGENT")%>">
+		<input type="hidden" id="HTTP_DEVICE_TYPE_bottomFixedCounsel" name="HTTP_DEVICE_TYPE_bottomFixedCounsel" value="<%=getDeviceType()%>">
+		<input type="hidden" id="HTTP_MEDIA_TYPE_bottomFixedCounsel" name="HTTP_MEDIA_TYPE_bottomFixedCounsel" value="<%=getMediaType()%>">
+		<!-- <input type="hidden" name="center" value="" > -->
+		<h2 class="pc"><span>빠른</span> 상담신청</h2>
+
+			<input type="text" name="bottomFixedCounselUserName" id="bottomFixedCounselUserName" value="" autocomplete="off" placeholder="성함" maxlength="5">
+			<input type="tel" name="bottomFixedCounselPhone" id="bottomFixedCounselPhone" value="" autocomplete="off" placeholder="연락처" maxlength="13">
+      <div>
+				<input type="checkbox" id="bottomFixedCounselAgree" checked="checked"><label for="bottomFixedCounselAgree">개인정보수집 동의</label>
+          <a href="../board/personal_info.html" target="_blank">[보기]</a>
+			</div>
+			<button type="button" class="bfb_frm_btn" onclick="doBottomFixedCounsel()">상담신청</button>
+
+	</form>
+</div>
+
+
+<script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+<script type="text/javascript">
+  var isBottomFixedCounselSubmit = false;
+  function doBottomFixedCounsel() {
+
+	kakaoPixel('919778158732657933').pageView('underbarfastconsulting');
+
+	if ($.trim($("#bottomFixedCounselUserName").val()) == "") {
+		alert("이름을 입력해 주세요.");
+		$("#bottomFixedCounselUserName").focus();
+		return;
+	}
+
+	if ($("#bottomFixedCounselUserName").val().length < 2) {
+		alert("이름을 2글자 이상 입력해 주세요.");
+		$("#bottomFixedCounselUserName").focus();
+		return;
+	}
+
+	if ($.trim($("#bottomFixedCounselPhone").val()) == "") {
+		alert("연락처를 입력해 주세요.");
+		$("#bottomFixedCounselPhone").focus();
+		return;
+	}
+
+	if (ValPhone_V3($("#bottomFixedCounselPhone").val(), "", true) == false && ValNumber_V3($("#bottomFixedCounselPhone").val(), "", true) == false) {
+		alert("올바른 연락처 형식이 아닙니다.\n\r연락처를 확인해주세요.");
+		$("#bottomFixedCounselPhone").focus();
+		return;
+	}
+
+	if ($("#bottomFixedCounselAgree").is(":checked") == false) {
+		alert("개인정보취급방침에 동의해주세요.");
+		$("#bottomFixedCounselAgree").focus();
+		return;
+	}
+
+	if (isBottomFixedCounselSubmit == false) {
+		$.ajax({
+			type: "post",
+			url: "/controller/bottomFixedCounselController.asp",
+			dataType: "json",
+			data: $("#frmBottomFixedCounsel").serialize(),
+			async: false,
+			beforeSend: function() {
+				isBottomFixedCounselSubmit = true;
+			},
+			success: function(data) {
+				//alert(data.toString());
+				//alert(JSON.stringify(data));
+				//return;
+
+				if (data.result == "SUCCESS") {
+					alert("등록 되었습니다.");
+					document.location.reload();
+					return;
+				} else {
+					isBottomFixedCounselSubmit = false;
+					alert("등록에 실패하였습니다.");
+					return;
+				}
+			},
+			error: function(data, status, err) {
+				isBottomFixedCounselSubmit = false;
+				alert("서버와의 통신이 실패했습니다.");
+				console.log("서버와의 통신이 실패했습니다. data : " + data + ", status : " + status + ", err : " + err);
+			},
+			complete: function() {
+				isBottomFixedCounselSubmit = false;
+			}
+		});
+	}
+}
+</script>
+
+<script src="../js/common.js"></script>
+
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "1927bd0112e8da";
+if(window.wcs) {
+wcs_do();
+}
+</script>
+
+<!-- <script type='text/javascript' src='http://www.1004ok.co.kr/platform-js/v1/counter_platform.js'></script>
+<script type='text/javascript'>
+if (!pmpf_cp) var pmpf_cp = {};
+pmpf_cp['sc'] = '12KIYEOUcGYyZTRsTJYX';
+pmpf_cp_start();
+</script> -->
+
+<!-- NAVER SCRIPT START -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "s_2f72707af981";
+if (!_nasa) var _nasa={};
+if (window.wcs ) {
+    wcs.inflow("topplant.kr");
+    wcs_do(_nasa);
+}
+</script>
+<!-- NAVER SCRIPT END -->
+
+
+</body>
+
+</html>

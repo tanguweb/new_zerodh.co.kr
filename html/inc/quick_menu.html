@@ -1,0 +1,924 @@
+<div class="quick_menu">
+  <ul>
+    <li class="pc"><a href="../board/counsel.html"><span>온라인상담</span></a></li>
+    <!-- <li id="quick_counsel" class="mobile"><a><span>빠른상담</span></a></li> -->
+    <!-- <li><a href="../introduce/time.html"><span>진료시간</span></a></li>
+    <li><a href="../introduce/contact.html"><span>오시는길</span></a></li> -->
+    <li class="pc"><a href="<%=m_client_kakao%>" target="_blank"><span>카톡상담</span></a></li>
+    <li id="quick_reserve_icon"><a href="#"><span>빠른예약</span></a></li>
+    <li class="mobile"><a href="<%=m_client_kakao%>" target="_blank"><span>카톡상담</span></a></li>
+    <li class="mobile"><a href="../board/counsel.html"><span>온라인상담</span></a></li>
+
+  </ul>
+</div>
+
+<div class="layerwrite">
+  <h2>빠른 상담<i class="demo-icon icon-close" id="quick_close"></i></h2>
+  <div class="wraper quick_counsel">
+    <p>
+      궁금하신 사항을 아래 문의 내용에 입력해주시면 <br>
+      보다 빠르게 전화로 상담을 도와드립니다
+    </p>
+    <form id="frmMainCounsel_quick" name="frmMainCounsel_quick" autocomplete="new-password" onsubmit="return false;">
+
+		<input type="hidden" id="HTTP_REFERER_side" name="HTTP_REFERER_side" value="<%=Request.ServerVariables("HTTP_REFERER")%>">
+		<input type="hidden" id="HTTP_USER_AGENT_side" name="HTTP_USER_AGENT_side" value="<%=Request.ServerVariables("HTTP_USER_AGENT")%>">
+		<input type="hidden" id="HTTP_DEVICE_TYPE_side" name="HTTP_DEVICE_TYPE_side" value="<%=getDeviceType()%>">
+		<input type="hidden" id="HTTP_MEDIA_TYPE_side" name="HTTP_MEDIA_TYPE_side" value="<%=getMediaType()%>">
+
+      <input type="hidden" name="isQuick" value="Y" />
+      <input style="visibility: hidden; width: 0px; height: 0px;" />
+
+      <table>
+        <tbody>
+          <tr>
+            <th>이름</th>
+            <td><input type="text" id="mainCounselUserName_quick" name="mainCounselUserName_quick" value="" maxlength="4" autocomplete="off" placeholder="이름을 입력하세요"></td>
+          </tr>
+          <tr>
+            <th>연락처</th>
+            <td><input type="text" id="mainCounselPhone_quick" name="mainCounselPhone_quick" value="" maxlength="15" autocomplete="off" placeholder="연락처를 입력하세요"></td>
+          </tr>
+          <tr>
+            <th>문의내용</th>
+            <td><textarea name="mainCounselContent_quick" id="mainCounselContent_quick" placeholder="궁금한 사항을 적어주세요" style="resize: none"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><input type="checkbox" id="mainCounselagree_quick" checked="checked"><label for="mainCounselagree_quick">개인정보수집동의 <a href="../board/personal_info.html" class="Counselagree_view">개인정보취급방침 </a></label></p>
+      <input type="submit" onclick="return false;" style="display: none; visibility: hidden; width: 0px; height: 0px;">
+      <input type="submit" value="상담신청하기" onclick="doMainCounsel_quick_Submit();return false;">
+    </form>
+
+	<script>
+      var isMainCounselSubmit = false;
+
+      function doMainCounsel_quick_Submit() {
+
+        if ($.trim($("#mainCounselUserName_quick").val()) == "") {
+          alert("이름을 입력해 주세요.");
+          $("#mainCounselUserName_quick").focus();
+          return;
+        }
+
+        if ($("#mainCounselUserName_quick").val().length < 2) {
+          alert("이름을 2글자 이상 입력해 주세요.");
+          $("#mainCounselUserName_quick").focus();
+          return;
+        }
+
+        if ($.trim($("#mainCounselPhone_quick").val()) == "") {
+          alert("연락처를 입력해 주세요.");
+          $("#mainCounselPhone_quick").focus();
+          return;
+        }
+
+        if (ValPhone_V3($("#mainCounselPhone_quick").val(), "", true) == false && ValNumber_V3($("#mainCounselPhone_quick").val(), "", true) == false) {
+          alert("올바른 연락처 형식이 아닙니다.\n\r연락처를 확인해주세요.");
+          $("#mainCounselPhone_quick").focus();
+          return;
+        }
+
+        if ($.trim($("#mainCounselContent_quick").val()) == "") {
+          alert("문의내용을 입력해 주세요.");
+          $("#mainCounselContent_quick").focus();
+          return;
+        }
+
+        if ($("#mainCounselContent_quick").val().length < 2) {
+          alert("문의내용을 2글자 이상 입력해 주세요.");
+          $("#mainCounselContent_quick").focus();
+          return;
+        }
+
+
+        if ($("#mainCounselagree_quick").is(":checked") == false) {
+          alert("개인정보취급방침에 동의해주세요.");
+          $("#mainCounselagree_quick").focus();
+          return;
+        }
+
+        if (isMainCounselSubmit == false) {
+          $.ajax({
+            type: "post",
+            url: "/controller/mainCounselController.asp",
+            dataType: "json",
+            data: $("#frmMainCounsel_quick").serialize(),
+            async: false,
+            beforeSend: function() {
+              isMainCounselSubmit = true;
+            },
+            success: function(data) {
+              //alert(data.toString());
+              //alert(JSON.stringify(data));
+              //return;
+
+              if (data.result == "SUCCESS") {
+                alert("등록 되었습니다.");
+                document.location.reload();
+                return;
+              } else {
+                isMainCounselSubmit = false;
+                alert("등록에 실패하였습니다.");
+                return;
+              }
+            },
+            error: function(data, status, err) {
+              isMainCounselSubmit = false;
+              alert("서버와의 통신이 실패했습니다.");
+              console.log("서버와의 통신이 실패했습니다. data : " + data + ", status : " + status + ", err : " + err);
+            },
+            complete: function() {
+              isMainCounselSubmit = false;
+            }
+          });
+        }
+      }
+    </script>
+
+    <!-- E : main_counsel -->
+  </div>
+</div>
+
+
+<!-- 정책 팝업 -->
+<div class="privacy_policy">
+  <div>
+    <div>
+      <img class="qr_desktop" src="../main/images/policy.svg" alt="" >
+      <img class="qr_mobile" src="../main/images/policy_mobile.svg" alt="" >
+      <button class="close_btn3">
+        <svg class="qr_desktop" xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
+          <line x1="0.511568" y1="-0.511568" x2="33.7785" y2="-0.511568" transform="matrix(-0.671354 0.741136 -0.671354 -0.741136 23.7891 0.425781)" stroke="#A4A4A4" stroke-width="1.02314" stroke-linecap="round"/>
+          <line x1="0.511568" y1="-0.511568" x2="33.7785" y2="-0.511568" transform="matrix(0.671354 0.741136 0.671354 -0.741136 2.30273 0.425781)" stroke="#A4A4A4" stroke-width="1.02314" stroke-linecap="round"/>
+        </svg>
+        <svg class="qr_mobile" xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+          <line x1="0.35484" y1="-0.35484" x2="23.4298" y2="-0.35484" transform="matrix(-0.671354 0.741136 -0.671354 -0.741136 16.2087 0.474579)" stroke="#A4A4A4" stroke-width="0.70968" stroke-linecap="round"/>
+          <line x1="0.35484" y1="-0.35484" x2="23.4298" y2="-0.35484" transform="matrix(0.671354 0.741136 0.671354 -0.741136 1.30493 0.474579)" stroke="#A4A4A4" stroke-width="0.70968" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- quick reserve -->
+<section id="quick_reserve">
+    <div class="modal_inner">
+      <!-- <form name="ev_form" id="ev_form" action="" method="post" onSubmit="return sendReserve('<? echo $t_send; ?>');"> -->
+      <form class="modal_inner_form">
+          <div class="form_div1">
+              <h2 class="tit" >
+                  <span>빠른</span>
+                  <span>예약</span>
+              </h2>
+              <button type="button" class="close_btn1 desktop close_btn1_desktop">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="31" viewBox="0 0 30 31" fill="none">
+                      <line x1="0.5" y1="-0.5" x2="40.5914" y2="-0.5" transform="matrix(-0.671354 0.741136 -0.671354 -0.741136 27.5869 0)" stroke="#fff" stroke-linecap="round"/>
+                      <line x1="0.5" y1="-0.5" x2="40.5914" y2="-0.5" transform="matrix(0.671354 0.741136 0.671354 -0.741136 1.83911 0)" stroke="#fff" stroke-linecap="round"/>
+                    </svg>	
+              </button>
+              <button type="button" class="close_btn1 mobile close_btn1_mobile">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
+                    <line x1="0.315826" y1="-0.315826" x2="35.3234" y2="-0.315826" transform="matrix(-0.683945 0.729534 -0.683945 -0.729534 24.375 0)" stroke="white" stroke-width="0.631652" stroke-linecap="round"/>
+                    <line x1="0.315826" y1="-0.315826" x2="35.3234" y2="-0.315826" transform="matrix(0.683945 0.729534 0.683945 -0.729534 1.625 0)" stroke="white" stroke-width="0.631652" stroke-linecap="round"/>
+                  </svg>
+              </button>
+          </div>
+          <!-- <p class="des" style="text-align: center;">이벤트 기간 : <span id="event-period"></span></p> -->
+
+          <div class="form_css">
+              <div>
+                  <div>
+                      <div class="select_below_div">
+                          <div id="procedure-select">
+                              <span id="select_text">원하는 시술을 선택해주세요.</span>
+                              <div id="show_list">
+                                  <div><span class="show_list_text">임플란트</span></div>
+                                  <div><span class="show_list_text">충치치료</span></div>
+                                  <div><span class="show_list_text">보철치료</span></div>
+                                  <div><span class="show_list_text">스케일링</span></div>
+                              </div>
+                              <svg class="select_below_icon qr_desktop" xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9" fill="none">
+                                  <path d="M6.5 9L0.870835 0.749999L12.1292 0.75L6.5 9Z" fill="#197F92"/>
+                              </svg>
+                              <svg class="select_below_icon qr_mobile" xmlns="http://www.w3.org/2000/svg" width="9" height="7" viewBox="0 0 9 7" fill="none">
+                                <path d="M4.67755 6.51318L0.751954 0.759894L8.60316 0.759894L4.67755 6.51318Z" fill="#197F92"/>
+                              </svg>
+                          </div>
+                      </div>
+                      
+                  </div>
+
+                  <div class="hope_div_text">
+                      <div>
+                          <h4 class="tit2">
+                              <span>희망</span>
+                              <span class="type2">예약일</span>
+                          </h4>
+                          <div id="calendar"></div>
+                      </div>
+
+                      <div id="click_time_tag">
+                          <div>
+                              <!-- <span>예약</span> -->
+                              <span><span class="tint">예약</span> 가능 <span class="tint">시간</span></span>
+                          </div>
+                          <div id="time-select"></div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- <div class="agree_tag">
+                  <div class="check_icon">
+                      <div class="off">
+                          <svg class="qr_desktop" xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16" fill="none">
+                            <path d="M16.6719 1.15609C16.0121 0.586396 15.0162 0.659699 14.4465 1.31943L5.90586 11.2122L2.97373 7.16614C2.46221 6.4602 1.4758 6.30324 0.770656 6.81397C0.0647155 7.3255 -0.0922485 8.3119 0.41928 9.01705L4.52027 14.6765C4.80312 15.0669 5.24932 15.3068 5.73057 15.3267C5.75288 15.3275 5.77519 15.3283 5.7975 15.3283C6.25484 15.3283 6.69147 15.1291 6.99186 14.7817L16.8344 3.38068C17.4041 2.72095 17.3308 1.72498 16.6711 1.15529L16.6719 1.15609Z" fill="#BFBFBF"/>
+                          </svg>
+                          <svg class="qr_mobile" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11" fill="none">
+                            <path d="M12.1133 0.766767C11.6532 0.369481 10.9586 0.4206 10.5613 0.880673L4.60539 7.77955L2.56062 4.95799C2.2039 4.46569 1.51601 4.35623 1.02427 4.7124C0.531966 5.06912 0.422504 5.75701 0.779228 6.24875L3.63913 10.1955C3.83638 10.4678 4.14754 10.635 4.48315 10.6489C4.49871 10.6495 4.51427 10.65 4.52983 10.65C4.84877 10.65 5.15326 10.5111 5.36274 10.2688L12.2266 2.31813C12.6239 1.85805 12.5728 1.1635 12.1127 0.766211L12.1133 0.766767Z" fill="#BFBFBF"/>
+                          </svg>
+                      </div>
+                      <span class="privacy_policy_btn"><span>개인정보 수집이용 및 제3자 제공동의 (필수)</span><span class="underline">보기</span></span>
+                  </div>
+              </div> -->
+
+              <!-- desktop_submit_row -->
+              <div class="submit_row">
+                  <div class="agree_tag">
+                      <!-- <div class="all_check_icon">
+                          <div class="off">
+                              <svg class="qr_desktop" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M20.5887 8.32412C20.0456 7.85512 19.2257 7.91547 18.7567 8.45859L11.7257 16.6027L9.31185 13.2719C8.89074 12.6907 8.07869 12.5615 7.49818 12.9819C6.91702 13.403 6.7878 14.2151 7.20892 14.7956L10.585 19.4547C10.8179 19.7761 11.1852 19.9736 11.5814 19.99C11.5998 19.9906 11.6181 19.9913 11.6365 19.9913C12.013 19.9913 12.3725 19.8273 12.6197 19.5413L20.7225 10.1555C21.1915 9.61238 21.1312 8.79246 20.5881 8.32346L20.5887 8.32412Z" fill="#AAAAAA"/>
+                                <path d="M23.8997 4.10026C21.2557 1.45618 17.7398 0 14.0003 0C10.2608 0 6.74501 1.45618 4.10027 4.10026C1.45618 6.745 0 10.2608 0 14.0003C0 17.7398 1.45618 21.2557 4.10027 23.8997C6.74435 26.5438 10.2602 28 13.9997 28C17.7392 28 21.255 26.5438 23.8991 23.8997C26.5432 21.2557 27.9993 17.7398 27.9993 14.0003C27.9993 10.2608 26.5432 6.745 23.8991 4.10092L23.8997 4.10026ZM14.0003 25.4996C7.65938 25.4996 2.50109 20.3413 2.50109 14.0003C2.50109 7.65938 7.65938 2.50109 14.0003 2.50109C20.3413 2.50109 25.4996 7.65938 25.4996 14.0003C25.4996 20.3413 20.3413 25.4996 14.0003 25.4996Z" fill="#AAAAAA"/>
+                              </svg>
+                              <svg class="qr_mobile" xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                                <path d="M14.358 6.2919C13.9793 5.96483 13.4075 6.00692 13.0804 6.38567L8.17725 12.0651L6.49391 9.74229C6.20024 9.33701 5.63394 9.2469 5.22912 9.54011C4.82383 9.83378 4.73372 10.4001 5.02739 10.8049L7.38178 14.054C7.54417 14.2782 7.80033 14.4159 8.07662 14.4273C8.08943 14.4277 8.10223 14.4282 8.11504 14.4282C8.37761 14.4282 8.62828 14.3138 8.80073 14.1144L14.4514 7.56904C14.7784 7.19029 14.7363 6.6185 14.3576 6.29144L14.358 6.2919Z" fill="#AAAAAA"/>
+                                <path d="M16.6669 3.34627C14.823 1.50237 12.3711 0.486877 9.76333 0.486877C7.15552 0.486877 4.70369 1.50237 2.85933 3.34627C1.01543 5.19063 -6.10352e-05 7.64246 -6.10352e-05 10.2503C-6.10352e-05 12.8581 1.01543 15.3099 2.85933 17.1538C4.70324 18.9977 7.15506 20.0132 9.76287 20.0132C12.3707 20.0132 14.8225 18.9977 16.6664 17.1538C18.5103 15.3099 19.5258 12.8581 19.5258 10.2503C19.5258 7.64246 18.5103 5.19063 16.6664 3.34673L16.6669 3.34627ZM9.76333 18.2695C5.34135 18.2695 1.74412 14.6722 1.74412 10.2503C1.74412 5.82829 5.34135 2.23106 9.76333 2.23106C14.1853 2.23106 17.7825 5.82829 17.7825 10.2503C17.7825 14.6722 14.1853 18.2695 9.76333 18.2695Z" fill="#AAAAAA"/>
+                              </svg>
+                          </div>
+                          <span>전체 동의</span>
+                      </div> -->
+                      <div class="check_icon">
+                          <div class="off">
+                              <svg class="qr_desktop" xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16" fill="none">
+                                <path d="M16.6719 1.15609C16.0121 0.586396 15.0162 0.659699 14.4465 1.31943L5.90586 11.2122L2.97373 7.16614C2.46221 6.4602 1.4758 6.30324 0.770656 6.81397C0.0647155 7.3255 -0.0922485 8.3119 0.41928 9.01705L4.52027 14.6765C4.80312 15.0669 5.24932 15.3068 5.73057 15.3267C5.75288 15.3275 5.77519 15.3283 5.7975 15.3283C6.25484 15.3283 6.69147 15.1291 6.99186 14.7817L16.8344 3.38068C17.4041 2.72095 17.3308 1.72498 16.6711 1.15529L16.6719 1.15609Z" fill="#fff"/>
+                              </svg>
+                              <svg class="qr_mobile" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11" fill="none">
+                                <path d="M12.1133 0.766767C11.6532 0.369481 10.9586 0.4206 10.5613 0.880673L4.60539 7.77955L2.56062 4.95799C2.2039 4.46569 1.51601 4.35623 1.02427 4.7124C0.531966 5.06912 0.422504 5.75701 0.779228 6.24875L3.63913 10.1955C3.83638 10.4678 4.14754 10.635 4.48315 10.6489C4.49871 10.6495 4.51427 10.65 4.52983 10.65C4.84877 10.65 5.15326 10.5111 5.36274 10.2688L12.2266 2.31813C12.6239 1.85805 12.5728 1.1635 12.1127 0.766211L12.1133 0.766767Z" fill="#fff"/>
+                              </svg>
+                          </div>
+                          <span class="privacy_policy_btn"><span>개인정보 수집이용 및 제3자 제공동의 (필수)</span><span class="underline">보기</span></span>
+                      </div>
+                  </div>
+
+                  <div class="form_row">
+                      <div>
+                          <div>
+                              <span>성</span>
+                              <span>함</span>
+                          </div>
+                          <input type="text" id="t_name" name="t_name" maxlength="11" placeholder="이름을 입력해주세요" value="">
+                      </div>
+                  </div>
+
+                  <div class="form_row form_row2">
+                      <div>
+                          <div>
+                              <span>연</span>
+                              <span>락</span>
+                              <span>처</span>
+                          </div>
+                          <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" id="t_phone" name="t_phone" maxlength="11" placeholder="-를 제외한 휴대폰 번호를 입력해주세요" value="" class="input_text">
+                      </div>
+                  </div>
+                  <div class="submit_btn_div" class="submit_btn_div">
+                      <button class="submit_btn" type="button"><input class="submit_btn_img" type="image" src="../main/images/submit_btn.svg"></button>
+                  </div>
+              </div>
+          </div>
+          <!-- <div class="privacy_policy">
+            <div>
+              <div>
+                <img class="qr_desktop" src="../main/images/policy.svg" alt="" >
+                <img class="qr_mobile" src="../main/images/policy_mobile.svg" alt="" >
+                <button class="close_btn3">
+                  <svg class="qr_desktop" xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
+                    <line x1="0.511568" y1="-0.511568" x2="33.7785" y2="-0.511568" transform="matrix(-0.671354 0.741136 -0.671354 -0.741136 23.7891 0.425781)" stroke="#9D9D9D" stroke-width="1.02314" stroke-linecap="round"/>
+                    <line x1="0.511568" y1="-0.511568" x2="33.7785" y2="-0.511568" transform="matrix(0.671354 0.741136 0.671354 -0.741136 2.30273 0.425781)" stroke="#9D9D9D" stroke-width="1.02314" stroke-linecap="round"/>
+                  </svg>
+                  <svg class="qr_mobile" xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+                    <line x1="0.35484" y1="-0.35484" x2="23.4298" y2="-0.35484" transform="matrix(-0.671354 0.741136 -0.671354 -0.741136 16.2087 0.474579)" stroke="#9D9D9D" stroke-width="0.70968" stroke-linecap="round"/>
+                    <line x1="0.35484" y1="-0.35484" x2="23.4298" y2="-0.35484" transform="matrix(0.671354 0.741136 0.671354 -0.741136 1.30493 0.474579)" stroke="#9D9D9D" stroke-width="0.70968" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div> -->
+      </form>
+    </div>
+</section>
+
+<!-- guide_modal -->
+<!-- <section id="guide_modal">
+    <div>
+        <div>
+          <div>
+            <img class="" src="../main/images/qr_modal_check_icon.svg" alt="">
+            <div class="guide_title">
+              <span class="title">예약 신청이 <span class="tint">완료</span>되없습니다.</span>
+            </div>
+            <div class="guide_sub_title">
+              <span>내원 시 본인 확인 의무화 시행에 따라 신분증 지참 부탁드립니다.</span>
+            </div>
+            <div class="guide_modal_btn_div">
+                <button class="guide_close_btn2"><span>닫기</span></button>
+            </div>
+          </div>
+        </div>
+    </div>
+</section> -->
+
+<!-- quick reserve modal -->
+<section id="quick_reserve_modal">
+    <div>
+        <div class="submit_alarm pc">
+            <div>
+                <span>알림</span>
+            </div>
+            <div class="submit_alarm_span">
+                <div>
+                    <div>
+                        <span>예약이 <span class="tint">완료</span>되었습니다.</span>
+                    </div>
+                    <div class="submit_alarm_span2">
+                        <span>내원 시 본인 확인 의무화 시행에 따라 <span class="sub_tint">신분증 지참</span> 부탁드립니다.</span>
+                    </div>
+                    <!-- <div class="submit_alarm_span2 qr_mobile_flex">
+                        <span>일정 확인 후에 유선으로</span>
+                        <div>
+                            <span>안내 도와드리겠습니다. 감사합니다.</span>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="submit_alarm_btn">
+                <button class="close_btn2"><span>닫기</span></button>
+            </div>
+        </div>
+
+        <div class="submit_alarm mobile">
+            <div>
+                <span>예약이 <span class="tint">완료</span>되었습니다.</span>
+            </div>
+            <div class="submit_alarm_span">
+                <div>
+                    <div class="submit_alarm_span2">
+                        <span>내원 시 본인 확인 의무화 시행에 따라 <br>
+                        <span class="sub_tint">신분증 지참</span> 부탁드립니다.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="submit_alarm_btn">
+                <button class="close_btn2"><span>닫기</span></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section id="quick_reserve_modal" class="mo">
+    <div>
+        <div class="submit_alarm">
+            <div>
+                <span>예약이 <span class="tint">완료</span>되었습니다.</span>
+            </div>
+            <div class="submit_alarm_span">
+                <div>
+                    <div class="submit_alarm_span2">
+                        <span>내원 시 본인 확인 의무화 시행에 따라 <br>
+                        <span class="sub_tint">신분증 지참</span> 부탁드립니다.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="submit_alarm_btn">
+                <button class="close_btn2"><span>닫기</span></button>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<!-- calendar -->
+<script>
+	let calendarInstance = null; // flatpickr 인스턴스를 전역에 저장
+	function resetCalendar() {
+    let innerWidth = window.innerWidth;
+		calendar(); // 초기 설정으로 되돌림
+		document.getElementById('time-select').innerHTML = ''; // 시간 선택도 초기화
+		$('#click_time_tag').hide(); // 기타 요소 초기화
+
+    // if (innerWidth>=768) {
+    //   $('.hope_div_text').css({'margin-bottom':'26px'});
+    // } else {
+    //   $('.hope_div_text').css({'margin-bottom':'14.13px'});
+    // }
+		$('.flatpickr-day').removeClass('selected'); // 선택 일자 효과 제거
+	}
+
+  // 선택 일자의 연도-월의 첫째주 토요일 return true, false
+  function isNotFirstSaturday(date) {
+    const this_date = new Date(date);
+    const standard_Sat_date = new Date(this_date.getFullYear(), this_date.getMonth(), 1); // 월의 1일 00:00:00
+    // 첫 번째 토요일 계산
+    standard_Sat_date.setDate(1 +  6 - standard_Sat_date.getDay());
+    // 시간 초기화 (시,분,초,밀리초 모두 0)
+    this_date.setHours(0, 0, 0, 0);
+    standard_Sat_date.setHours(0, 0, 0, 0);
+    return this_date.getTime() !== standard_Sat_date.getTime();
+  }
+
+	function calendar() {
+		// const inputEl = document.getElementById('selected-date');
+		const timeSelectEl = document.getElementById('time-select');
+
+		// 금일 날짜 생성
+		const today = new Date();
+		const diff_today = new Date(today); // 금일 비교
+		const disable_days = [1,3] // 특정 일자 비활성화
+		const eight_month_days = [5]; // 8월 휴무일 및 임시 공휴일
+    const six_month_all_disable_days = [12, 13]; // 6월 공휴일
+		diff_today.setDate(diff_today.getDate()-1);
+		flatpickr.localize(flatpickr.l10ns.ko);
+		
+		// 기존 달력이 있다면 제거
+		if (calendarInstance) {
+			calendarInstance.destroy();
+		}
+
+		const now_procedure_text = $('#select_text').html();
+    const target_procedure_days = [2,5,6];
+
+		// flatpickr 재생성 및 인스턴스 저장
+		calendarInstance = flatpickr("#calendar", {
+			enableTime: false, // 시간 선택 비활성화
+			dateFormat: "Y-m-d", // 날짜 형식 지정 (YYYY-MM-DD)
+			inline: true,
+			local: 'ko',
+			time_24hr: true,
+			disable: [
+				function(date) {
+					// getMonth-1 = 의도한 달
+					if (date.getMonth() === 5 && six_month_all_disable_days.includes(date.getDate())) {
+            return date;
+          } else if (now_procedure_text==="임플란트") {
+						return (date.getDay() === 0 || diff_today > date);
+					} else if (now_procedure_text==="충치치료") {
+						return (date.getDay() === 0 || diff_today > date);
+					} else if (now_procedure_text==="보철치료") {
+						return (date.getDay() === 0 || diff_today > date);
+					} else if (now_procedure_text==="스케일링") {
+						return (date.getDay() === 0 || diff_today > date);
+					} 
+				}
+			],
+			onChange: function(selectedDates, dateStr, instance) {
+				// 선택한 날짜를 input에 표시
+				// inputEl.value = dateStr;
+				const clickDate = new Date(selectedDates[0]);
+				// 시간 옵션 업데이트
+                updateTimeOptions(clickDate.getDay(), dateStr);
+			},
+		});
+
+		function nightCheck(dateStr) {
+			// 수요일 격주 간격으로 야간진료 체크
+			const now = new Date(dateStr);
+			const specificDay = new Date('2025-02-19');
+			const diffDate = now.getTime()-specificDay.getTime();
+			return Math.abs(diffDate / (24*60*60*1000))%14===0?true:false; // 시*분*초*밀리세컨 = 일
+		}
+
+		function updateTimeOptions(dayOfWeek, dateStr) {
+			const nowDay = dateStr.split("-")[2];
+            // 초기화
+            // timeSelectEl.innerHTML = '<option value="">예약시간을 선택해주세요</option>';
+
+            // 시간 옵션 생성
+            let availableTimes = [];
+
+			if (dateStr === "2026-06-03") {
+				availableTimes = generateTimes("09:30", "11:50", nowDay, dateStr);
+			} else if (dayOfWeek === 6) { // 토요일
+				availableTimes = generateTimes("09:30", "12:00", nowDay, dateStr)
+
+			} else { // 화요일, 목요일
+				availableTimes = generateTimes("09:30", "17:00", nowDay, dateStr).filter(
+					time => time < "11:40" || time >= "14:30"
+				);
+			}
+			
+
+			timeSelectEl.innerHTML = ''; 
+
+            // 옵션 추가
+            availableTimes.forEach(time => {
+                const div = document.createElement('div');
+                const span = document.createElement('span');
+				span.textContent = time;
+                timeSelectEl.appendChild(div).appendChild(span);
+            });
+        }
+
+        function generateTimes(start, end, nowDay, dateStr) {
+            // 시작 시간과 종료 시간을 분 단위로 변환
+            const nowtime = new Date();
+            const nowHour = nowtime.getHours();
+            const nowMinutes = nowtime.getMinutes();
+			      const clickDate = new Date(dateStr); // 클릭 일자
+
+            const times = [];
+
+            let [startHour, startMinute] = start.split(":").map(Number); // 시작 시간 (시, 분)
+            let [endHour, endMinute] = end.split(":").map(Number); // 종료 시간 (시, 분)
+
+            if (nowtime.getFullYear() === clickDate.getFullYear() && nowtime.getMonth() === clickDate.getMonth() && nowtime.getDate() === parseInt(nowDay)) { // 당일의 현재 시간 이전 날짜 제거.
+                if (nowHour > startHour) {
+                    if (nowMinutes >= 30) {
+                        startHour = nowHour + 1;
+                        startMinute = 30;
+                    } else {
+                        startHour = nowHour+1;
+                        startMinute = 0;
+                    }
+                } else if (nowHour == startHour && nowMinutes > startMinute) {
+                    if (nowMinutes >= 30) {
+                        startHour = startHour + 1;
+                        startMinute = 30;
+                    } else {
+                        startHour = nowHour+1;
+                        startMinute = 0;
+                    }
+                }
+
+                // 30분 단위로 시간을 추가
+                while (startHour < endHour || (startHour === endHour && startMinute <= endMinute)) {
+                    // 시간을 HH:mm 형식으로 저장
+                    const timeString = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
+                    times.push(timeString);
+
+                    // 30분 추가 -> 20분
+                    startMinute += 20;
+                    if (startMinute >= 60) {
+                        startMinute = startMinute%60;
+                        startHour++;
+                    }
+                }
+            } else {
+                // 30분 단위로 시간을 추가
+                while (startHour < endHour || (startHour === endHour && startMinute <= endMinute)) {
+                    // 시간을 HH:mm 형식으로 저장
+                    const timeString = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
+                    times.push(timeString);
+
+                    // 30분 추가 -> 20분
+                    startMinute += 20;
+                    if (startMinute >= 60) {
+                        startMinute = startMinute%60;
+                        startHour++;
+                    }
+                }
+            }
+
+            if (times.length > 0) {
+              $('#click_time_tag').css({'display':'block'});
+              // if (innerWidth>=768) {
+              //   $('.hope_div_text').css({'margin-bottom':'24.48px'});
+              // } else {
+              //   $('.hope_div_text').css({'margin-bottom':'15.09px'});
+              // }
+            } 
+            return times;
+          }
+
+        // 시간 선택 드롭다운 클릭 시 날짜가 비어 있으면 경고
+        // timeSelectEl.addEventListener('click', function() {
+        //     if (!inputEl.value) {
+        //         alert('날짜를 선택해주세요.');
+        //     }
+        // });
+
+		// 시간 선택에 따른 효과
+        $('#time-select').on('click', 'div', function() {
+          $('#time-select div').css({
+            'border': '1px solid #fff',
+            'color': '#AAA', 
+            'background-color': '#FFF',
+            'font-weight': '400'
+          }).removeClass('checked'); 
+
+
+          $(this).css({
+            'border': '1px solid #B5FFFF', 
+            'color': '#156D7D', 
+            'background-color': '#EAFFFA',
+            'font-weight': '700'
+          }).addClass('checked');
+        });
+
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		resetCalendar();
+	})
+</script>
+
+<script>
+
+	// 전체 동의 클릭 이벤트
+	$(".all_check_icon, .check_icon").on('click', function() {
+    let innerWidth = window.innerWidth;
+
+		const all_check = $(".all_check_icon div");
+		const check = $(".check_icon div");
+
+    if (innerWidth>=768) {
+      if (all_check.hasClass('on') || check.hasClass('on')) {
+        $(".all_check_icon div svg.qr_desktop").html(
+          '<path d="M20.5887 8.32412C20.0456 7.85512 19.2257 7.91547 18.7567 8.45859L11.7257 16.6027L9.31185 13.2719C8.89074 12.6907 8.07869 12.5615 7.49818 12.9819C6.91702 13.403 6.7878 14.2151 7.20892 14.7956L10.585 19.4547C10.8179 19.7761 11.1852 19.9736 11.5814 19.99C11.5998 19.9906 11.6181 19.9913 11.6365 19.9913C12.013 19.9913 12.3725 19.8273 12.6197 19.5413L20.7225 10.1555C21.1915 9.61238 21.1312 8.79246 20.5881 8.32346L20.5887 8.32412Z" fill="#fff"/>'+
+          '<path d="M23.8997 4.10026C21.2557 1.45618 17.7398 0 14.0003 0C10.2608 0 6.74501 1.45618 4.10027 4.10026C1.45618 6.745 0 10.2608 0 14.0003C0 17.7398 1.45618 21.2557 4.10027 23.8997C6.74435 26.5438 10.2602 28 13.9997 28C17.7392 28 21.255 26.5438 23.8991 23.8997C26.5432 21.2557 27.9993 17.7398 27.9993 14.0003C27.9993 10.2608 26.5432 6.745 23.8991 4.10092L23.8997 4.10026ZM14.0003 25.4996C7.65938 25.4996 2.50109 20.3413 2.50109 14.0003C2.50109 7.65938 7.65938 2.50109 14.0003 2.50109C20.3413 2.50109 25.4996 7.65938 25.4996 14.0003C25.4996 20.3413 20.3413 25.4996 14.0003 25.4996Z" fill="#fff"/>'
+        )
+        $(".check_icon div svg.qr_desktop").html(
+          '<path d="M16.6719 1.15609C16.0121 0.586396 15.0162 0.659699 14.4465 1.31943L5.90586 11.2122L2.97373 7.16614C2.46221 6.4602 1.4758 6.30324 0.770656 6.81397C0.0647155 7.3255 -0.0922485 8.3119 0.41928 9.01705L4.52027 14.6765C4.80312 15.0669 5.24932 15.3068 5.73057 15.3267C5.75288 15.3275 5.77519 15.3283 5.7975 15.3283C6.25484 15.3283 6.69147 15.1291 6.99186 14.7817L16.8344 3.38068C17.4041 2.72095 17.3308 1.72498 16.6711 1.15529L16.6719 1.15609Z" fill="#fff"/>'
+        )
+
+        all_check.removeClass('on').addClass('off');
+        check.removeClass('on').addClass('off');
+        $(".all_check_icon span").css({'color':'#fff'});
+        $(".check_icon span").css({'color':'#fff'});
+        
+      } else {
+        $(".all_check_icon div svg.qr_desktop").html(
+          '<path d="M20.5887 8.32412C20.0456 7.85512 19.2257 7.91547 18.7567 8.45859L11.7257 16.6027L9.31185 13.2719C8.89074 12.6907 8.07869 12.5615 7.49818 12.9819C6.91702 13.403 6.7878 14.2151 7.20892 14.7956L10.585 19.4547C10.8179 19.7761 11.1852 19.9736 11.5814 19.99C11.5998 19.9906 11.6181 19.9913 11.6365 19.9913C12.013 19.9913 12.3725 19.8273 12.6197 19.5413L20.7225 10.1555C21.1915 9.61238 21.1312 8.79246 20.5881 8.32346L20.5887 8.32412Z" fill="#B5FFFF"/>'+
+          '<path d="M23.8997 4.10026C21.2557 1.45618 17.7398 0 14.0003 0C10.2608 0 6.74501 1.45618 4.10027 4.10026C1.45618 6.745 0 10.2608 0 14.0003C0 17.7398 1.45618 21.2557 4.10027 23.8997C6.74435 26.5438 10.2602 28 13.9997 28C17.7392 28 21.255 26.5438 23.8991 23.8997C26.5432 21.2557 27.9993 17.7398 27.9993 14.0003C27.9993 10.2608 26.5432 6.745 23.8991 4.10092L23.8997 4.10026ZM14.0003 25.4996C7.65938 25.4996 2.50109 20.3413 2.50109 14.0003C2.50109 7.65938 7.65938 2.50109 14.0003 2.50109C20.3413 2.50109 25.4996 7.65938 25.4996 14.0003C25.4996 20.3413 20.3413 25.4996 14.0003 25.4996Z" fill="#B5FFFF"/>'
+        )
+        $(".check_icon div svg.qr_desktop").html(
+          '<path d="M16.6719 1.15609C16.0121 0.586396 15.0162 0.659699 14.4465 1.31943L5.90586 11.2122L2.97373 7.16614C2.46221 6.4602 1.4758 6.30324 0.770656 6.81397C0.0647155 7.3255 -0.0922485 8.3119 0.41928 9.01705L4.52027 14.6765C4.80312 15.0669 5.24932 15.3068 5.73057 15.3267C5.75288 15.3275 5.77519 15.3283 5.7975 15.3283C6.25484 15.3283 6.69147 15.1291 6.99186 14.7817L16.8344 3.38068C17.4041 2.72095 17.3308 1.72498 16.6711 1.15529L16.6719 1.15609Z" fill="#B5FFFF"/>'
+        )
+
+        all_check.removeClass('off').addClass('on');
+        check.removeClass('off').addClass('on');
+        $(".all_check_icon span").css({'color':'#B5FFFF'});
+        $(".check_icon span").css({'color':'#B5FFFF'});			
+      }
+    } else {
+      if (all_check.hasClass('on') || check.hasClass('on')) {
+        $(".all_check_icon div svg.qr_mobile").html(
+          '<path d="M14.358 6.2919C13.9793 5.96483 13.4075 6.00692 13.0804 6.38567L8.17725 12.0651L6.49391 9.74229C6.20024 9.33701 5.63394 9.2469 5.22912 9.54011C4.82383 9.83378 4.73372 10.4001 5.02739 10.8049L7.38178 14.054C7.54417 14.2782 7.80033 14.4159 8.07662 14.4273C8.08943 14.4277 8.10223 14.4282 8.11504 14.4282C8.37761 14.4282 8.62828 14.3138 8.80073 14.1144L14.4514 7.56904C14.7784 7.19029 14.7363 6.6185 14.3576 6.29144L14.358 6.2919Z" fill="#fff"/>'+
+          '<path d="M16.6669 3.34627C14.823 1.50237 12.3711 0.486877 9.76333 0.486877C7.15552 0.486877 4.70369 1.50237 2.85933 3.34627C1.01543 5.19063 -6.10352e-05 7.64246 -6.10352e-05 10.2503C-6.10352e-05 12.8581 1.01543 15.3099 2.85933 17.1538C4.70324 18.9977 7.15506 20.0132 9.76287 20.0132C12.3707 20.0132 14.8225 18.9977 16.6664 17.1538C18.5103 15.3099 19.5258 12.8581 19.5258 10.2503C19.5258 7.64246 18.5103 5.19063 16.6664 3.34673L16.6669 3.34627ZM9.76333 18.2695C5.34135 18.2695 1.74412 14.6722 1.74412 10.2503C1.74412 5.82829 5.34135 2.23106 9.76333 2.23106C14.1853 2.23106 17.7825 5.82829 17.7825 10.2503C17.7825 14.6722 14.1853 18.2695 9.76333 18.2695Z" fill="#fff"/>'
+        )
+        $(".check_icon div svg.qr_mobile").html(
+          '<path d="M12.1133 0.766767C11.6532 0.369481 10.9586 0.4206 10.5613 0.880673L4.60539 7.77955L2.56062 4.95799C2.2039 4.46569 1.51601 4.35623 1.02427 4.7124C0.531966 5.06912 0.422504 5.75701 0.779228 6.24875L3.63913 10.1955C3.83638 10.4678 4.14754 10.635 4.48315 10.6489C4.49871 10.6495 4.51427 10.65 4.52983 10.65C4.84877 10.65 5.15326 10.5111 5.36274 10.2688L12.2266 2.31813C12.6239 1.85805 12.5728 1.1635 12.1127 0.766211L12.1133 0.766767Z" fill="#fff"/>'
+        )
+
+        all_check.removeClass('on').addClass('off');
+        check.removeClass('on').addClass('off');
+        $(".all_check_icon span").css({'color':'#fff'});
+        $(".check_icon span").css({'color':'#fff'});
+        
+      } else {
+        $(".all_check_icon div svg.qr_mobile").html(
+          '<path d="M14.3581 5.98965C13.9794 5.66259 13.4076 5.70467 13.0805 6.08342L8.17731 11.7629L6.49397 9.44005C6.2003 9.03476 5.634 8.94465 5.22918 9.23786C4.82389 9.53153 4.73378 10.0978 5.02745 10.5027L7.38184 13.7518C7.54423 13.9759 7.80039 14.1136 8.07668 14.125C8.08949 14.1255 8.10229 14.126 8.1151 14.126C8.37767 14.126 8.62834 14.0116 8.80079 13.8122L14.4514 7.2668C14.7785 6.88804 14.7364 6.31626 14.3577 5.98919L14.3581 5.98965Z" fill="#B5FFFF"/>'+
+          '<path d="M16.6669 3.04403C14.823 1.20013 12.3712 0.184631 9.76339 0.184631C7.15558 0.184631 4.70375 1.20013 2.8594 3.04403C1.01549 4.88838 0 7.34021 0 9.94802C0 12.5558 1.01549 15.0077 2.8594 16.8516C4.7033 18.6955 7.15512 19.7109 9.76293 19.7109C12.3707 19.7109 14.8226 18.6955 16.6665 16.8516C18.5104 15.0077 19.5259 12.5558 19.5259 9.94802C19.5259 7.34021 18.5104 4.88838 16.6665 3.04448L16.6669 3.04403ZM9.76339 17.9672C5.34141 17.9672 1.74418 14.37 1.74418 9.94802C1.74418 5.52604 5.34141 1.92881 9.76339 1.92881C14.1854 1.92881 17.7826 5.52604 17.7826 9.94802C17.7826 14.37 14.1854 17.9672 9.76339 17.9672Z" fill="#B5FFFF"/>'
+        )
+        $(".check_icon div svg.qr_mobile").html(
+          '<path d="M12.1133 0.464551C11.6532 0.0672657 10.9586 0.118385 10.5613 0.578458L4.60539 7.47733L2.56062 4.65577C2.2039 4.16347 1.51601 4.05401 1.02427 4.41018C0.531966 4.7669 0.422504 5.45479 0.779228 5.94654L3.63913 9.89327C3.83638 10.1655 4.14754 10.3328 4.48315 10.3467C4.49871 10.3472 4.51427 10.3478 4.52983 10.3478C4.84877 10.3478 5.15326 10.2089 5.36274 9.96662L12.2266 2.01591C12.6239 1.55584 12.5728 0.861281 12.1127 0.463995L12.1133 0.464551Z" fill="#B5FFFF"/>'
+        )
+
+        all_check.removeClass('off').addClass('on');
+        check.removeClass('off').addClass('on');
+        $(".all_check_icon span").css({'color':'#B5FFFF'});
+        $(".check_icon span").css({'color':'#B5FFFF'});			
+      }
+    }
+		
+	})
+
+</script>
+
+<script>
+  let year;
+  let month;
+  let day;
+  let reservationTime;
+  let isReservationWishSubmit = false;
+
+	// 예약서 작성
+	$('.submit_btn').on('click', function(e) {
+		e.preventDefault();
+		console.log($('#select_text').html());
+
+		// let isReservationWishSubmit = false;
+
+		if ($('#select_text').html() === '원하는 시술을 선택해주세요.') {
+			alert('원하는 시술을 선택해 주세요.')
+			return;
+		}
+
+		if ($('.flatpickr-day.selected').length === 0) {
+			alert('희망 예약일을 선택해 주세요.')
+			return;
+		}
+
+		let reservationDate = $('.flatpickr-day.selected').attr('aria-label'); // M월 D, YYYY
+		let reservationDates = reservationDate.split(' ')
+		if (reservationDates.length !== 3) {
+			alert('희망 예약일을 선택해주세요.')
+			return
+		}
+		
+		month = parseInt( reservationDates[0].replace(/[^0-9]/g, '') )
+		month = month < 10 ? '0' + month : '' + month
+
+		day = parseInt( reservationDates[1].replace(/[^0-9]/g, '') )
+		day = day < 10 ? '0' + day : '' + day
+
+		year = parseInt( reservationDates[2].replace(/[^0-9]/g, '') )
+
+		if ($('#time-select').find('div.checked').length === 0) {
+			alert('희망 시간을 선택해 주세요.')
+			return;
+		}
+		
+		reservationTime = $('#time-select').find('div.checked').text(); // HH24:mm
+
+		if ($.trim($('#t_name').val()).length === 0) {
+			alert('이름을 입력해주세요.')
+			return;
+		}
+
+		if ($.trim($('#t_name').val()).length < 2) {
+			alert('이름을 2글자 이상 입력해주세요.')
+			return;
+		}
+
+		if ($.trim($('#t_name').val()).length > 50) {
+			alert('입력할 수 있는 이름의 입력 길이가 초과하였습니다.')
+			return;
+		}
+
+		if ($.trim($('#t_phone').val()).length === 0) {
+			alert('휴대폰 번호를 입력해주세요.')
+			return;
+		}
+
+		if (/^01[016789]{1}[0-9]{3,4}[0-9]{4}/.test($('#t_phone').val()) === false) {
+			alert('휴대폰 번호를 정확히 입력해주세요.')
+			return;
+		}
+		
+    		if ($(".check_icon div").hasClass('off')) {
+			alert('동의 버튼을 눌러주세요.')
+			return;
+		}
+		
+
+		if (isReservationWishSubmit) return;
+
+		const params = {
+			'cureType' : $.trim($('#select_text').html()),
+			'name' : $.trim($('#t_name').val()),
+			'phone' : $.trim($('#t_phone').val()),
+			'reservationDate' : year + '-' + month + '-' + day,
+			'reservationTime' : reservationTime,
+			'HTTP_REFERER': '<%=Request.ServerVariables("HTTP_REFERER")%>',
+			'HTTP_USER_AGENT': '<%=Request.ServerVariables("HTTP_USER_AGENT")%>',
+			'HTTP_DEVICE_TYPE': '<%=getDeviceType()%>',
+			'HTTP_MEDIA_TYPE': '<%=getMediaType()%>'
+		}
+		$.ajax({
+			type: "post",
+			url: "/controller/reservationWishController.html",
+			dataType: "json",
+			data: params,
+			async: false,
+			beforeSend: function() {
+				isReservationWishSubmit = true;
+			},
+			success: function(data) {
+				console.log(data);
+				if (data.result == "SUCCESS") {
+					$('#quick_reserve_modal').css({'display':'block'});
+					$('.qr_background').css({'display':'none'});
+				} else {
+					isReservationWishSubmit = false;
+					alert("등록에 실패하였습니다.");
+				}
+			},
+			error: function(data, status, err) {
+				isReservationWishSubmit = false;
+				alert("서버와의 통신이 실패했습니다.");
+				console.log("서버와의 통신이 실패했습니다. data : " + data + ", status : " + status + ", err : " + err);
+			},
+			complete: function() {
+				isReservationWishSubmit = false;
+			}
+		});
+	})
+
+
+
+ 
+
+
+  $('.guide_close_btn2').on('click', function() {
+    $('#guide_modal').css({'display':'none'});
+  })
+
+	// quick_reserve 
+	$('#quick_reserve_icon').on('click', function() {
+	  $('#quick_reserve').css({'display':'block'});
+	})
+	// mobile
+	$('#quick_reserve_icon_mobile').on('click', function() {
+	  $('#quick_reserve').css({'display':'block'});
+	})
+  
+	$('.close_btn1').on('click', function() {
+	  $('#quick_reserve').css({'display':'none'});
+	})
+
+	$('.close_btn2, .close_btn4').on('click', function() {
+	  $('#quick_reserve_modal').css({'display':'none'});
+	  $('#quick_reserve').css({'display':'none'});
+	  location.reload();
+	})
+
+	$('.privacy_policy_btn .underline').on('click', function() {
+    $('.privacy_policy').css({'display': 'flex'});
+	})
+
+	$('.close_btn3').on('click', function(e) {
+		e.preventDefault();
+        $('.privacy_policy').css({'display': 'none'});
+	})
+
+	$('#procedure-select').on('change', function() {
+		$(this).css('color', '#888');
+		$(this).find('option').css('color', '#888');
+		let selectedValue = $(this).val();
+		if (selectedValue!=='원하는 시술을 선택해주세요') {
+			$(this).find(`option[value="${selectedValue}"]`).css({'color': '#15A7A7', 'font-weight': '600'});
+			$(this).css({'color': '#15A7A7', 'font-weight': '600'});
+		}
+	})
+
+	
+
+	$('#procedure-select').on('click', function() {
+		if ($('#show_list').css('display') === 'none') {
+			$('#show_list').css({'display':'flex'});
+		} else {
+			$('#show_list').css({'display':'none'});
+		}
+	})
+
+
+	$('.show_list_text').hover(function(e){
+		$(this).css({'color': '#197F92', 'font-weight': '700'})
+	}, function(e) {
+		$(this).css({'color': '#AAA', 'font-weight': '400'})
+	});
+
+	$('.show_list_text').on('click', function(e) {
+		const select_text = $('#select_text');
+		select_text.html($(this).html());
+		if ($(this).html()!=='원하는 시술을 선택해주세요.') {
+			select_text.css({'color': '#197F92', 'font-weight': '700'});
+			$('.show_list_text').removeClass('active');
+			$(this).addClass('active');
+			resetCalendar(); // 시술 변경 시 달력 초기화		
+		} else {
+			select_text.css({'color': '#AAA', 'font-weight': '400'})
+		}
+		
+	})
+  </script>
+
+
+<!-- S : sub lnb -->
+<!-- <div class="sub_lnb" ></div> -->
+<div class="dim_bg "></div>
+<!-- E : sub lnb -->
+<script type="text/javascript">
+  $("#quick_counsel").click(function() {
+    $('.layerwrite, .dim_bg').fadeIn();
+  });
+  $("#quick_close , .dim_bg").click(function() {
+    $('.layerwrite,  .dim_bg').fadeOut();
+  });
+  // $("#quick_counsel").click(function() {
+  //   $('.quick_menu').addClass("open");
+  //
+  // });
+  // $("#quick_close").click(function() {
+  //   $('.quick_menu').removeClass("open");
+  // });
+</script>

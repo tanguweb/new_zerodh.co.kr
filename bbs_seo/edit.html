@@ -1,0 +1,302 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<%
+	Dim aryBoard, page
+	Dim objADO, SQL, SQL_where, iloop, jloop, kloop 
+	Dim CD_BOARDCD, id, st, q
+	
+	Dim UploadForm
+	Set UploadForm = Server.CreateObject("DEXT.FileUpload")
+	UploadForm.DefaultPath = FileSaveRoot_Board
+
+	CD_BOARDCD = "999"
+	page = getText(UploadForm("page"))
+	'Response.write "page : [" & UploadForm("page") & "], MODE : [" & UploadForm("MODE") & "]"
+	'Response.End
+	id = getText(UploadForm("id"))
+	st = getText(UploadForm("st"))
+	q = getText(UploadForm("q"))
+	
+	Dim userName : userName = ""
+	Dim password : password = UploadForm("password")
+	Dim email : email = ""
+	Dim homepage : homepage = ""
+	Dim title : title = ""
+	Dim article : article = ""
+	Dim link1 : link1 = ""
+	Dim link2 : link2 = ""
+	Dim file1 : file1 = ""
+	Dim file2 : file2 = ""
+	Dim MODE : MODE = "I"
+	
+	If password <> "peters2011" Then
+		Response.write "<script>alert('잘못된 접근 입니다.');history.back()</script>"
+		Response.End
+	End If
+
+	If id <> "" And IsNumeric(id) Then
+
+		Set objADO = new clsADO
+		
+		SQL= ""
+		SQL = SQL & "SELECT "
+		SQL = SQL & "	BD.CD_BOARDID, BD.NM_TITLE, BD.NM_CONTENTS, BD.NO_VIEWCNT, BD.CD_INUSER, BD.DT_INSYSDATE "	'5
+		SQL = SQL & "	, BD.NM_FIELD_1, BD.NM_FIELD_2, BD.NM_FIELD_3, BD.NM_FIELD_4, BD.NM_FIELD_5, BD.NM_FIELD_6, BD.NM_FIELD_7, BD.NM_FIELD_8 "	'13
+		SQL = SQL & "FROM "
+		SQL = SQL & "	T_BOARDDETAIL AS BD "
+		SQL = SQL & "WHERE "
+		SQL = SQL & "	BD.CD_BOARDID = '" & id & "' AND BD.CD_BOARDCD = '" & CD_BOARDCD & "' AND BD.YN_USE='Y' "
+		
+		'Response.write SQL
+
+		objADO.setSql(SQL)
+		aryBoard = objADO.getArrRs()
+		
+		Set objADO = Nothing
+
+		If IsArray(aryBoard) = False Then
+			Response.write "게시글이 존재하지 않습니다."
+			Response.End
+		End If
+		
+		MODE = "U"
+
+		userName = getText(aryBoard(6,0))
+		password = getText(aryBoard(7,0))
+		email = getText(aryBoard(8,0))
+		homepage = getText(aryBoard(9,0))
+		title = getText(aryBoard(1,0))
+		article = aryBoard(2,0)
+		link1 = getText(aryBoard(10,0))
+		link2 = getText(aryBoard(11,0))
+		file1 = getText(aryBoard(12,0))
+		file2 = getText(aryBoard(13,0))
+	End If 
+
+	 
+
+%>
+<!doctype html>
+<html>
+<head>
+	<!-- #include virtual = "/bbs_seo/inc.head.html" -->
+	<style type="text/css">
+		.input-require {position: absolute; top: 0px; right: 3px; z-index: 100;}
+	</style>
+</head>
+<body class="top-navigation pace-done">	
+	<div id="wrapper">
+
+		<div id="page-wrapper" class="gray-bg">
+			
+			<div class="wrapper wrapper-content animated fadeInRight">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-content">
+								<form id="frm" name="frm" method="post" enctype="multipart/form-data">
+									
+									<input type="hidden" class="form-control" id="MODE" name="MODE" value="<%=MODE%>" />
+									<input type="hidden" class="form-control" id="id" name="id" value="<%=id%>" />
+									<input type="hidden" class="form-control" id="st" name="st" value="<%=st%>" />
+									<input type="hidden" class="form-control" id="q" name="q" value="<%=q%>" />
+									<input type="hidden" class="form-control" id="page" name="page" value="<%=page%>" />
+
+									<div class="row">
+										<div class="col-sm-4 m-b-xs">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-user"></i></span>
+												<input type="text" class="form-control" id="userName" name="userName" value="<%=userName%>" autocomplete="off" maxlength="20" placeholder="이름" />
+												<small class="pull-right input-require"><i class="fa fa-asterisk text-danger"></i></small>
+											</div>
+										</div>
+										<div class="col-sm-4 m-b-xs">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+												<input type="password" class="form-control" id="password" name="password" value="" autocomplete="off" maxlength="20" placeholder="비밀번호" />
+												<small class="pull-right input-require"><i class="fa fa-asterisk text-danger"></i></small>
+											</div>
+										</div>
+										<div class="col-sm-4 m-b-xs">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-at"></i></span>
+												<input type="text" class="form-control" id="email" name="email" value="<%=email%>" autocomplete="off" maxlength="100" placeholder="이메일" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12 m-b-xs">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-home"></i></span>
+												<input type="text" class="form-control" id="homepage" name="homepage" value="<%=homepage%>" autocomplete="off" maxlength="100" placeholder="홈페이지" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12 m-b-xs">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+												<input type="text" class="form-control" id="title" name="title" value="<%=title%>" autocomplete="off" maxlength="100" placeholder="제목" />
+												<small class="pull-right input-require"><i class="fa fa-asterisk text-danger"></i></small>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">									
+										<div class="col-sm-12 m-b-xs">
+											<textarea id="article" name="article"><%=(article)%></textarea>
+										</div>
+									</div>
+									
+									<div class="row">									
+										<div class="col-xs-12 m-b-none">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-link"></i></span>
+												<input type="text" class="form-control" id="link1" name="link1" value="<%=link1%>" autocomplete="off" maxlength="500" placeholder="" />
+											</div>
+										</div>
+										<div class="col-xs-12 m-b-none">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-link"></i></span>
+												<input type="text" class="form-control" id="link2" name="link2" value="<%=link2%>" autocomplete="off" maxlength="500" placeholder="" />
+											</div>
+										</div>
+										<div class="col-xs-12 m-b-none">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-download"></i></span>
+												<input type="file" class="form-control" name="file1" id="file1" />
+												<input type="hidden" name="hd_file1" id="hd_file1" value="<%=file1%>" />												
+											</div>
+											<%If file1 <> "" Then%>
+												<div class="m-b-xs m-l-xl">
+													<a href="/file/board/<%=file1%>" target="_blank"><%=file1%></a>
+												</div>
+											<%End If%>
+										</div>
+										<div class="col-xs-12 m-b-none">
+											<div class="input-group m-b-xs">
+												<span class="input-group-addon"><i class="fa fa-download"></i></span>
+												<input type="file" class="form-control" name="file2" id="file2" />
+												<input type="hidden" name="hd_file2" id="hd_file2" value="<%=file2%>" />												
+											</div>
+											<%If file2 <> "" Then%>
+												<div class="m-b-xs m-l-xl">
+													<a href="/file/board/<%=file2%>" target="_blank"><%=file2%></a>
+												</div>
+											<%End If%>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="ibox-footer">
+								<div class="row">
+									<div class="col-xs-12 m-b-none text-right">
+										<button type="button" class="btn btn-white m-b-none" id="btnCancel"><i class="fa fa-times"></i> 취소</button>
+										<button type="button" class="btn btn-success m-b-none" id="btnSave"><i class="fa fa-check"></i> 작성완료</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<div>
+					<strong>Copyright</strong> Peter's &copy; 2020
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+	<script>
+		$(function() {
+
+			CKEDITOR.replace('article',
+			{
+				toolbar: 'Full',
+				skin: 'office2013', //에디터 스킨
+				uiColor: '#14B8C4',
+				enterMode: '1', //엔터키 태그 1:<p>, 2:<br>, 3:<div>
+				shiftEnterMode: '2', //쉬프트+엔터키 태그 1:<p>, 2:<br>, 3:<div>
+				height:"400px",
+				resize_enabled:true,
+				filebrowserUploadUrl: '/function/fn_ckeditorFileUpload.asp?type=Files',
+				filebrowserImageUploadUrl: '/function/fn_ckeditorFileUpload.asp?type=Images',
+				filebrowserFlashUploadUrl: '/function/fn_ckeditorFileUpload.asp?type=Flash'
+			});
+
+			$('#btnCancel').click(function() {
+				if (confirm('글 작성을 취소하시겠습니까?')) {
+					history.back();
+				}
+			});
+
+			$('#btnSave').click(function() {
+				
+				if ($.trim($('#userName').val()) == '') {
+					alert('이름을 입력해 주세요.');
+					$('#userName').focus();
+					return;
+				}
+
+				if ($('#userName').val().length < 2) {
+					alert('이름을 2글자 이상 입력해 주세요.');
+					$('#userName').focus();
+					return;
+				}
+				
+				if ($.trim($('#password').val()) == '') {
+					alert('비밀번호를 입력해 주세요.');
+					$('#password').focus();
+					return;
+				}
+
+				if ($('#email').val() != '') {
+					if (ValEmail_V3($('#email').val(), '', true) == false) {
+						alert('올바른 이메일 형식이 아닙니다.');
+						$('#email').focus();
+						return;
+					}
+				}
+
+				if ($.trim($('#title').val()) == '') {
+					alert('제목을 입력해주세요.');
+					$('#title').focus();
+					return;
+				}
+				
+				if ($('#title').val().length < 2) {
+					alert('제목은 최소 2글자 이상 입력해주세요.');
+					$('#title').focus();
+					return;
+				}
+				
+				var article = CKEDITOR.instances['article'].getData();
+
+				if ($.trim(article) == '') {
+					alert('내용을 입력해주세요.');
+					return;
+				}
+				
+				if (article.length < 2) {
+					alert('내용은 최소 2글자 이상 입력해주세요.');
+					return;
+				}
+				
+				$('#MODE').val('<%=MODE%>');
+				$('#id').val('<%=id%>');
+
+				document.frm.method = 'post';
+				document.frm.action = 'seo_proc.html';
+				document.frm.submit();
+
+			});
+			
+        });
+	</script>
+
+</body>
+</html>		

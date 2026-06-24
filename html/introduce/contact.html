@@ -1,0 +1,101 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<!-- <style>
+  @media (max-width: 767px) {
+    #sub .content_wrap {
+      padding-top: 220px;
+    }
+  }
+</style> -->
+<!-- S : sub -->
+<div id="sub" class="contact">
+  <section>
+    <!-- S : sub_visual -->
+    <!-- #include virtual = "/html/inc/introduce_left.html" -->
+    <div class="sub_tit">
+      <div>
+        <!-- <h5>고민하지말고 방문하세요!</h5> -->
+        <h1><%=m_client_name_s%> <span> 오시는 길</span></h1>
+        <p class="en">&nbsp;<%=m_client_en%></p>
+      </div>
+    </div>
+    <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+    <section class="section_01  center">
+      <div class="inwrap pen_wrap ">
+        <div class="title" data-aos="fade-up">
+          <h2>오시는 길</h2>
+          <h5><%=m_client_name_s%>로 쉽고 빠르게 <br class="mobile">오시는 길을 확인하세요</h5>
+        </div>
+
+        <h4 class="  m_b_10 " data-aos="fade-up" data-aos-delay="100">
+          <span class="color_main"><%=m_client_address1%> <%=m_client_address2%> </span> </h4>
+        <!-- <h4 data-aos="fade-up" data-aos-delay="100"><span class="pen"><%=m_client_address2%></span></h4> -->
+        <h3 class="Barlow m_b_60  " data-aos="fade-up" data-aos-delay="300"> <%=m_client_tel%> </h3>
+
+
+        <div id="map2" data-aos="fade-up" data-aos-delay="400" ></div>
+        <!-- <div class="bus" data-aos="fade-up" data-aos-delay="400">
+          <h5>지하철로 오실 경우</h5>
+          <p><span class="nine">9</span>호선 <em class="color_sub">신반포역 3번출구</em> 직진</p>
+          <p class="m_t_10"><span>3</span><span>7</span><span class="nine">9</span>호선 <em class="color_sub">고속터미널역 6번출구</em> 직진</p>
+
+        </div> -->
+        <script>
+          $(window).load(function() {
+
+            var mapContainer = document.getElementById('map2'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            // 지도를 생성합니다
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch('<%=m_client_address1%>', function(result, status) {
+
+                // 정상적으로 검색이 완료됐으면
+                 if (status === kakao.maps.services.Status.OK) {
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                      content: '<div class="map_marker"><p><%=m_client_name%></p></div>'
+                    });
+                    infowindow.open(map, marker);
+
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                }
+            })
+
+
+          });
+        </script>
+        <a href="http://kko.to/M5KyhrCdm" target="_blank" data-aos="fade-up" data-aos-delay="400">큰지도보기</a>
+        <a href="http://kko.to/4FDpARztO" target="_blank" data-aos="fade-up" data-aos-delay="400">길찾기</a>
+
+
+
+      </div>
+    </section>
+
+
+
+  </div>
+
+
+  <!-- #include virtual = "/html/inc/footer.html" -->

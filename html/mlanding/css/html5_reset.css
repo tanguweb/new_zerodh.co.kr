@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video, select {
+ margin:0;
+ padding:0;
+ border:0;
+ outline:0;
+ font-size:1em;
+ vertical-align:baseline;
+ background:transparent;
+}
+
+body {
+ /* line-height:1.4; */
+ font-size: 18px;
+ color: #444;
+
+}
+
+header,nav,section,article,footer,canvas,details,aside,figcaption,figure,hgroup,menu {
+ display:block;
+}
+
+nav ul, li {
+ list-style:none;
+}
+
+blockquote, q {
+ quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+ content:'';
+ content:none;
+}
+
+a {
+ margin:0;
+ padding:0;
+ color: #444;
+ font-size:100%;
+ vertical-align:baseline;
+ background:transparent;
+ text-decoration:none;
+}
+a:hover {text-decoration:none; color: #222; }
+
+/* change colours to suit your needs */
+ins {
+ background-color:#ff9;
+ color:#000;
+ text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+ background-color:#ff9;
+ color:#000;
+ font-style:italic;
+ font-weight:bold;
+}
+
+del {
+ text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+ border-bottom:1px dotted;
+ cursor:help;
+}
+
+table {
+ border-collapse:collapse;
+ border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+ display:block;
+ height:1px;
+ border:0;
+ border-top: 1px solid #c9c9c9;
+ padding:0;
+ clear: both;
+ max-width: 1200px;
+ margin: 0 auto;
+}
+input, select {
+ vertical-align:middle;
+}
+
+input[type="color"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="week"],
+input[type="month"] {
+/*BUGFIX: http://stackoverflow.com/questions/5449412/css-styling-for-input-buttons-on-ipad-iphone*/
+-webkit-appearance: none;
+}
+p,
+pre {
+    margin: 1em 0 0;
+}
+em, address {font-style: normal;}
+
+/*iphone reset*/
+input, select, textarea{ -webkit-appearance: none;-moz-appearance: none;appearance: none;}
+
+@media screen and (max-width:  767px) {
+    hr{margin:0 15px}
+     .inwrap hr{margin:0}
+}

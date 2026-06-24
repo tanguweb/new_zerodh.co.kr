@@ -1,0 +1,216 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<!-- #include virtual = "/function/fn_BoardCnt.asp" -->
+<%
+	Dim aryBoard, page
+	Dim objADO, SQL, SQL_where, iloop, jloop, kloop 
+	Dim CD_BOARDCD, id, st, q, MODE
+	
+	MODE = ""
+	CD_BOARDCD = "999"
+	page = getText(ReqQ("page"))
+	id = getText(ReqQ("id"))
+	st = getText(ReqQ("st"))
+	q = getText(ReqQ("q"))
+	
+	If id = "" Then
+		Response.write "잘못된 접근 입니다."
+		Response.End
+	End If 
+
+	Set objADO = new clsADO
+		
+		SQL= ""
+		SQL = SQL & "SELECT "
+		SQL = SQL & "	BD.CD_BOARDID, BD.NM_TITLE, BD.NM_CONTENTS, BD.NO_VIEWCNT, BD.CD_INUSER, BD.DT_INSYSDATE "	'5
+		SQL = SQL & "	, BD.NM_FIELD_1, BD.NM_FIELD_2, BD.NM_FIELD_3, BD.NM_FIELD_4, BD.NM_FIELD_5, BD.NM_FIELD_6, BD.NM_FIELD_7, BD.NM_FIELD_8 "	'13
+		SQL = SQL & "FROM "
+		SQL = SQL & "	T_BOARDDETAIL AS BD "
+		SQL = SQL & "WHERE "
+		SQL = SQL & "	BD.CD_BOARDID = '" & id & "' AND BD.CD_BOARDCD = '" & CD_BOARDCD & "' AND BD.YN_USE='Y' "
+		
+		'Response.write SQL
+
+		objADO.setSql(SQL)
+		aryBoard = objADO.getArrRs()
+		
+	Set objADO = Nothing
+
+	If IsArray(aryBoard) = False Then
+		Response.write "게시글이 존재하지 않습니다."
+		Response.End
+	End If 
+	
+	fn_BoardCnt (id)
+%>
+<!doctype html>
+<html>
+<head>
+	<!-- #include virtual = "/bbs_seo/inc.head.html" -->
+</head>
+<body class="top-navigation pace-done">	
+	<div id="wrapper">
+
+		<div id="page-wrapper" class="gray-bg">
+			
+			<div class="wrapper wrapper-content animated fadeInRight">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<div class="row">
+									<div class="col-sm-12 m-b-xs">
+										<h5><%=getText(aryBoard(1,0))%></h5>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 m-b-xs">
+										<strong><i class="fa fa-user"></i> <%=getText(aryBoard(6,0))%></strong>
+										<span class="m-l-md"><i class="fa fa-eye"></i> <%=setComma(aryBoard(3,0))%></span>
+									</div>
+									<div class="col-sm-6 m-b-xs text-right">
+										<i class="fa fa-clock-o"></i> <%=aryBoard(5,0)%>
+									</div>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="row">									
+									<div class="col-sm-12 m-b-xs">
+										<%=(aryBoard(2,0))%>
+									</div>
+								</div>
+							</div>
+							<div class="ibox-footer">
+								<div class="row">									
+									<div class="col-xs-6 m-b-none">
+										<div class="form-group m-b-none">
+											<button type="button" class="btn btn-info m-b-none" id="btnModify"><i class="fa fa-edit"></i> 수정</button>
+											<button type="button" class="btn btn-danger m-b-none" id="btnRemove"><i class="fa fa-trash"></i> 삭제</button>
+										</div>
+										
+									</div>
+									<div class="col-xs-6 m-b-none text-right">
+										<button type="button" class="btn btn-default m-b-none" id="btnList"><i class="fa fa-list"></i> 목록</button>
+										<button type="button" class="btn btn-success m-b-none" id="btnWrite"><i class="fa fa-edit"></i> 글쓰기</button>
+									</div>
+								</div>
+								<div class="row">									
+									<div class="col-xs-12 m-b-none">
+										<div class="form-group m-b-none m-t-sm" style="display: none" id="areaPw">
+											<div class="input-group">
+												<input type="password" class="form-control m-b-none" style="max-width: 144px" id="pw" value="" maxlength="20" placeholder="비밀번호" />
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" id="btnPwCancel"><i class="fa fa-times"></i> 취소</button>
+													<button type="button" class="btn btn-white" id="btnPwConfirm"><i class="fa fa-check"></i> 확인</button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<div>
+					<strong>Copyright</strong> Peter's &copy; 2020
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<form id="frm" name="frm" method="post" enctype="multipart/form-data">
+		<input type="hidden" id="page" name="page" value="<%=page%>" />
+		<input type="hidden" id="st" name="st" value="<%=st%>" />
+		<input type="hidden" id="q" name="q" value="<%=q%>" />
+		<input type="hidden" id="id" name="id" value="<%=id%>" />
+		<input type="hidden" id="MODE" name="MODE" value="" />
+		<input type="hidden" id="password" name="password" value="" />
+	</form>
+
+	<script>
+		$(function() {
+			
+			$('#pw').keyup(function(e) {
+				if (e.keyCode == 13) {
+					$('#btnPwConfirm').click();
+				}
+			});
+
+			$('#btnPwCancel').click(function() {
+				$('#pw').val('');
+				$('#areaPw').hide();
+			});
+
+			$('#btnModify').click(function() {
+				$('#MODE').val('U');
+				$('#areaPw').fadeIn(function() {
+					//alert('비밀번호를 입력해주세요.');	
+					$('#pw').focus();
+				});				
+			});
+
+			$('#btnRemove').click(function() {				
+				$('#MODE').val('D');
+				$('#areaPw').fadeIn(function() {
+					//alert('비밀번호를 입력해주세요.');	
+					$('#pw').focus();
+				});
+			});
+			
+			
+			$('#btnPwConfirm').click(function() {
+
+				var MODE = $('#MODE').val();
+				
+				if ($('#pw').val() == '') {
+					alert('비밀번호를 입력해주세요.');
+					return;
+				}
+
+				$('#password').val($('#pw').val());
+				
+				if (MODE == 'U') {
+					document.frm.method = 'post';
+					document.frm.action = 'edit.html';
+					document.frm.submit();
+				} else if (MODE == 'D') {
+					if (confirm('삭제 하시겠습니까?')) {
+						document.frm.method = 'post';
+						document.frm.action = 'seo_proc.html';
+						document.frm.submit();
+					}
+				} else if (MODE == 'I') {
+					document.frm.method = 'post';
+					document.frm.action = 'edit.html';
+					document.frm.submit();
+				}
+				
+			});
+
+			$('#btnList').click(function() {
+				document.location.href = "/bbs_seo/?page=<%=page%>&st=<%=st%>&q=<%=q%>";
+			});
+
+			$('#btnWrite').click(function() {
+				//$('#MODE').val('I');
+				//$('#id').val('');
+				//document.frm.method = 'post';
+				//document.frm.action = 'edit.html';
+				//document.frm.submit();
+
+				$('#MODE').val('I');
+				$('#areaPw').fadeIn(function() {
+					//alert('비밀번호를 입력해주세요.');	
+					$('#pw').focus();
+				});
+			});
+			
+        });
+	</script>
+
+</body>
+</html>		

@@ -1,0 +1,482 @@
+<!--#include virtual="/Include/Config.asp"-->
+<!--#include virtual="/function/fn_AdminLoginCheck.asp"-->
+<!--#include virtual="/function/fn_PageNavigation.asp"-->
+<!--#include virtual="/function/fn_CodeInfo.asp"-->
+<%
+	'########################################################################################
+	'#	File		: 
+	'#  Create		: 
+	'#	Info		: 
+	'#	Update		: 
+	'#	Update Memo	: 
+	'########################################################################################
+
+	Dim CD_BOARDCD : CD_BOARDCD = ReqQ("CD_BOARDCD")
+	Dim sSTARTDATE : sSTARTDATE = ReqQ("sSTARTDATE")	'기간검색(시작일)
+	Dim sENDDATE : sENDDATE = ReqQ("sENDDATE")	'기간검색(종료일)
+
+	Dim sGUBUN : sGUBUN = ReqQ("sGUBUN")
+	Dim sKEYWORD : sKEYWORD = ReqQ("sKEYWORD")
+
+	Dim objADO, SQL, iloop, jloop, kloop 
+	Dim SQL_where, SQL_device_type, SQL_media_type, SQL_counsel_ratio
+	Dim aryChartDeviceType, aryChartMediaType, aryChartCounselRatioType
+	Dim aryBoardList, aryBoardInfo, aryCodeInfo, arySTATUS, aryCOUNSEL_TYPE
+	Dim NM_BOARDNM, YN_USE, YN_CNTVIEW, YN_ANSWER, YN_REPLY, YN_XML, YN_DOWNLOAD
+	Dim spancnt : spancnt = 9
+	
+	If CD_BOARDCD = "" Then
+		Response.Write "<script>alert('올바른경로로 접근하세요.');history.back();</script>"
+		Response.End
+	End If
+	
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 10
+	Const setsize = 10
+
+	If IsNumeric(ReqQ("page")) = False then  
+		page=1  
+		startpage=1
+	Else 
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then 
+				startpage=page-setsize + 1
+			Else 
+				startpage=int(page/setsize)*setsize + 1
+			End If 
+	End If 
+
+	Set objADO = new clsADO
+		
+		'// start: 검색 조건들 -------------------------------------------- 
+		SQL_where = ""
+		' 키워드 검색 조건
+		If sKEYWORD <> "" Then
+			If sGUBUN = "name" Then 
+				SQL_where = SQL_where & "			AND BD.NM_FIELD_4 LIKE '%" & sKEYWORD & "%'														"
+			End If 
+			If sGUBUN = "phone" Then 
+				SQL_where = SQL_where & "			AND BD.NM_FIELD_5 LIKE '%" & sKEYWORD & "%'														"
+			End If 
+		End If
+			
+		' 기간 검색 조건
+		If sSTARTDATE <> "" Then 
+				SQL_where = SQL_where & "			AND REPLACE(BD.NM_FIELD_1, '-', '') >= " & Replace(sSTARTDATE,"-","") & "		"
+		End If 
+
+		If sENDDATE <> "" Then 
+				SQL_where = SQL_where & "			AND REPLACE(BD.NM_FIELD_1, '-', '') <= " & Replace(sENDDATE,"-","") & "		"
+		End If 
+
+		'// end: 검색 조건들 -------------------------------------------- 
+
+		'// start: 상담 게시글 조회 -------------------------------------------- 
+		SQL = ""
+		SQL = SQL & "SELECT BM.NM_BOARDNM, BM.YN_USE, BM.YN_CNTVIEW, BM.YN_ANSWER, BM.YN_REPLY, BM.YN_XML, BM.YN_DOWNLOAD	"
+		SQL = SQL & "FROM T_BOARDMAST AS BM 																							"
+		SQL = SQL & "WHERE BM.CD_BOARDCD = '" & CD_BOARDCD & "'																			"
+		objADO.setSql(SQL)
+		aryBoardInfo = objADO.getArrRs()
+
+		NM_BOARDNM	= aryBoardInfo(0,0)
+		YN_USE		= aryBoardInfo(1,0)
+		YN_CNTVIEW	= aryBoardInfo(2,0)
+		YN_ANSWER	= aryBoardInfo(3,0)
+		YN_REPLY	= aryBoardInfo(4,0)
+		YN_XML		= aryBoardInfo(5,0)
+		YN_DOWNLOAD	= aryBoardInfo(6,0)
+		
+		SQL= ""
+		SQL = SQL & "DECLARE @CNT int																					"
+		SQL = SQL & "DECLARE @SNUM int																					"
+		SQL = SQL & "DECLARE @ENUM int																					"
+		SQL = SQL & "SET @ENUM = " & page & " * " & pgsize & "															"
+		SQL = SQL & "SET @SNUM = (@ENUM - " & pgsize & ")+1																"
+		SQL = SQL & "																									"
+		SQL = SQL & "SELECT @CNT = COUNT(*)																				"
+		SQL = SQL & "FROM                                                                                               "
+		SQL = SQL & "	T_BOARDMAST AS BM                                                                               "
+		SQL = SQL & "		INNER JOIN T_BOARDDETAIL AS BD                                                              "
+		SQL = SQL & "		ON BD.CD_BOARDCD = BM.CD_BOARDCD															"
+		SQL = SQL & "		INNER JOIN T_ADMIN AS AM																	"
+		SQL = SQL & "		ON AM.CD_ADMINID = BD.CD_INUSER																"
+		SQL = SQL & "		WHERE                                                                                       "
+		SQL = SQL & "			BM.CD_BOARDCD = '" & CD_BOARDCD & "'  "
+		SQL = SQL & "			AND BD.YN_USE = 'Y' AND BD.NO_BOARD_DEPTH = 1	"
+		
+		SQL = SQL & SQL_where
+
+		SQL = SQL & "																											"
+		SQL = SQL & "SELECT																										"
+		SQL = SQL & "	@CNT AS CNT, *																							"
+		SQL = SQL & "FROM																										"
+		SQL = SQL & "	(																										"
+		SQL = SQL & "		SELECT																								"
+		SQL = SQL & "			ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY DESC, BD.NO_BOARD_SEQ ASC) AS [No]		"	'1
+		SQL = SQL & "			,ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY ASC, BD.NO_BOARD_SEQ ASC) AS [NoDesc]	"	'2
+		SQL = SQL & "			,BM.NM_BOARDNM,BD.CD_BOARDID,BD.CD_BOARDCD,BD.YN_DISPLAY,BD.NO_VIEWCNT									"	'7
+		SQL = SQL & "			,BD.YN_USE,BD.NM_TITLE,BD.NM_CONTENTS																	"	'10
+		SQL = SQL & "			,BD.NM_FIELD_1,BD.NM_FIELD_2,BD.NM_FIELD_3,BD.NM_FIELD_4,BD.NM_FIELD_5									"	'15
+		SQL = SQL & "			,BD.NM_FIELD_6,BD.NM_FIELD_7,BD.NM_FIELD_8,BD.NM_FIELD_9,BD.NM_FIELD_10									"	'20
+		SQL = SQL & "			,BD.NM_FIELD_11,BD.NM_FIELD_12,BD.NM_FIELD_13,BD.NM_FIELD_14,BD.NM_FIELD_15								"	'25
+		SQL = SQL & "			,BD.CD_INUSER,BD.DT_INSYSDATE																			"	'27
+		SQL = SQL & "			, BD.NO_INIPADDR																						"	'28
+		SQL = SQL & "			, BD.HTTP_REFERER, BD.HTTP_USER_AGENT, BD.HTTP_DEVICE_TYPE, BD.HTTP_MEDIA_TYPE							"	'32
+		SQL = SQL & "			, BD.NO_BOARD_DEPTH							"	'33
+		SQL = SQL & "		FROM																								"
+		SQL = SQL & "			T_BOARDMAST AS BM																				"
+		SQL = SQL & "				INNER JOIN T_BOARDDETAIL AS BD																"
+		SQL = SQL & "				ON BD.CD_BOARDCD = BM.CD_BOARDCD															"
+		SQL = SQL & "				INNER JOIN T_ADMIN AS AM																	"
+		SQL = SQL & "				ON AM.CD_ADMINID = BD.CD_INUSER																"
+		SQL = SQL & "		WHERE                                                                                               "
+		SQL = SQL & "				BM.CD_BOARDCD = '" & CD_BOARDCD & "' "
+		SQL = SQL & "			AND BD.YN_USE = 'Y' AND BD.NO_BOARD_DEPTH = 1	"
+
+		SQL = SQL & SQL_where
+
+		SQL = SQL & "	) AS J																									"
+		SQL = SQL & "WHERE																										"
+		SQL = SQL & "	No BETWEEN @SNUM AND @ENUM																				"
+		SQL = SQL & "ORDER BY																									"
+		SQL = SQL & "	NO ASC																									"
+		
+		'Response.write SQL
+
+		objADO.setSql(SQL)
+		aryBoardList = objADO.getArrRs()
+
+		If IsArray(aryBoardList) Then
+		'If Not RS.Eof then
+			tn =  aryBoardList(0,0)								'총 페이지수
+			pgcount = - INT( - ( tn/pgsize ) )					'페이지수 계산
+			If (page>pgcount) Then page=pgcount End If 			'페이지수 이상의 페이지를 요구하면 마지막 페이지로
+
+			'이전page 다음page
+			prevPage = page - ((page-1) Mod setsize) - setsize
+			If prevPage < 1 Then 
+				prevPage = 0
+			End If 
+			nextPage = page - ((page-1) Mod setsize) + setsize
+			If nextPage > pgcount Then 
+				nextPage = 0
+			End If
+		Else 
+			tn = 0
+			pgcount = 0
+		End If
+		
+		'// end: 상담 게시글 조회 -------------------------------------------- 
+
+	Set objADO = Nothing
+%>
+<!doctype html>
+<html>
+<head>
+	<!--#include virtual="/manager/inc/inc.ui.head.asp"-->
+	<title><%=NM_BOARDNM%> 관리</title>
+	<style type="text/css">
+		.custom-contents p {margin: 0 !important;}
+	</style>
+</head>
+<body class="skin-2">	
+	<div id="wrapper">
+
+		<!--#include virtual="/manager/inc/inc.ui.navi.asp"-->
+
+		<div id="page-wrapper" class="gray-bg dashbard-1">
+			
+			<!--#include virtual="/manager/inc/inc.ui.top.asp"-->
+			
+
+
+			<div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2><%=NM_BOARDNM%></h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/manager/">Home</a>
+                        </li>
+						<!--
+                        <li>
+                            <a href="javascript:void(0)">상담</a>
+                        </li>
+						-->
+                        <li class="active">
+                            <strong><%=NM_BOARDNM%></strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+			
+			<div class="wrapper wrapper-content animated fadeInRight">
+				<div class="row">
+					<div class="col-lg-12">
+						
+						<div class="ibox float-e-margins"><!-- collapsed-->
+							<div class="ibox-title">
+								<h5><i class="fa fa-search"></i> 검색 <small>게시글을 검색합니다.</small></h5>
+								<div class="ibox-tools">
+									<a class="collapse-link">
+										<i class="fa fa-chevron-up"></i>
+									</a>
+								</div>
+							</div>
+							<div class="ibox-content m-b-sm border-bottom">
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label small" for="date_added">예약일자 - 시작</label>
+											<div class="input-group date">
+												<input id="sSTARTDATE" name="sSTARTDATE" type="text" class="form-control text-center" value="<%=sSTARTDATE%>" data-mask="9999-99-99" />
+												<span class="input-group-addon" id="btnStartDate"><i class="fa fa-calendar"></i></span>
+												<span class="input-group-addon" id="btnStartDateRemove"><i class="fa fa-refresh"></i></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label small" for="date_modified">예약일자 - 종료</label>
+											<div class="input-group date">
+												<input id="sENDDATE" name="sENDDATE" type="text" class="form-control text-center" value="<%=sENDDATE%>"  data-mask="9999-99-99" />
+												<span class="input-group-addon" id="btnEndDate"><i class="fa fa-calendar"></i></span>
+												<span class="input-group-addon" id="btnEndDateRemove"><i class="fa fa-refresh"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2">
+										<div class="form-group">
+											<label class="control-label small" for="sGUBUN">구분</label>
+											<select name="sGUBUN" id="sGUBUN" class="form-control">
+												<option value="name" <%=getBoolean(sGUBUN="name","selected","")%>>예약자명</option>
+												<option value="phone" <%=getBoolean(sGUBUN="phone","selected","")%>>예약자 휴대폰번호</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label small" for="sKEYWORD">검색어</label>
+											<div class="input-group">
+												<input type="text" class="form-control" id="sKEYWORD" name="sKEYWORD" value="<%=sKEYWORD%>" placeholder="검색어를 입력해주세요." onkeypress="fn_chkent();" />
+												<span class="input-group-btn">
+													<button type="button" class="btn" onclick="fn_Search();"> <i class="fa fa-search"></i><!--조회--></button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<form id="frm_BoardDetail" name="frm_BoardDetail">
+							
+							<input type="hidden" id="COUNSEL_GUBUN" name="COUNSEL_GUBUN" value="" /> <!--처리결과(state)/메모(memo) 구분-->
+							<input type="hidden" id="CD_BOARDID" name="CD_BOARDID" value="" />		 <!--처리결과/메모 수정 게시글 아이디-->
+							<input type="hidden" id="CD_BOARDCD" name="CD_BOARDCD" value="<%=CD_BOARDCD%>" />
+							
+
+							<div class="ibox float-e-margins">
+								<div class="ibox-title">
+									<h5><i class="fa fa-list"></i> 리스트 <small> <strong class="text-info"><%=tn%></strong> 건의 데이터가 존재합니다.</small></h5>
+									<div class="ibox-tools">
+									</div>
+								</div>
+								<div class="ibox-content">
+									
+									<div class="table-responsive">
+
+										<table class="table table-striped table-bordered">
+											<colgroup>
+												<col width="50px" />
+												<col width="120px" />
+												<col width="70px" />
+												<col width="60px" />
+												<col width="60px" />
+												<col width="60px" />
+												<col width="100px" />
+												<col width="200px" />
+												<col width="60px" />
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center small">No</th>
+													<th class="text-center small">신청일</th>
+													<th class="text-center small">희망 예약일</th>
+													<th class="text-center small">희망 예약시각</th>
+													<th class="text-center small">시술</th>
+													<th class="text-center small">예약자명</th>
+													<th class="text-center small">예약자 휴대폰번호</th>
+													<th class="text-center small">메모</th>
+													<th class="text-center small">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+											<%
+											If IsArray(aryBoardList) Then 
+												For iloop = 0 To UBound(aryBoardList,2)
+											%>
+												<tr>
+													<td class="text-center small"><%=aryBoardList(2,iloop)%></td>
+													<td class="text-center small"><%=aryBoardList(27,iloop)%></td>
+													<td class="text-center small"><%=aryBoardList(11,iloop)%></td>
+													<td class="text-center small"><%=aryBoardList(12,iloop)%></td>
+													<td class="text-center small"><%=aryBoardList(13,iloop)%></td>
+													<td class="text-center small"><%=aryBoardList(14,iloop)%></td>
+													<td class="text-center small"><%=addHyphen(aryBoardList(15,iloop))%></td>
+													<td class="text-center no-padding">
+														<textarea name="NM_MEMO_<%=aryBoardList(4,iloop)%>" class="form-control" style="width: 100%; height: 120px; resize: none; font-size: 85%;"><%=getHtml(aryBoardList(22,iloop))%></textarea>
+														<div class="text-right">
+															<button type="button" class="btn btn-xs btn-info" onclick="fn_counsel('memo','<%=aryBoardList(4,iloop)%>');"><i class="fa fa-check"></i> 메모저장</button>
+														</div>
+													</td>
+													<td class="text-center no-padding">
+														<button type="button" class="btn btn-xs btn-danger" onclick="fn_remove('<%=aryBoardList(4,iloop)%>')">
+															<i class="fa fa-trash"></i> 삭제
+														</button>
+													</td>
+												</tr>												
+											<%
+												Next
+											Else
+											%>
+												<tr>
+													<td colspan="<%=spancnt%>" class="text-center">데이터가 없습니다.</td>
+												</tr>
+											<%
+											End If 
+											%>							
+
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="<%=spancnt%>" class="text-center">
+														<%
+															Call PageNavigation("","CD_BOARDCD="&CD_BOARDCD&"&sGUBUN="&sGUBUN&"&sKEYWORD="&sKEYWORD&"&sSTARTDATE="&sSTARTDATE&"&sENDDATE="&sENDDATE, tn, pgcount, startpage, page, setsize, prevpage, nextpage)
+														%>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+			
+			<!--#include virtual="/manager/inc/inc.ui.footer.asp"-->
+		</div>
+	</div>
+
+	<!--#include virtual="/manager/inc/inc.ui.hidden.asp"-->
+
+
+<script type="text/javascript"> 
+	
+	// 달력 컨트롤 가져오기
+	$(document).ready(function(){
+		$('#sSTARTDATE').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			autoclose: true,
+			format: 'yyyy-mm-dd',
+			keyboardNavigation: true,
+			language: 'ko'
+		});
+
+		$('#sENDDATE').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			autoclose: true,
+			format: 'yyyy-mm-dd',
+			keyboardNavigation: true,
+			language: 'ko'
+		});
+		
+		$('#btnStartDate').click(function() {
+			$('#sSTARTDATE').focus();
+		});
+
+		$('#btnStartDateRemove').click(function() {
+			$('#sSTARTDATE').val("");
+		});
+
+		$('#btnEndDate').click(function() {
+			$('#sENDDATE').focus();
+		});
+
+		$('#btnEndDateRemove').click(function() {
+			$('#sENDDATE').val("");
+		});
+	});
+	
+	/**
+	 * name : fn_Search
+	 * parameter : 없음
+	 * description : 조회
+	 */
+	function fn_Search()
+	{
+		var sgubun = document.getElementById("sGUBUN").value;
+		var skeyword = document.getElementById("sKEYWORD").value;
+		var sSTARTDATE = document.getElementById("sSTARTDATE");
+		var sENDDATE = document.getElementById("sENDDATE");
+		document.location.href = "?CD_BOARDCD=<%=CD_BOARDCD%>&sGUBUN="+sgubun+"&sKEYWORD="+skeyword+"&sSTARTDATE="+sSTARTDATE.value+"&sENDDATE="+sENDDATE.value;
+	}
+
+	/**
+	 * name : fn_chkent
+	 * parameter : 없음
+	 * description : 엔터키 입력시 액션
+	 */
+	function fn_chkent()
+	{
+		if (event.keyCode == 13)
+		{
+			fn_Search();
+		}
+	}
+
+	/**
+	 *	처리결과, 메모 등록/수정
+	 */
+	function fn_counsel(gubun, BOARDID)
+	{
+		var COUNSEL_GUBUN = document.getElementById("COUNSEL_GUBUN");
+		var CD_BOARDID = document.getElementById("CD_BOARDID");
+
+		COUNSEL_GUBUN.value = gubun;
+		CD_BOARDID.value = BOARDID;
+
+		document.frm_BoardDetail.target = "hd_frame";
+		document.frm_BoardDetail.method = "post";
+		document.frm_BoardDetail.action = "BoardCounsel_memo_proc.asp";
+		document.frm_BoardDetail.submit();
+	}
+
+	function fn_remove(BOARDID) {
+		if (confirm('삭제하시겠습니까?'))
+		{
+			var CD_BOARDID = document.getElementById("CD_BOARDID");
+			CD_BOARDID.value = BOARDID;
+
+			document.frm_BoardDetail.target = "hd_frame";
+			document.frm_BoardDetail.method = "post";
+			document.frm_BoardDetail.action = "ReservationWishRemoveController.html";
+			document.frm_BoardDetail.submit();
+		}
+	}
+</script>
+
+<iframe type="hiddenframe" id="hd_frame" name="hd_frame" style="display:none;"></iframe>
+</body>
+</html>

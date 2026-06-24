@@ -1,0 +1,194 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_PageNavigation.asp"-->
+<%
+	Dim iloop, jloop, SQL
+	Dim CD_BOARDCD : CD_BOARDCD = 1009
+	Dim aryBoard, arrRsBest
+	Dim CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, DT_INSYSDATE, DT_INSYSDATE_to_int, VIEW_CNT, RowNo
+	Dim searchType : searchType = ReqQ("searchType")
+	Dim keyword : keyword = ReqQ("keyword")
+
+	If searchType = "" And keyword <> "" Then
+		SQL = SQL & " and (BD.NM_TITLE LIKE '%" & keyword & "%' or BD.NM_CONTENTS LIKE '%" & keyword & "%') "
+	ElseIf searchType = "title" And keyword <> "" Then
+		SQL = SQL & " and BD.NM_TITLE LIKE '%" & keyword & "%' "
+	End If
+
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 15
+	'Const setsize = 10
+	Dim setsize
+
+	If isMobile() Then
+		setsize = 5
+	Else
+		setsize = 10
+	End If
+
+	If IsNumeric(ReqQ("page")) = False then
+		page=1
+		startpage=1
+	Else
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then
+				startpage=page-setsize + 1
+			Else
+				startpage=int(page/setsize)*setsize + 1
+			End If
+	End If
+
+	aryBoard = fn_BoardList_paging (CD_BOARDCD, page , pgsize, SQL)
+
+	If IsArray(aryBoard) Then
+		tn =  aryBoard(0,0)						'총 페이지수
+		pgcount = - INT( - ( tn/pgsize ) )			'페이지수 계산
+		If (page>pgcount) Then page=pgcount End If 	'페이지수 이상의 페이지를 요구하면 마지막 페이지로
+
+		'이전page 다음page
+		prevPage = page - ((page-1) Mod setsize) - setsize
+		IF prevPage < 1 THEN
+			prevPage = 0
+		END IF
+		nextPage = page - ((page-1) Mod setsize) + setsize
+		IF nextPage > pgcount THEN
+			nextPage = 0
+		END If
+	Else
+		tn = 0
+		pgcount = 0
+	End If
+
+	Dim newIconDate : newIconDate = int(Replace(Left(dateadd("d",-3,now()), 10),"-",""))
+'	Response.write newIconDate
+%>
+
+<!-- S : sub -->
+<div id="sub" class="column">
+  <section>
+    <!-- S : sub_visual -->
+		<!-- #include virtual = "/html/inc/board_left.html" -->
+    <div class="sub_tit">
+			<div>
+			<h1><%=m_client_name_s%> <span>칼럼</span></h1>
+			<p class="en">&nbsp;<%=m_client_en%></p>
+			</div>
+    </div>
+  <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+
+    <section class="section_01">
+      <div class="inwrap">
+				<!-- <div class="title">
+					<h2><span>원장님 </span>칼럼 <em></em></h2>
+					<h3><%=m_client_name_s%> <br class="mobile">원장님이 직접 알려드립니다</h3>
+				</div> -->
+
+        <div class="review_board ">
+          <ul class="three">
+
+							<%
+							If IsArray(aryBoard) Then
+								For iloop = 0 To UBound(aryBoard,2)
+									RowNo		 = aryBoard(24,iloop)
+									CD_BOARDID	 = aryBoard(2,iloop)
+									VIEW_CNT	 = aryBoard(7,iloop)
+									NM_TITLE	 = aryBoard(10,iloop)
+									NM_CONTENTS  = aryBoard(11,iloop)
+									NM_FIELD_1	 = aryBoard(12,iloop)
+									NM_FIELD_2	 = aryBoard(13,iloop)
+									DT_INSYSDATE = aryBoard(23,iloop)
+									DT_INSYSDATE_to_int = int(Replace(Left(DT_INSYSDATE, 10),"-",""))
+							%>
+
+
+
+						<li>
+							<a href="column_view.html?CD_BOARDID=<%=aryBoard(2,iloop)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSS(keyword, "")%>" >
+								<div>
+								<img src="/file/board/<%=NM_FIELD_1%>">
+								<h5><%=CheckLength2(NM_TITLE,40,"..")%>
+		            </h5>
+								</div>
+
+							 </a>
+						</li>
+						<%
+							Next
+						End If
+						%>
+
+						</ul>
+
+
+			<%
+			If IsArray(aryBoard) = False Then
+			%>
+				<div>
+				  <div class="center">조회된 게시글이 없습니다.</div>
+				</div>
+			<%
+			End If
+			%>
+
+
+        </div>
+
+		<ul class="paging m_t_50">
+			<%If IsArray(aryBoard) Then%>
+			<%Call PageNavigation_front("/html/board/column.html","searchType="&clearXSSdefault(searchType)&"&keyword="&clearXSSdefault(keyword), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+			<%End If%>
+		</ul>
+
+      <div class="list_search  center">
+        <label class="select pc ">
+  			<select name="s_searchType" id="s_searchType">
+  			<option value="">선택</option>
+  			<option value="title" <%=getBoolean(clearXSSdefault(searchType)="title","selected='selected'","")%>>제목</option>
+  			</select>
+  		</label>
+        <input type="text" name="s_keyword" id="s_keyword" value="<%=clearXSSdefault(keyword)%>" placeholder="" autocomplete="off" class="pc" />
+        <input type="submit" value="Search" onclick="doSearch(); return false;" class="pc">
+
+
+      </div>
+
+
+
+
+
+      </div>
+    </section>
+
+
+  </div>
+  <!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->
+
+
+<script>
+$(function() {
+	$(document).on('keyup', '#s_keyword',  function(e) {
+		if (e.keyCode == 13) {
+			doSearch();
+		}
+	});
+});
+
+function goView(CD_BOARDID) {
+	var searchType = encodeURIComponent($("#s_searchType option:selected").val());
+	var keyword = encodeURIComponent($("#s_keyword").val());
+	document.location.href = "column_view.html?CD_BOARDID="+CD_BOARDID+"&page=<%=clearXSSdefault(page)%>&searchType="+searchType+"&keyword="+keyword;
+}
+
+function doSearch() {
+	var searchType = encodeURIComponent($("#s_searchType option:selected").val());
+	var keyword = encodeURIComponent($("#s_keyword").val());
+	document.location.href = "?page=1&searchType="+searchType+"&keyword="+keyword;
+}
+</script>

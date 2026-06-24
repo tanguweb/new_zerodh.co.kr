@@ -1,0 +1,309 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<!-- #include virtual = "/function/fn_PageNavigation.asp"-->
+<%
+	Dim aryBoardList
+	Dim objADO, SQL, SQL_where, iloop, jloop, kloop 
+	Dim CD_BOARDCD, st, q
+	Dim spancnt : spancnt = 5
+	Dim sType
+
+	CD_BOARDCD = "999"
+	st = getText(ReqQ("st"))
+	q = getText(ReqQ("q"))
+
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 10	
+	Const setsize = 10
+
+	If IsNumeric(ReqQ("page")) = False then  
+		page=1  
+		startpage=1
+	Else 
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then 
+				startpage=page-setsize + 1
+			Else 
+				startpage=int(page/setsize)*setsize + 1
+			End If 
+	End If 
+
+	SQL_where = ""
+	if q <> "" then 
+		if st = "t" then 
+			SQL_where = SQL_where & " AND BD.NM_TITLE LIKE '%"&q&"%' "
+		elseif st = "c" then 
+			SQL_where = SQL_where & " AND BD.NM_CONTENTS LIKE '%"&q&"%'  "
+		elseif st = "tc" then 
+			SQL_where = SQL_where & " AND (BD.NM_TITLE LIKE '%"&q&"%' or (BD.NM_CONTENTS LIKE '%"&q&"%')) "
+		elseif st = "w" then 
+			SQL_where = SQL_where & " AND BD.NM_FIELD_1 LIKE '%"&q&"%'  "
+		end if 
+	end if 
+
+
+	Set objADO = new clsADO
+		
+		SQL= ""
+		SQL = SQL & "DECLARE @CNT int																					"
+		SQL = SQL & "DECLARE @SNUM int																					"
+		SQL = SQL & "DECLARE @ENUM int																					"
+		SQL = SQL & "SET @ENUM = " & page & " * " & pgsize & "															"
+		SQL = SQL & "SET @SNUM = (@ENUM - " & pgsize & ")+1																"
+		SQL = SQL & "																									"
+		SQL = SQL & "SELECT @CNT = COUNT(*)																				"
+		SQL = SQL & "FROM                                                                                               "
+		SQL = SQL & "		T_BOARDDETAIL AS BD                                                              "
+		SQL = SQL & "WHERE                                                                                              "
+		SQL = SQL & "	BD.CD_BOARDCD = '" & CD_BOARDCD & "' AND BD.YN_USE='Y'                                          "
+		SQL = SQL & SQL_where
+		SQL = SQL & "																											"
+		SQL = SQL & "SELECT																										"
+		SQL = SQL & "	@CNT AS CNT, *																							"
+		SQL = SQL & "FROM																										"
+		SQL = SQL & "	(																										"
+		SQL = SQL & "		SELECT																								"
+		SQL = SQL & "		ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY DESC, BD.NO_BOARD_SEQ ASC) AS [No]	"
+		SQL = SQL & "		,ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY ASC, BD.NO_BOARD_SEQ ASC) AS [NoDesc]	"	'2
+		SQL = SQL & "		, BD.CD_BOARDID, BD.NO_BOARD_DEPTH, BD.NO_BOARD_SEQ, BD.YN_DISPLAY, BD.NO_VIEWCNT, BD.NO_VIEWORDER	"	'8
+		SQL = SQL & "		, BD.NM_TITLE, BD.NM_CONTENTS, BD.CD_INUSER, BD.DT_INSYSDATE										"	'12
+		SQL = SQL & "		, BD.NM_FIELD_1, BD.NM_FIELD_2, BD.NM_FIELD_3, BD.NM_FIELD_4, BD.NM_FIELD_5, BD.NM_FIELD_6, BD.NM_FIELD_7, BD.NM_FIELD_8 "	'20
+		SQL = SQL & "		FROM																								"
+		SQL = SQL & "				T_BOARDDETAIL AS BD																"
+		SQL = SQL & "		WHERE                                                                                               "
+		SQL = SQL & "			BD.CD_BOARDCD = '" & CD_BOARDCD & "' AND BD.YN_USE='Y'                                          "
+		SQL = SQL & SQL_where
+		SQL = SQL & "	) AS J																									"
+		SQL = SQL & "WHERE																										"
+		SQL = SQL & "	No BETWEEN @SNUM AND @ENUM																				"
+		SQL = SQL & "ORDER BY																									"
+		SQL = SQL & "	NO ASC																									"
+		
+'		Response.write SQL
+
+		objADO.setSql(SQL)
+		aryBoardList = objADO.getArrRs()
+
+		If IsArray(aryBoardList) Then
+		'If Not RS.Eof then
+			tn =  aryBoardList(0,0)								'총 페이지수
+			pgcount = - INT( - ( tn/pgsize ) )					'페이지수 계산
+			If (page>pgcount) Then page=pgcount End If 			'페이지수 이상의 페이지를 요구하면 마지막 페이지로
+
+			'이전page 다음page
+			prevPage = page - ((page-1) Mod setsize) - setsize
+			IF prevPage < 1 THEN
+				prevPage = 0
+			END IF
+			nextPage = page - ((page-1) Mod setsize) + setsize
+			IF nextPage > pgcount THEN
+				nextPage = 0
+			END If
+		else
+			tn = 0
+			pgcount = 0
+		End If
+		
+	Set objADO = Nothing
+
+%>
+<!doctype html>
+<html>
+<head>
+	<!-- #include virtual = "/bbs_seo/inc.head.html" -->
+</head>
+<body class="top-navigation pace-done">
+	<div id="wrapper">
+
+		<div id="page-wrapper" class="gray-bg">
+			
+			<div class="wrapper wrapper-content animated fadeInRight">
+				<div class="row">
+					<div class="col-lg-12">
+						
+						<div class="ibox">
+							<div class="ibox-title">
+								<h5><i class="fa fa-list"></i> <small> <strong class="text-info"> <%=tn%></strong> 건의 데이터가 존재합니다.</small></h5>
+							</div>
+							<div class="ibox-content">
+								<div class="row">									
+									<div class="col-sm-2 m-b-xs">
+										<select name="st" id="st" class="form-control-sm form-control input-s-sm inline">
+											<option value="t" <%=getBoolean(st="t","selected","")%>>제목</option>
+											<option value="c" <%=getBoolean(st="c","selected","")%>>내용</option>
+											<option value="tc" <%=getBoolean(st="tc","selected","")%>>제목+내용</option>
+											<option value="w" <%=getBoolean(st="w","selected","")%>>작성자</option>
+										</select>
+									</div>
+									<div class="col-sm-3 m-b-xs">
+										<div class="input-group">
+											<input type="text" class="form-control" id="q" name="q" value="<%=q%>" placeholder="검색어를 입력해주세요." autocomplete="off"/>
+											<span class="input-group-btn">
+												<button type="button" class="btn" id="btnSearch"> <i class="fa fa-search"></i><!--조회--></button>
+											</span>
+										</div>
+									</div>
+									<div class="col-sm-7 m-b-xs text-right">
+										<button type="button" class="btn btn-sm btn-success" id="btnWrite"><i class="fa fa-edit"></i> 글쓰기</button>
+										
+									</div>
+								</div>
+
+								<div class="row">									
+									<div class="col-sm-12 m-b-none">
+										<div class="form-group m-b-none m-t-sm" style="display: none" id="areaPw">
+											<div class="input-group pull-right">
+												<input type="password" class="form-control m-b-none" style="max-width: 144px" id="pw" value="" maxlength="20" placeholder="비밀번호" />
+												<span class="input-group-append">
+													<button type="button" class="btn btn-default" id="btnPwCancel"><i class="fa fa-times"></i> 취소</button>
+													<button type="button" class="btn btn-white" id="btnPwConfirm"><i class="fa fa-check"></i> 확인</button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="table-responsive">
+
+									<table class="table table-hover table-striped">
+										<colgroup>
+											<col width="100px" />
+											<col width="auto" />
+											<col width="130px" />
+											<col width="60px" />
+											<col width="150px" />
+										</colgroup>
+										<thead>
+											<tr>
+												<th class="text-center small">No.</th>
+												<th class="text-center small">제목</th>
+												<th class="text-center small">작성자</th>
+												<th class="text-right small">조회수</th>
+												<th class="text-center small">작성일</th>
+											</tr>
+										</thead>
+										<tbody>
+										<%
+										If IsArray(aryBoardList) Then
+											For iloop = 0 To UBound(aryBoardList,2)
+										%>
+											<tr>
+												<td class="text-center small"><%=aryBoardList(2,iloop)%></td>
+												<td class="text-left small">
+													<a href="article.html?id=<%=aryBoardList(3,iloop)%>&page=<%=page%>&st=<%=getText(st)%>&q=<%=getText(q)%>">
+														<%=getText(aryBoardList(9,iloop))%>
+													</a>
+												</td>
+												<td class="text-center small"><%=getText(aryBoardList(13,iloop))%></td>
+												<td class="text-right small"><%=setComma(aryBoardList(7,iloop))%></td>
+												<td class="text-left small"><%=aryBoardList(12,iloop)%></td>
+											</tr>
+										<%
+											Next
+										Else 
+										%>
+											<tr>
+												<td class="text-center small" colspan="<%=spancnt%>">데이터가 존재하지 않습니다.</td>
+											</tr>
+										<%
+										End If 
+										%>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td class="text-center" colspan="<%=spancnt%>">
+													<%Call PageNavigation("","st="&st&"&q="&q, tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<div>
+					<strong>Copyright</strong> Peter's &copy; 2020
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<form id="frm" name="frm" method="post" enctype="multipart/form-data">
+		<input type="hidden" id="page" name="page" value="<%=page%>" />
+		<input type="hidden" id="st" name="st" value="<%=st%>" />
+		<input type="hidden" id="q" name="q" value="<%=q%>" />
+		<input type="hidden" id="id" name="id" value="" />
+		<input type="hidden" id="MODE" name="MODE" value="I" />
+		<input type="hidden" id="password" name="password" value="" />
+	</form>
+
+	<script>
+		$(function() {
+
+			$('#pw').keyup(function(e) {
+				if (e.keyCode == 13) {
+					$('#btnPwConfirm').click();
+				}
+			});
+
+			$('#btnPwCancel').click(function() {
+				$('#pw').val('');
+				$('#areaPw').hide();
+			});
+
+			$('#btnSearch').click(function() {
+				var st = $("#st option:selected").val();
+				var q = encodeURIComponent($("#q").val());
+				document.location.href = "?st="+st+"&q="+q;
+			});
+
+			$('#q').keyup(function(e) {
+				if (e.keyCode == 13) {
+					$('#btnSearch').click();
+				}
+			});
+
+			$('#btnWrite').click(function() {
+				//document.location.href = "edit.html?page=<%=page%>&st=<%=st%>&q=<%=q%>";
+				//document.frm.method = 'post';
+				//document.frm.action = 'edit.html';
+				//document.frm.submit();
+
+				$('#MODE').val('I');
+				$('#areaPw').fadeIn(function() {
+					//alert('비밀번호를 입력해주세요.');	
+					$('#pw').focus();
+				});
+
+			});
+
+			$('#btnPwConfirm').click(function() {
+
+				var MODE = $('#MODE').val();
+				
+				if ($('#pw').val() == '') {
+					alert('비밀번호를 입력해주세요.');
+					return;
+				}
+
+				$('#password').val($('#pw').val());
+
+				if (MODE == 'I') {
+					document.frm.method = 'post';
+					document.frm.action = 'edit.html';
+					document.frm.submit();
+				}
+				
+			});
+        });
+	</script>
+
+</body>
+</html>		

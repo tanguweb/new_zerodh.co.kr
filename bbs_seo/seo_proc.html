@@ -1,0 +1,178 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<!-- #include virtual = "/function/fn_FileSave.asp" -->
+<!-- #include virtual = "/function/fn_XMLpath.asp" -->
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%
+	
+	Dim adoCmd, Result1, Result1_ID, Result1_DEPTH, Result1_SEQ, Result2, Rtn_string
+	Dim CD_BOARDKEY, NO_BOARD_DEPTH, NO_BOARD_SEQ, YN_USE, NO_CNTVIEW, YN_DISPLAY, NO_VIEWORDER, NO_DOWNLOAD, YN_XML, NM_XMLPATH
+	Dim ary_FIELD(16), ary_FIELDTYPE(16)
+	Dim UploadForm, arrFileNames(16), arrFileSize(16), arrFileType(16), arrFileTypechk, i, j, iCount, FilePath, FileNameOnly, FileExt, FileName
+	Dim HTTP_REFERER, HTTP_USER_AGENT, HTTP_DEVICE_TYPE, HTTP_MEDIA_TYPE
+
+	Set UploadForm = Server.CreateObject("DEXT.FileUpload")
+	UploadForm.DefaultPath = FileSaveRoot_Board
+	UploadForm.MaxFileLen = 1024 * 1024 * 5	' 5MB 
+
+	Dim CD_BOARDCD : CD_BOARDCD = "999"
+	Dim MODE : MODE = UploadForm("MODE")
+	If MODE = "" Then 
+		MODE = "I"
+	End If 
+
+	Dim CD_BOARDID : CD_BOARDID = UploadForm("id")	
+	If CD_BOARDID = "" Then 
+		CD_BOARDID = 0
+	End If 
+	
+	Dim page : page = UploadForm("page")
+	Dim st : st = UploadForm("st")
+	Dim q : q = UploadForm("q")
+	Dim NM_FIELD_1  : NM_FIELD_1 = getText(UploadForm("userName"))
+	Dim NM_FIELD_2  : NM_FIELD_2 = getText(UploadForm("password"))
+	Dim NM_FIELD_3  : NM_FIELD_3 = getText(UploadForm("email"))
+	Dim NM_FIELD_4  : NM_FIELD_4 = getText(UploadForm("homepage"))
+	Dim NM_FIELD_5  : NM_FIELD_5 = getText(UploadForm("link1"))
+	Dim NM_FIELD_6  : NM_FIELD_6 = getText(UploadForm("link2"))
+	Dim NM_FIELD_7  : NM_FIELD_7 = UploadForm("file1")
+	Dim NM_FIELD_8  : NM_FIELD_8 = UploadForm("file2")
+	Dim NM_TITLE	: NM_TITLE = getText(UploadForm("title"))
+	'Dim NM_CONTENTS : NM_CONTENTS = Replace(getText(UploadForm("article")) ,Chr(10),"<br />")
+	Dim NM_CONTENTS : NM_CONTENTS = UploadForm("article")
+
+'	Response.write "MODE : " & MODE & "<br />"
+'	Response.write "NM_FIELD_1 : " & NM_FIELD_1 & "<br />"
+'	Response.write "NM_FIELD_2 : " & NM_FIELD_2 & "<br />"
+'	Response.write "NM_FIELD_3 : " & NM_FIELD_3 & "<br />"
+'	Response.write "NM_FIELD_4 : " & NM_FIELD_4 & "<br />"
+'	Response.write "NM_FIELD_7 : " & NM_FIELD_7 & "<br />"
+'	Response.write "NM_FIELD_8 : " & NM_FIELD_8 & "<br />"
+'	Response.write "NM_FIELD_9 : " & NM_FIELD_9 & "<br />"
+'	Response.write "NM_TITLE : " & NM_TITLE & "<br />"
+'	Response.write "NM_CONTENTS : " & NM_CONTENTS & "<br />"
+		
+	If MODE = "D" Then 
+		CD_BOARDKEY = CD_BOARDID
+		YN_DISPLAY = "N"
+		YN_USE = "N"
+	Else
+		If MODE = "" Or NM_FIELD_1 = "" Or NM_FIELD_2 = "" Or NM_TITLE = "" Or NM_CONTENTS = "" Then 
+			Response.Write "Bad Request"
+			Response.End
+		End If 
+
+		CD_BOARDKEY = 0
+		YN_DISPLAY = "Y"
+		YN_USE = "Y"
+		
+	End If 
+
+	If NM_FIELD_2 <> "peters2011" Then
+		Response.Write "Unauthorized"
+		Response.End
+	End If 
+	
+	For i = 1 To 15
+		ary_FIELD(i)		= UploadForm("NM_FIELD_" & i)
+	Next
+
+	ary_FIELD(1) = NM_FIELD_1
+	ary_FIELD(2) = NM_FIELD_2
+	ary_FIELD(3) = NM_FIELD_3
+	ary_FIELD(4) = NM_FIELD_4
+	ary_FIELD(5) = NM_FIELD_5
+	ary_FIELD(6) = NM_FIELD_6
+	ary_FIELD(7) = NM_FIELD_7
+	ary_FIELD(8) = NM_FIELD_8
+
+	If UploadForm("file1").FileLen > UploadForm.MaxFileLen Then
+		Response.Write "<script type='text/javascript'>alert('첨부파일은 최대 5MB 까지 업로드 가능합니다.');history.back();</script>"
+		Response.End 
+	End If 
+
+	If UploadForm("file2").FileLen > UploadForm.MaxFileLen Then
+		Response.Write "<script type='text/javascript'>alert('첨부파일은 최대 5MB 까지 업로드 가능합니다.');history.back();</script>"
+		Response.End 
+	End If 
+
+	ary_FIELDTYPE(7) = "FILE"
+
+	If ary_FIELD(7) <> "" Then 	
+		arrFileNames(7) = fn_FileSave (UploadForm, "file1", getBoolean(YN_XML="Y" and NM_XMLPATH<>"",FileSaveRoot & NM_XMLPATH,FileSaveRoot_Board))
+	Else
+		arrFileNames(7) = UploadForm("hd_file1")
+	End If 
+
+	ary_FIELDTYPE(8) = "FILE"
+
+	If ary_FIELD(8) <> "" Then 
+		arrFileNames(8) = fn_FileSave (UploadForm, "file2", getBoolean(YN_XML="Y" and NM_XMLPATH<>"",FileSaveRoot & NM_XMLPATH,FileSaveRoot_Board))
+	Else
+		arrFileNames(8) = UploadForm("hd_file2")
+	End If 
+
+	' 게시글 저장
+	Set adoCmd	=	Server.CreateObject("ADODB.Command")
+		with adoCmd
+		.ActiveConnection	= m_DB
+		.CommandType		= adCmdStoredProc
+		.CommandText		= "SPA_BOARDDETAIL_EDIT"
+		.Parameters.Append	.CreateParameter("@MODE"			, adChar,		adParamInput,	1, MODE)
+		.Parameters.Append	.CreateParameter("@CD_BOARDID"		, adInteger,	adParamInput,	 , CD_BOARDID)
+		.Parameters.Append	.CreateParameter("@CD_BOARDKEY"		, adInteger,	adParamInput,	 , CD_BOARDKEY)
+		.Parameters.Append	.CreateParameter("@NO_BOARD_DEPTH"	, adInteger,	adParamInput,    , 1)
+		.Parameters.Append	.CreateParameter("@NO_BOARD_SEQ"	, adInteger,	adParamInput,    , 1)
+		.Parameters.Append	.CreateParameter("@CD_BOARDCD"		, adInteger,	adParamInput,    , CD_BOARDCD)
+		.Parameters.Append	.CreateParameter("@YN_DISPLAY"		, adchar,		adParamInput,	1, YN_DISPLAY)
+		.Parameters.Append	.CreateParameter("@NO_VIEWCNT"		, adInteger,	adParamInput,    , 0)
+		.Parameters.Append	.CreateParameter("@NO_VIEWORDER"	, adInteger,	adParamInput,	 , 100)
+		.Parameters.Append	.CreateParameter("@NO_DOWNLOAD"		, adInteger,	adParamInput,	 , 0)
+		.Parameters.Append	.CreateParameter("@YN_USE"			, adchar,		adParamInput,	1, YN_USE)
+		.Parameters.Append	.CreateParameter("@NM_TITLE"		, adVarchar,	adParamInput,	500, NM_TITLE)
+		.Parameters.Append	.CreateParameter("@NM_CONTENTS"		, adVarchar,	adParamInput,	100000, NM_CONTENTS)
+	For i = 1 To 15
+		If ary_FIELDTYPE(i) = "FILE" Then
+			.Parameters.Append	.CreateParameter("@NM_FIELD_"&i		, adVarchar,	adParamInput,1000, arrFileNames(i))
+		Else 
+			.Parameters.Append	.CreateParameter("@NM_FIELD_"&i		, adVarchar,	adParamInput,1000, ary_FIELD(i))
+		End If
+	Next
+
+		.Parameters.Append	.CreateParameter("@CD_USER"			, adVarchar,	adParamInput,	15, getBoolean(m_ServiceUserID<>"",m_ServiceUserID,"guest"))
+		.Parameters.Append	.CreateParameter("@NO_IPADDR"		, adVarchar,	adParamInput,	20, m_IPAddr)
+		.Parameters.Append	.CreateParameter("@HTTP_REFERER"		, adVarchar,	adParamInput,	5000, "")
+		.Parameters.Append	.CreateParameter("@HTTP_USER_AGENT"		, adVarchar,	adParamInput,	5000, "")
+		.Parameters.Append	.CreateParameter("@HTTP_DEVICE_TYPE"	, adVarchar,	adParamInput,	200, "")
+		.Parameters.Append	.CreateParameter("@HTTP_MEDIA_TYPE"		, adVarchar,	adParamInput,	200, "")
+		.Parameters.Append  .CreateParameter("@Result"			, adVarChar,	adParamoutput,  20	)
+		.Parameters.Append  .CreateParameter("@Result_ID"		, adInteger,	adParamoutput  	)
+		.Execute
+		Result1			= .Parameters("@Result")
+		Result1_ID		= .Parameters("@Result_ID")
+		End with
+	Set adoCmd = Nothing
+
+	If Result1 = "SUCCESS" Then 
+
+		If MODE = "I" Then 
+			Response.Write "<script type='text/javascript'>alert('등록되었습니다.');document.location.href='/bbs_seo/';</script>"
+		ElseIf MODE = "U" Then 
+			Response.Write "<script type='text/javascript'>alert('수정되었습니다.');document.location.href='/bbs_seo/?page="&page&"&st="&st&"&q="&q&"';</script>"
+		ElseIf MODE = "D" Then 
+			Response.Write "<script type='text/javascript'>alert('삭제되었습니다.');document.location.href='/bbs_seo/?page="&page&"&st="&st&"&q="&q&"';</script>"
+		End If 
+		
+	Else
+		
+		If MODE = "I" Then 
+			Response.Write "<script type='text/javascript'>alert('등록에 실패하였습니다.');history.back();</script>"
+		ElseIf MODE = "U" Then 
+			Response.Write "<script type='text/javascript'>alert('수정에 실패하였습니다.');document.location.href='/bbs_seo/?page="&page&"&st="&st&"&q="&q&"';</script>"
+		ElseIf MODE = "D" Then 
+			Response.Write "<script type='text/javascript'>alert('삭제에 실패하였습니다.');document.location.href='/bbs_seo/?page="&page&"&st="&st&"&q="&q&"';</script>"
+		End If 
+	End If 
+
+	Response.End 
+%>

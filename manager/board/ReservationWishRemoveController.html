@@ -1,0 +1,59 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<!-- #include virtual = "/function/fn_AdminLoginCheck.asp" -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%	
+	Dim CD_BOARDCD
+	Dim conn, cmd, rs, iloop
+	Dim sql
+	Dim dbErrorCount : dbErrorCount = 0
+	Dim CD_BOARDID
+	
+	CD_BOARDID = getText(ReqF("CD_BOARDID"))
+	CD_BOARDCD = getText(ReqF("CD_BOARDCD"))
+
+	'response.write "<script>alert('"&CD_BOARDID&"');</script>" 
+	'response.end
+
+	If CD_BOARDCD = "" Or CD_BOARDID = "" Then 
+		response.write "<script>alert('잘못된 접근 입니다.');parent.document.location.reload();</script>" 
+	End If 
+	
+	sql = sql & "UPDATE T_BOARDDETAIL SET YN_USE = 'N', YN_DISPLAY = 'N' WHERE CD_BOARDCD = ? AND CD_BOARDID = ?;	"
+	
+	Set conn = Server.CreateObject("ADODB.Connection")
+	conn.Open m_DB
+	
+	On Error Resume Next
+	
+	conn.BeginTrans
+
+	Set cmd = server.createobject("ADODB.Command")
+	cmd.ActiveConnection = conn
+	cmd.CommandType = adCmdText
+	cmd.CommandTimeout = 900
+
+	cmd.CommandText = sql
+	cmd.Parameters.Append cmd.CreateParameter("@CD_BOARDCD", adInteger, adParamInput, , CD_BOARDCD)
+	cmd.Parameters.Append cmd.CreateParameter("@CD_BOARDID", adInteger, adParamInput, , CD_BOARDID)
+	cmd.Execute()
+	dbErrorCount = dbErrorCount + conn.errors.count
+	
+	If dbErrorCount > 0 Then 
+		conn.RollbackTrans
+	Else 		
+		conn.CommitTrans
+	End If
+
+	conn.close
+
+	Set cmd = Nothing
+	Set conn = Nothing
+
+
+	If dbErrorCount = 0 Then
+		response.write "<script>alert('삭제되었습니다.');parent.document.location.reload();</script>" 
+	Else
+		response.write "<script>alert('삭제에 실패하였습니다.');parent.document.location.reload();</script>"
+	End If 
+	Response.End
+%>

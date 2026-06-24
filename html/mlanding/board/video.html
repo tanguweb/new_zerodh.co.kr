@@ -1,0 +1,206 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_PageNavigation.asp"-->
+<%
+	Dim iloop, jloop, SQL
+	Dim CD_BOARDCD : CD_BOARDCD = 1009
+	Dim aryBoard, arrRsBest
+	Dim CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, DT_INSYSDATE, DT_INSYSDATE_to_int, VIEW_CNT, RowNo
+	Dim searchType : searchType = ReqQ("searchType")
+	Dim keyword : keyword = ReqQ("keyword")
+
+	If searchType = "" And keyword <> "" Then
+		SQL = SQL & " and (BD.NM_TITLE LIKE '%" & keyword & "%' or BD.NM_CONTENTS LIKE '%" & keyword & "%') "
+	ElseIf searchType = "title" And keyword <> "" Then
+		SQL = SQL & " and BD.NM_TITLE LIKE '%" & keyword & "%' "
+	End If
+
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 15
+	'Const setsize = 10
+	Dim setsize
+
+	If isMobile() Then
+		setsize = 5
+	Else
+		setsize = 10
+	End If
+
+	If IsNumeric(ReqQ("page")) = False then
+		page=1
+		startpage=1
+	Else
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then
+				startpage=page-setsize + 1
+			Else
+				startpage=int(page/setsize)*setsize + 1
+			End If
+	End If
+
+	aryBoard = fn_BoardList_paging (CD_BOARDCD, page , pgsize, SQL)
+
+	If IsArray(aryBoard) Then
+		tn =  aryBoard(0,0)						'총 페이지수
+		pgcount = - INT( - ( tn/pgsize ) )			'페이지수 계산
+		If (page>pgcount) Then page=pgcount End If 	'페이지수 이상의 페이지를 요구하면 마지막 페이지로
+
+		'이전page 다음page
+		prevPage = page - ((page-1) Mod setsize) - setsize
+		IF prevPage < 1 THEN
+			prevPage = 0
+		END IF
+		nextPage = page - ((page-1) Mod setsize) + setsize
+		IF nextPage > pgcount THEN
+			nextPage = 0
+		END If
+	Else
+		tn = 0
+		pgcount = 0
+	End If
+
+'	Dim newIconDate : newIconDate = int(Replace(Left(dateadd("d",-3,now()), 10),"-",""))
+'	Response.write newIconDate
+
+%>
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+
+<!-- S : sub -->
+<div id="sub" class="video">
+  <section>
+    <!-- S : sub_visual -->
+		<!-- #include virtual = "/html/inc/board_left.html" -->
+		<div class="sub_tit">
+			<div>
+				<!-- <h5><span class="pc"><%=m_client_name%>의 </span> 환자분들이 말하는 진료후기를 확인해보세요</h5> -->
+				<h1><%=m_client_name_s%> <span>VOD</span></h1>
+				<p class="en">&nbsp;<%=m_client_en%></p>
+			</div>
+	  </div>
+  <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+
+		<section class="section_01">
+      <div class="inwrap">
+        <!-- <div class="sub_title ">
+          <h2><%=m_client_name_s%> VOD</h2>
+        </div> -->
+
+
+        <div class="review_board">
+          <ul class="three">
+
+<%
+if isarray(aryBoard) then
+	for iloop = 0 to ubound(aryBoard,2)
+		'Response.write "[" &ubound(aryBoard,2)& "]"
+%>
+				<li>
+					<a href="video_view.html?CD_BOARDID=<%=aryBoard(2,iloop)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSS(keyword, "")%>" >
+						<div>
+							<p class="auto_height">
+								<iframe src="<%=aryBoard(12,iloop)%>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</p>
+
+							<h5 class="center"><%=clearXSS(aryBoard(10,iloop), "")%></h5>
+						</div>
+					</a>
+				</li>
+<%
+	Next
+end if
+%>
+
+<!--
+
+            <li>
+              <a href="sub_06_view.html" onclick="showTempId('349')">
+              <div>
+                <p class="auto_height">
+                    <iframe src="https://www.youtube.com/embed/iIN_jdIwANA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </p>
+                <h5 class="center">김**님의 교정후기입니다.</h5>
+              </div>
+              </a>
+            </li>
+            <li>
+              <a href="sub_06_view.html" onclick="showTempId('348')">
+              <div>
+                <p class="auto_height">
+                    <iframe src="https://www.youtube.com/embed/iIN_jdIwANA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </p>
+                <h5 class="center">김**님의 교정후기입니다.</h5>
+              </div>
+              </a>
+            </li>
+-->
+
+          </ul>
+
+
+			<%
+			If IsArray(aryBoard) = False Then
+			%>
+				<div>
+				  <div class="center">조회된 게시글이 없습니다.</div>
+				</div>
+			<%
+			End If
+			%>
+
+
+        </div>
+
+		<ul class="paging m_t_50">
+			<%If IsArray(aryBoard) Then%>
+			<%Call PageNavigation_front("/html/board/sub_06.html","searchType="&clearXSSdefault(searchType)&"&keyword="&clearXSSdefault(keyword), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+			<%End If%>
+		</ul>
+
+      <div class="list_search  center">
+        <label class="select pc ">
+  			<select name="s_searchType" id="s_searchType">
+  			<option value="">선택</option>
+  			<option value="title" <%=getBoolean(clearXSSdefault(searchType)="title","selected='selected'","")%>>제목</option>
+  			</select>
+  		</label>
+        <input type="text" name="s_keyword" id="s_keyword" value="<%=clearXSSdefault(keyword)%>" placeholder="" autocomplete="off" class="pc" />
+        <input type="submit" value="Search" onclick="doSearch(); return false;" class="pc">
+      </div>
+      </div>
+    </section>
+
+  </div>
+  <!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->
+
+
+
+<script>
+$(function() {
+	$(document).on('keyup', '#s_keyword',  function(e) {
+		if (e.keyCode == 13) {
+			doSearch();
+		}
+	});
+});
+
+function goView(CD_BOARDID) {
+	var searchType = encodeURIComponent($("#s_searchType option:selected").val());
+	var keyword = encodeURIComponent($("#s_keyword").val());
+	document.location.href = "sub_06_view.html?CD_BOARDID="+CD_BOARDID+"&page=<%=clearXSSdefault(page)%>&searchType="+searchType+"&keyword="+keyword;
+}
+
+function doSearch() {
+	var searchType = encodeURIComponent($("#s_searchType option:selected").val());
+	var keyword = encodeURIComponent($("#s_keyword").val());
+	document.location.href = "?page=1&searchType="+searchType+"&keyword="+keyword;
+}
+</script>

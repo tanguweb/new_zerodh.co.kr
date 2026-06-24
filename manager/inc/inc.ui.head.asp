@@ -1,0 +1,72 @@
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><%=m_client_name%> 관리자 페이지</title>
+    <link rel="icon" href="/html/images/favicon.ico" type="image/x-icon">
+    <link href="/manager/css/bootstrap/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/manager/css/bootstrap/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="/manager/css/bootstrap/inspinia/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="/manager/css/bootstrap/inspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="/manager/css/bootstrap/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/manager/css/bootstrap/inspinia/css/style.css" rel="stylesheet">
+
+	<!-- Sweet Alert -->
+    <link href="/manager/css/bootstrap/inspinia/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	
+	<!-- datepicker -->
+    <link href="/manager/css/bootstrap/inspinia/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+	<!-- Mainly scripts -->
+    <script src="/manager/css/bootstrap/inspinia/js/jquery-2.1.1.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/bootstrap.min.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/flot/jquery.flot.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/manager/css/bootstrap/inspinia/js/inspinia.js"></script>
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="/manager/css/bootstrap/inspinia/js/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/toastr/toastr.min.js"></script>
+
+	<!-- Data picker -->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+	<!-- Input Mask-->
+    <script src="/manager/css/bootstrap/inspinia/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+
+
+	<script src="/js/common.js"></script>
+	<script src="/manager/js/jquery.cookie.js"></script>

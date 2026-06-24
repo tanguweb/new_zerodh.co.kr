@@ -1,0 +1,17 @@
+.count_pop input[type=checkbox] + label:before {display: inline-block;vertical-align: text-bottom;content: "";margin-right: 8px;line-height: 20px;position: absolute;left: 0;border: 1px solid #fff;width: 13px;height: 13px;vertical-align: middle;top: 5px;margin-left: 3px;} /* unchecked icon */
+.count_pop input[type=checkbox]:checked + label:before {font-family: 'LineAwesome';top: 2px;content: "\f17f";color: #fff;margin-right: 5px;left: 0;font-size: 19px;border:0;margin-left:0;}
+
+.count_pop .button .search1{font-family: 'NotoSansKR', sans-serif !important;width: 100%;height: 84px;border:0;color:#fff;cursor:pointer;font-size:24px;border-radius: 5px;line-height: 84px;}
+.count_pop ul li input{font-family: 'NotoSansKR', sans-serif !important;width: 100%;height: 36px;background: #fff;font-size: 18px;border:0;outline:0;border-radius: 5px;padding-left:15px;font-weight: 400;box-sizing: border-box;line-height: 36px !important;}
+.typeC_pop > div.inputWrap {position: absolute;bottom:0;padding: 0 35px 75px;left:  0;right:  0;}
+.typeC_pop ul {margin-top: 10px;float: left;width: 65%;}
+.typeC_pop .chk_agree {text-align: center;float: left;color: #fff;}
+.typeC_pop .button {margin-top: 15px;float: right;margin-top: -93px;width: 30%;}
+
+@media all and (max-width:768px){
+.count_pop ul li{margin-top: 0;margin-bottom: 5px;}
+.count_pop ul li input{width:100%;height: 26px;background: #fff;font-size:15px;border:0;outline:0;padding-left:5px; line-height: 26px;}
+.typeC_pop > div.inputWrap {position: absolute;bottom:0;padding: 0 20px 47px;left:  0;right:  0;}
+.typeC_pop .button {margin-top: -65px;}
+.count_pop .button .search1{width: 100%;height: 60px;border:0;color:#fff;cursor:pointer;font-size:18px;line-height: 60px;}
+}

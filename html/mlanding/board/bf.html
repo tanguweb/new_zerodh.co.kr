@@ -1,0 +1,389 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_PageNavigation.asp"-->
+<%
+	Dim objADO, iloop, jloop, SQL, SQL_where
+	Dim CD_BOARDCD : CD_BOARDCD = 1004
+	Dim aryBoard
+	Dim CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, NM_FIELD_3, DT_INSYSDATE, DT_INSYSDATE_to_int, BEFORE_IMG, AFTER_IMG,  RowNo
+	Dim beforeAfterType : beforeAfterType = ReqQ("beforeAfterType")
+	Dim searchType : searchType = ReqQ("searchType")
+	Dim keyword : keyword = ReqQ("keyword")
+
+	If beforeAfterType <> "" Then
+		SQL_where = SQL_where & " and BD.NM_FIELD_1 = " & beforeAfterType
+	End If
+
+	If searchType = "" And keyword <> "" Then
+		SQL_where = SQL_where & " and (BD.NM_TITLE LIKE '%" & keyword & "%' or BD.NM_CONTENTS LIKE '%" & keyword & "%') "
+	ElseIf searchType = "title" And keyword <> "" Then
+		SQL_where = SQL_where & " and BD.NM_TITLE LIKE '%" & keyword & "%' "
+	End If
+'Response.write "<!--" & SQL & "-->"
+	Dim page, startpage, tn, pgcount, nextpage, prevpage
+	Const pgsize = 10
+	'Const setsize = 10
+	Dim setsize
+
+	If isMobile() Then
+		setsize = 5
+	Else
+		setsize = 5
+	End If
+
+	If IsNumeric(ReqQ("page")) = False then
+		page=1
+		startpage=1
+	Else
+		page=cint(ReqQ("page"))
+		startpage=int(page/setsize)
+			If startpage=(page/setsize) Then
+				startpage=page-setsize + 1
+			Else
+				startpage=int(page/setsize)*setsize + 1
+			End If
+	End If
+
+	'aryBoard = fn_BoardList_paging (CD_BOARDCD, page , pgsize, SQL)
+	Set objADO = new clsADO
+
+	SQL = ""
+	SQL = SQL & "DECLARE @CNT int																					"
+	SQL = SQL & "DECLARE @SNUM int																				"
+	SQL = SQL & "DECLARE @ENUM int																				"
+	SQL = SQL & "SET @ENUM = " & page & " * " & pgsize & "												"
+	SQL = SQL & "SET @SNUM = (@ENUM - " & pgsize & ")+1														"
+	SQL = SQL & "																									"
+	SQL = SQL & "SELECT @CNT = COUNT(*)																			"
+	SQL = SQL & "FROM																								"
+	SQL = SQL & "	T_BOARDDETAIL AS BD																				"
+	SQL = SQL & "		INNER JOIN T_BOARDMAST AS BM																"
+	SQL = SQL & "		ON BM.CD_BOARDCD = BD.CD_BOARDCD															"
+	SQL = SQL & "WHERE																							"
+	SQL = SQL & "	BD.YN_USE = 'Y' AND BD.YN_DISPLAY = 'Y'															"
+	SQL = SQL & "	AND BD.CD_BOARDCD = '" & CD_BOARDCD & "'													"
+	SQL = SQL & "			AND BD.NO_BOARD_DEPTH = '1' AND BD.NO_BOARD_SEQ = '1'									"
+	SQL = SQL & SQL_where
+	SQL = SQL & "																									"
+	SQL = SQL & "SELECT @CNT AS CNT, *																			"
+	SQL = SQL & "FROM																								"
+	SQL = SQL & "	(																								"
+	SQL = SQL & "		SELECT																						"
+	SQL = SQL & "			ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY DESC, BD.NO_BOARD_SEQ ASC) AS [No]	"	'1
+	SQL = SQL & "			,BD.CD_BOARDID,BD.NO_BOARD_DEPTH,BD.NO_BOARD_SEQ,BD.CD_BOARDCD							"	'5
+	SQL = SQL & "			,BD.YN_DISPLAY,BD.NO_VIEWCNT,BD.NO_VIEWORDER,BD.YN_USE,BD.NM_TITLE						"	'10
+	SQL = SQL & "			,BD.NM_CONTENTS,BD.NM_FIELD_1,BD.NM_FIELD_2,BD.NM_FIELD_3,BD.NM_FIELD_4					"	'15
+	SQL = SQL & "			,BD.NM_FIELD_5,BD.NM_FIELD_6,BD.NM_FIELD_7,BD.NM_FIELD_8,BD.NM_FIELD_9					"	'20
+	SQL = SQL & "			,BD.NM_FIELD_10,BD.CD_INUSER,BD.DT_INSYSDATE											"	'23
+	SQL = SQL & "			,ROW_NUMBER() OVER (ORDER BY BD.NO_VIEWORDER ASC, BD.CD_BOARDKEY ASC, BD.NO_BOARD_SEQ ASC) AS [NoDesc]	"	'24
+	SQL = SQL & "			,BD.CD_BOARDKEY																			"	'25
+	SQL = SQL & "			,(SELECT COUNT(*) FROM T_BOARDREPLY WHERE CD_BOARDID = BD.CD_BOARDID AND YN_USE = 'Y') AS REPLYCNT	"	'26
+	SQL = SQL & "			,BD.NM_FIELD_11,BD.NM_FIELD_12,BD.NM_FIELD_13,BD.NM_FIELD_14							"	'30
+	SQL = SQL & "			,BD.NM_FIELD_15																			"	'31
+	SQL = SQL & "			,(SELECT COUNT(*) FROM T_BOARDDETAIL WHERE CD_BOARDKEY = BD.CD_BOARDID AND YN_USE = 'Y' AND NO_BOARD_DEPTH > 1) AS ANSHERCNT	"	'32
+	SQL = SQL & "			,BAIV.CD_BEFOREAFTER_ID, BAIV.BEFORE_IMG, BAIV.AFTER_IMG																		"	'35
+	SQL = SQL & "		FROM																						"
+	SQL = SQL & "			T_BOARDDETAIL AS BD																		"
+	SQL = SQL & "				INNER JOIN T_BOARDMAST AS BM														"
+	SQL = SQL & "				ON BM.CD_BOARDCD = BD.CD_BOARDCD													"
+	SQL = SQL & "				OUTER APPLY (	"
+	SQL = SQL & "					SELECT TOP 1 	"
+	SQL = SQL & "						BAI.CD_BEFOREAFTER_ID, BAI.BEFORE_IMG, BAI.AFTER_IMG	"
+	SQL = SQL & "					FROM T_BEFORE_AFTER_IMG AS BAI	"
+	SQL = SQL & "					WHERE BAI.CD_BOARDID = BD.CD_BOARDID	"
+	SQL = SQL & "					ORDER BY BAI.CD_BEFOREAFTER_ID ASC	"
+	SQL = SQL & "				) AS BAIV	"
+	SQL = SQL & "		WHERE																						"
+	SQL = SQL & "			BD.YN_USE = 'Y' AND BD.YN_DISPLAY = 'Y'													"
+	SQL = SQL & "			AND BD.CD_BOARDCD = '" & CD_BOARDCD & "'											"
+	SQL = SQL & "			AND BD.NO_BOARD_DEPTH = '1' AND BD.NO_BOARD_SEQ = '1'									"
+	SQL = SQL & SQL_where
+	SQL = SQL & "	) AS J																							"
+	SQL = SQL & "WHERE																							"
+	SQL = SQL & "	No BETWEEN @SNUM AND @ENUM																		"
+	SQL = SQL & "ORDER BY																							"
+	SQL = SQL & "	NO ASC																							"
+
+	objADO.setSql(SQL)
+	aryBoard = objADO.getArrRs()
+
+	Set objADO = Nothing
+
+	If IsArray(aryBoard) Then
+		tn =  aryBoard(0,0)						'총 페이지수
+		pgcount = - INT( - ( tn/pgsize ) )			'페이지수 계산
+		If (page>pgcount) Then page=pgcount End If 	'페이지수 이상의 페이지를 요구하면 마지막 페이지로
+
+		'이전page 다음page
+		prevPage = page - ((page-1) Mod setsize) - setsize
+		IF prevPage < 1 THEN
+			prevPage = 0
+		END IF
+		nextPage = page - ((page-1) Mod setsize) + setsize
+		IF nextPage > pgcount THEN
+			nextPage = 0
+		END If
+	Else
+		tn = 0
+		pgcount = 0
+	End If
+
+'	Dim newIconDate : newIconDate = int(Replace(Left(dateadd("d",-3,now()), 10),"-",""))
+'	Response.write newIconDate
+
+	Dim baCodeList : baCodeList = fn_CodeInfo("BEFORE_AFTER_TYPE")
+%>
+
+<div class="layer_pop">
+    <div class="password gallery_pass">
+      <h2>임시 아이디 입력 <i class="demo-icon icon-close close_but"></i></h2>
+
+		<form id="frmGoView">
+			<input type="hidden" id="CD_BOARDID" name="CD_BOARDID" value="" />
+			<input type="hidden" id="beforeAfterType" name="beforeAfterType" value="<%=clearXSSdefault(beforeAfterType)%>" />
+			<input type="hidden" id="searchType" name="searchType" value="<%=clearXSSdefault(searchType)%>" />
+			<input type="hidden" id="keyword" name="keyword" value="<%=clearXSSdefault(keyword)%>" />
+			<input type="hidden" id="page" name="page" value="<%=clearXSSdefault(page)%>" />
+
+			<p><input type="text" id="tempId" name="tempId" placeholder="아이디입력" autocomplete="off" value="mybarun" ></p>
+			<p><a href="javascript:goView();" class="btn btn_green">동의합니다</a><a href="javascript:$('.layer_pop').hide();" class="btn btn_gray">동의하지 않습니다</a></p>
+
+			<h5><span>본 정보는 임시회원 아이디 동의 후</span> <span>열람하실 수 있습니다.</span></h5>
+			<p><span>의료법 제 56조에 따라 전후사진 열람은</span> <span>  홈페이지의 회원일 경우에만 가능합니다.</span></p>
+			<p class="left_align">이에 저희 병원의 홈페이지에서는 임시 아이디 신청 후 이용가능하시며, 진료후기 열람에만 사용이 되어 다른 용도로는 이용이 되지 않습니다. <br>
+			진료후기 열람을 원하시는 고객님께서는 임시로 사용할 아이디를 입력하시고 <em class="btn btn_green">동의합니다</em> 버튼을 클릭하세요.<br>
+			원하지 않는 분들은 <em class="btn btn_gray">동의하지 않습니다</em> 버튼을 클릭하시기 바랍니다.
+			</p>
+			<p>* 의료법상 불가피한 부분이니 양해 부탁드립니다.</p>
+		</form>
+
+      </div>
+  </div>
+  <!-- <div class="dim_bg"></div> -->
+
+  <script>
+
+      $(document).ready(function(){
+          $(".bf_list a").click(function(){
+            // alert("ddd");
+            $(".layer_pop, .dim_bg").fadeIn();
+          });
+          $(".close_but, .dim_bg").click(function(){
+              $(".layer_pop,.dim_bg").fadeOut();
+          });
+
+		  $(".layer_pop, button.btn_gray").click(function(){
+              $(".layer_pop,.dim_bg").fadeOut();
+          });
+
+      });
+
+      </script>
+
+
+<!-- S : sub -->
+<div id="sub" class="bf_board">
+  <section>
+  <!-- S : sub_visual -->
+	<!-- #include virtual = "/html/inc/board_left.html" -->
+	<div class="sub_tit">
+		<div>
+			<!-- <h5><span class="pc"><%=m_client_name%>의 </span>전후사진을 직접 확인해 보세요!</h5> -->
+			<h1>치료  <span>전후사진</span></h1>
+			<p class="en">&nbsp;<%=m_client_en%></p>
+		</div>
+	</div>
+  <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+
+    <section class="section_01">
+      <div class="inwrap">
+				<!-- <div class="title">
+					<h2><span>치료 </span>전후사진<em></em></h2>
+					<h3><%=m_client_name%>의 <br class="mobile">전후사진을 직접 확인해 보세요!</h3>
+				</div> -->
+
+        <!-- <nav class="board_cate">
+          <ul>
+
+			<%
+			For iloop = 0 To UBound(baCodeList, 2)
+			%>
+				<li class="<%=getBoolean(beforeAfterType=baCodeList(1, iloop),"active","")%>"><a href="bf.html?beforeAfterType=<%=baCodeList(1, iloop)%>"><%=baCodeList(2, iloop)%></a></li>
+			<%
+			Next
+			%>
+          </ul>
+        </nav> -->
+
+
+        <ul class="two bf_list">
+<%
+If IsArray(aryBoard) Then
+	For iloop = 0 To UBound(aryBoard,2)
+		RowNo		 = aryBoard(24,iloop)
+		CD_BOARDID	 = aryBoard(2,iloop)
+		NM_TITLE	 = aryBoard(10,iloop)
+		NM_CONTENTS  = aryBoard(11,iloop)
+		NM_FIELD_1	 = aryBoard(12,iloop)
+		NM_FIELD_2	 = aryBoard(13,iloop)
+		NM_FIELD_3	 = aryBoard(14,iloop)
+		DT_INSYSDATE = aryBoard(23,iloop)
+		DT_INSYSDATE_to_int = int(Replace(Left(DT_INSYSDATE, 10),"-",""))
+		BEFORE_IMG = aryBoard(34,iloop)
+		AFTER_IMG = aryBoard(35,iloop)
+
+%>
+          <li>
+            <div class="bf_box">
+              <ul>
+								<a href="javascript:showTempId('<%=CD_BOARDID%>')">
+                <li><img src="/file/board/<%=BEFORE_IMG%>" alt=""><p>BEFORE</p></li>
+                <li><div><img src="/file/board/<%=AFTER_IMG%>" alt=""></div><p>AFTER</p></li></a>
+              </ul>
+              <h4><a href="javascript:showTempId('<%=CD_BOARDID%>')"><%=clearXSSdefault(NM_TITLE)%></a></h4>
+            </div>
+          </li>
+<%
+	Next
+End If
+%>
+
+<!--
+          <li>
+            <div class="bf_box">
+              <ul>
+                <a href="javascript:showPwd('689')"><li><img src="images/sub03_img01.jpg" alt=""><p>BEFORE</p></li>
+                <li><img src="images/sub03_img02.jpg" alt=""><p>AFTER</p></li></a>
+              </ul>
+              <h4><a href="javascript:showPwd('689')">비수술 개방 교합</a></h4>
+            </div>
+          </li>
+          <li>
+            <div class="bf_box">
+              <ul>
+                <a href="javascript:showPwd('689')"><li><img src="images/sub03_img01.jpg" alt=""><p>BEFORE</p></li>
+                <li><img src="images/sub03_img02.jpg" alt=""><p>AFTER</p></li></a>
+              </ul>
+              <h4><a href="javascript:showPwd('689')">비수술 개방 교합</a></h4>
+            </div>
+          </li>
+          <li>
+            <div class="bf_box">
+              <ul>
+                <a href="javascript:showPwd('689')"><li><img src="images/sub03_img01.jpg" alt=""><p>BEFORE</p></li>
+                <li><img src="images/sub03_img02.jpg" alt=""><p>AFTER</p></li></a>
+              </ul>
+              <h4><a href="javascript:showPwd('689')">비수술 개방 교합</a></h4>
+            </div>
+          </li>
+          <li>
+            <div class="bf_box">
+              <ul>
+                <a href="javascript:showPwd('689')"><li><img src="images/sub03_img01.jpg" alt=""><p>BEFORE</p></li>
+                <li><img src="images/sub03_img02.jpg" alt=""><p>AFTER</p></li></a>
+              </ul>
+              <h4><a href="javascript:showPwd('689')">비수술 개방 교합</a></h4>
+            </div>
+          </li>
+-->
+        </ul>
+
+
+	<%
+	If IsArray(aryBoard) = False Then
+	%>
+		<div>
+		  <div class="center">조회된 게시글이 없습니다.</div>
+		</div>
+	<%
+	End If
+	%>
+
+		<ul class="paging m_t_50">
+		<%If IsArray(aryBoard) Then%>
+		<%Call PageNavigation_front("/html/board/bf.html","beforeAfterType="&clearXSSdefault(beforeAfterType)&"&searchType="&clearXSSdefault(searchType)&"&keyword="&clearXSSdefault(keyword), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+		<%End If%>
+		</ul>
+
+      <div class="list_search  center pc">
+        <label class="select  ">
+  			<select name="searchType" id="searchType" class="frm_search">
+  			<option value="">선택</option>
+  			<option value="title" <%=getBoolean(clearXSSdefault(searchType)="title","selected='selected'","")%>>제목</option>
+  			</select>
+  		</label>
+         <input type="text"  class="frm_search"name="keyword" id="keyword" value="<%=clearXSSdefault(keyword)%>" placeholder="" class="pc" autocomplete="off">
+        <input type="submit" value="Search" onclick="doSearch(); return false;" class="pc">
+
+
+      </div>
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+
+  </div>
+  <!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->
+
+
+<script>
+$(function() {
+	$(document).on('keyup', '.frm_search#keyword',  function(e) {
+		if (e.keyCode == 13) {
+			doSearch();
+		}
+	});
+});
+
+function showTempId(CD_BOARDID) {
+	var tempId = $.cookie('tempId');
+
+	if (!tempId) {
+		$("#frmGoView #CD_BOARDID").val(CD_BOARDID);
+		$('.layer_pop').fadeIn();
+	} else {
+		$("#frmGoView #CD_BOARDID").val(CD_BOARDID);
+		$("#frmGoView").attr({
+			"method": "post"
+			, "action" : "bf_view.html?CD_BOARDID="+CD_BOARDID
+		}).submit();
+	}
+}
+
+function goView() {
+
+	if ($.trim($("#tempId").val()) == "")
+	{
+		alert("임시회원 아이디를 입력해주세요.");
+		$("#tempId").focus();
+		return;
+	}
+
+	$.cookie('tempId', $.trim($("#tempId").val()), { expires: 1, path: '/', domain: '<%=CookieDomain%>', secure: false });
+
+	$("#frmGoView").attr({
+		"method" : "post"
+		, "action" : "bf_view.html"
+	}).submit();
+}
+
+function doSearch() {
+	var searchType = encodeURIComponent($(".frm_search#searchType option:selected").val());
+	var keyword = encodeURIComponent($(".frm_search#keyword").val());
+
+	document.location.href = "?page=1&searchType="+searchType+"&keyword="+keyword;
+}
+</script>

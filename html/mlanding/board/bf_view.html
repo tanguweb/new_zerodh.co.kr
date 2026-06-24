@@ -1,0 +1,173 @@
+<!-- #include virtual = "/html/inc/header.html" -->
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+<!-- #include virtual = "/function/fn_CodeInfo.asp" -->
+<!-- #include virtual = "/function/fn_Board.asp" -->
+<!-- #include virtual = "/function/fn_BoardCnt.asp" -->
+<%
+	Dim objADO, SQL, iloop
+	Dim aryList
+	Dim arybefore
+	Dim aryafter
+	Dim aryImage
+
+	Dim CD_BOARDCD : CD_BOARDCD = 1004
+	Dim CD_BOARDID : CD_BOARDID = Req("CD_BOARDID")
+	Dim page : page = Req("page")
+	Dim beforeAfterType : beforeAfterType = Req("beforeAfterType")
+	Dim searchType : searchType =Req("searchType")
+	Dim keyword : keyword =Req("keyword")
+
+	If CD_BOARDID = "" Then
+		Response.write "<script>alert('잘못된 접근입니다.');history.back();</script>"
+		Response.End
+	End If
+
+	aryList = fn_BoardView(CD_BOARDID)
+
+	if isarray(aryList) then
+		arybefore = fn_BoardBefore(CD_BOARDCD, CD_BOARDID)
+		aryafter = fn_BoardAfter(CD_BOARDCD, CD_BOARDID)
+	else
+		response.write "<script>history.back();</script>"
+		response.end
+	end if
+
+	fn_BoardCnt (CD_BOARDID)
+
+
+
+
+	Set objADO = new clsADO
+
+	SQL = ""
+	SQL = SQL & "SELECT	"
+	SQL = SQL & "	CD_BEFOREAFTER_ID, BEFORE_IMG, AFTER_IMG	"
+	SQL = SQL & "FROM T_BEFORE_AFTER_IMG	"
+	SQL = SQL & "WHERE CD_BOARDID = " & CD_BOARDID & "	"
+	SQL = SQL & "ORDER BY CD_BEFOREAFTER_ID ASC	"
+
+	objADO.setSql(SQL)
+	aryImage = objADO.getArrRs()
+
+	Set objADO = Nothing
+%>
+
+
+
+<!-- S : sub -->
+<div id="sub" class="bf_board">
+  <section>
+    <!-- S : sub_visual -->
+		<!-- #include virtual = "/html/inc/board_left.html" -->
+		<div class="sub_tit">
+			<div>
+				<!-- <h5><span class="pc"><%=m_client_name%>의 </span>전후사진을 직접 확인해 보세요!</h5> -->
+				<h1>치료  <span>전후사진</span></h1>
+				<p class="en">&nbsp;<%=m_client_en%></p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$('.sub_nav li:nth-child(3) ').addClass('active');
+		</script>
+  <!-- E : sub_visual -->
+  </section>
+  <div class="content_wrap ">
+
+    <section class="section_01">
+      <div class="inwrap">
+				<!-- <div class="title">
+					<h2><span>치료 </span>전후사진<em></em></h2>
+					<h3><%=m_client_name%>의<br class="mobile"> 전후사진을 직접 확인해 보세요!</h3>
+				</div> -->
+
+
+        <table class="line view"  id="review-article" style="display: none;">
+			<!-- <colgroup><col width="100"><col width="140"><col width="*"><col width="100"><col width="140"><col width="120"></colgroup> -->
+			<tbody><tr>
+				<th><%=clearXSSdefault(aryList(8,0))%> <p class="pc"><span>작성일 | <%=Replace(Left(aryList(21,0), 10), "-", ".")%> </span>  <span>작성자 | 관리자</span></p></th>
+			</tr>
+			<tr>
+				<td class="board_con">
+					<ul class="bf_list">
+<%
+If isArray(aryImage) Then
+	For iloop = 0 To Ubound(aryImage,2)
+%>
+				<li>
+					<div class="bf_box ">
+						<ul>
+							<li><img src="/file/board/<%=aryImage(1,iloop)%>" alt="" class="m_b_0"><p>BEFORE</p></li>
+							<li><img src="/file/board/<%=aryImage(2,iloop)%>" alt="" class="m_b_0"><p>AFTER</p></li>
+						</ul>
+					</div>
+					</li>
+<%
+	Next
+End If
+%>
+					<%=aryList(9,0)%>
+
+					</ul>
+
+				</td>
+			</tr>
+		</tbody>
+  </table>
+
+  <p class="btn_wrap m_t_40">
+  			<a href="javascript:goList()" class="btn btn_green">목록</a>
+  		</p>
+      <table class="line m_t_50">
+      			<tbody><tr>
+      				<th><i class="icon-up-open-big-1 "></i> 이전글</th>
+      				<td class="TextL">
+					<%If isarray(arybefore) Then%>
+						<a href="bf_view.html?CD_BOARDID=<%=arybefore(0, 0)%>&beforeAfterType=<%=clearXSSdefault(beforeAfterType)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(arybefore(8, 0))%></a> <span class="right pc"><%=Replace(Left(arybefore(21,0), 10), "-", ".")%></span>
+					<%Else%>
+						이전 게시글이 없습니다.
+					<%End If%>
+      				</td>
+      			</tr>
+      			<tr>
+      				<th><i class="icon-down-open-big-1 "></i> 다음글</th>
+      				<td class="TextL">
+					<%If isarray(aryafter) Then%>
+						<a href="bf_view.html?CD_BOARDID=<%=aryafter(0, 0)%>&beforeAfterType=<%=clearXSSdefault(beforeAfterType)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(aryafter(8, 0))%></a> <span class="right pc"><%=Replace(Left(aryafter(21,0), 10), "-", ".")%></span>
+					<%Else%>
+						다음 게시글이 없습니다.
+					<%End If%>
+      				</td>
+      			</tr>
+      		</tbody></table>
+
+
+
+
+
+      </div>
+    </section>
+
+
+  </div>
+
+<script>
+$(document).ready(function() {
+	//alert(tempId);
+	var tempId = $.cookie('tempId');
+
+	if (!tempId) {
+		alert("게시글을 읽을 수 없습니다.\n\r임시아이디를 입력하지 않으셨습니다.");
+		document.location.href = "bf.html?beforeAfterType=<%=clearXSSdefault(beforeAfterType)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>";
+	} else {
+		$("#review-article").show();
+	}
+});
+
+function goList() {
+	document.location.href = "bf.html?beforeAfterType=<%=clearXSSdefault(beforeAfterType)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>";
+}
+</script>
+<!-- #include virtual = "/html/inc/foot_banner.html" -->
+
+<!-- #include virtual = "/html/inc/footer.html" -->

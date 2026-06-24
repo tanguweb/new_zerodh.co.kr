@@ -1,0 +1,104 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+<!-- #include virtual = "/function/JSON_2.0.4.asp" -->
+<!-- #include virtual = "/function/JSON_UTIL_0.1.1.asp" -->
+<!-- #include virtual = "/function/cafe24/sms/send.asp" -->
+<!-- #include virtual = "/function/fn_CodeInfo.asp"-->
+<%
+	'########################################################################################
+	'#	File		: /controller/reservationWishController.html
+	'#  Create		: 
+	'#	Info		: 
+	'#	Update		: 
+	'#	Update Memo	: 
+	'########################################################################################
+	
+	Dim CD_BOARDCD : CD_BOARDCD = 1011
+	Dim objADO, SQL, aryLoginInfo
+	Dim adoCmd, Result1, Result1_ID
+	Dim ary_FIELD(16), i
+	Dim MODE : MODE = "I"
+	Dim CD_BOARDID : CD_BOARDID = 0
+
+	Dim NM_FIELD_1  : NM_FIELD_1 = getText(ReqF("reservationDate"))
+	Dim NM_FIELD_2  : NM_FIELD_2 = getText(ReqF("reservationTime"))
+	Dim NM_FIELD_3  : NM_FIELD_3 = getText(ReqF("cureType"))
+	Dim NM_FIELD_4  : NM_FIELD_4 = getText(ReqF("name"))
+	Dim NM_FIELD_5  : NM_FIELD_5 = getText(ReqF("phone"))
+	Dim NM_TITLE 	: NM_TITLE = NM_FIELD_1 & " " & NM_FIELD_2 & " "  & NM_FIELD_3 & " "  & (Left(Trim(NM_FIELD_4), Len(Trim(NM_FIELD_4)) - 1) & "*") & "님이 빠른 예약을 남기셨습니다."
+	Dim NM_CONTENTS : NM_CONTENTS = "" 'Replace(getText(ReqF("footerCounselContent")) ,Chr(13)&Chr(10),"<br />")
+	Dim HTTP_REFERER : HTTP_REFERER = ReqF("HTTP_REFERER")
+	Dim HTTP_USER_AGENT : HTTP_USER_AGENT = ReqF("HTTP_USER_AGENT")
+	Dim HTTP_DEVICE_TYPE : HTTP_DEVICE_TYPE = ReqF("HTTP_DEVICE_TYPE")
+	Dim HTTP_MEDIA_TYPE : HTTP_MEDIA_TYPE = ReqF("HTTP_MEDIA_TYPE")
+
+	'json 객체 선언
+	Dim jsonResult 
+	
+	Set jsonResult = jsObject()
+	jsonResult("result") = "ERROR"
+	'jsonResult("NM_FIELD_1") = NM_FIELD_1
+	'Response.Write toJSON(jsonResult)
+	'Response.End
+
+	If NM_FIELD_1 = "" Or NM_FIELD_2 = "" Or NM_FIELD_3 = "" Or NM_FIELD_4 = "" Or NM_FIELD_5 = "" Then 
+		Response.Write toJSON(jsonResult)
+		Response.End
+	End If 
+
+	For i = 1 To 15
+		ary_FIELD(i)		= ReqF("NM_FIELD_" & i)
+	Next
+
+	ary_FIELD(1) = NM_FIELD_1
+	ary_FIELD(2) = NM_FIELD_2
+	ary_FIELD(3) = NM_FIELD_3
+	ary_FIELD(4) = NM_FIELD_4
+	ary_FIELD(5) = NM_FIELD_5
+	
+	' 게시글 저장
+	Set adoCmd	=	Server.CreateObject("ADODB.Command")
+		with adoCmd
+		.ActiveConnection	= m_DB
+		.CommandType		= adCmdStoredProc
+		.CommandText		= "SPA_BOARDDETAIL_EDIT"
+		.Parameters.Append	.CreateParameter("@MODE"			, adChar,		adParamInput,	1, MODE)
+		.Parameters.Append	.CreateParameter("@CD_BOARDID"		, adInteger,	adParamInput,	 , CD_BOARDID)
+		.Parameters.Append	.CreateParameter("@CD_BOARDKEY"		, adInteger,	adParamInput,	 , 0)
+		.Parameters.Append	.CreateParameter("@NO_BOARD_DEPTH"	, adInteger,	adParamInput,    , 1)
+		.Parameters.Append	.CreateParameter("@NO_BOARD_SEQ"	, adInteger,	adParamInput,    , 1)
+		.Parameters.Append	.CreateParameter("@CD_BOARDCD"		, adInteger,	adParamInput,    , CD_BOARDCD)
+		.Parameters.Append	.CreateParameter("@YN_DISPLAY"		, adchar,		adParamInput,	1, "Y")
+		.Parameters.Append	.CreateParameter("@NO_VIEWCNT"		, adInteger,	adParamInput,    , 0)
+		.Parameters.Append	.CreateParameter("@NO_VIEWORDER"	, adInteger,	adParamInput,	 , 100)
+		.Parameters.Append	.CreateParameter("@NO_DOWNLOAD"		, adInteger,	adParamInput,	 , 0)
+		.Parameters.Append	.CreateParameter("@YN_USE"			, adchar,		adParamInput,	1, "Y")
+		.Parameters.Append	.CreateParameter("@NM_TITLE"		, adVarchar,	adParamInput,	500, NM_TITLE)
+		.Parameters.Append	.CreateParameter("@NM_CONTENTS"		, adVarchar,	adParamInput,	100000, NM_CONTENTS)
+	For i = 1 To 15
+		.Parameters.Append	.CreateParameter("@NM_FIELD_"&i		, adVarchar,	adParamInput,1000, ary_FIELD(i))
+	Next		
+		.Parameters.Append	.CreateParameter("@CD_USER"			, adVarchar,	adParamInput,	15, getBoolean(m_ServiceUserID<>"",m_ServiceUserID,"guest"))
+		.Parameters.Append	.CreateParameter("@NO_IPADDR"		, adVarchar,	adParamInput,	20, m_IPAddr)
+		.Parameters.Append	.CreateParameter("@HTTP_REFERER"		, adVarchar,	adParamInput,	5000, HTTP_REFERER)
+		.Parameters.Append	.CreateParameter("@HTTP_USER_AGENT"		, adVarchar,	adParamInput,	5000, HTTP_USER_AGENT)
+		.Parameters.Append	.CreateParameter("@HTTP_DEVICE_TYPE"	, adVarchar,	adParamInput,	200, HTTP_DEVICE_TYPE)
+		.Parameters.Append	.CreateParameter("@HTTP_MEDIA_TYPE"		, adVarchar,	adParamInput,	200, HTTP_MEDIA_TYPE)
+		.Parameters.Append  .CreateParameter("@Result"			, adVarChar,	adParamoutput,  20	)
+		.Parameters.Append  .CreateParameter("@Result_ID"		, adInteger,	adParamoutput  	)
+		.Execute
+		Result1			= .Parameters("@Result")
+		Result1_ID		= .Parameters("@Result_ID")
+		End with
+	Set adoCmd = Nothing
+
+	If Result1 = "SUCCESS" Then 
+		
+		jsonResult("result") = Result1
+	Else
+		
+		jsonResult("result") = Result1
+	End If 
+
+	Response.Write toJSON(jsonResult)
+	Response.End 
+%>

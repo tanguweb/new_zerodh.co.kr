@@ -1,0 +1,146 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+ <%
+If LCase(Request.ServerVariables("HTTPS")) = "off" Then
+    Dim sUrl, sQS
+    sUrl = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
+    sQS = Request.ServerVariables("QUERY_STRING")
+    If Len(sQS) > 0 Then sUrl = sUrl & "?" & sQS
+    Response.Status = "301 Moved Permanently"
+    Response.AddHeader "Location", sUrl
+    Response.End
+End If
+%>
+<!DOCTYPE html>
+<!--
+//////////////////////////////////////////////////////
+
+DESIGNED & DEVELOPED by peters.co.kr
+
+Website:    http://www.peters.co.kr/
+
+//////////////////////////////////////////////////////
+ -->
+
+<html lang="ko">
+
+<head>
+  <title>익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=.5, maximum-scale=5" user-scaleable="yes">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
+  <meta name="description" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
+  <meta name="author" content="" />
+  <meta name="publisher" content="" />
+  <meta name="format-detection" content="telephone=no" />
+  <!-- 네이버 웹표준 코딩  -->
+  <link rel="canonical" href="https://www.topplant.kr/html/main/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과" />
+  <meta property="og:description" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
+  <meta property="og:image" content="../images/preview2.jpg" />
+  <meta property="og:site_name" content="익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과" />
+  <meta property="og:url" content="https://www.topplant.kr/" />
+  <!-- 네이버 웹표준 코딩  end -->
+  <link rel="stylesheet" type="text/css" href="../css/aos.css" />
+  <link rel="stylesheet" type="text/css" href="../css/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="../css/twentytwenty.css" />
+  <link rel="stylesheet" type="text/css" href="../css/common.css" />
+
+
+
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!--[if lt IE 9]><script type="text/javascript" src="../js/html5shiv.js"></script><![endif]-->
+  <!--[if lt IE 9]><script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]-->
+  <script src="../js/jquery-2.1.4.min.js"></script>
+  <script src="../js/jquery.event.move.js"></script>
+  <script src="../js/jquery.twentytwenty.js"></script>
+    <script src="../js/aos.js"></script>
+  <script src="../js/owl.carousel.min.js"></script>
+  <!-- <script src="../js/easing.1.3.js"></script>-->
+  <!--[if lt IE 9]><script src="../js/ie9.min.js"></script><![endif]-->
+  <!--[if lt IE 9]><script src="https://code.jquery.com/jquery-1.12.4.min.js"></script><![endif]-->
+  <!--[if gte IE 9]><script src="https://code.jquery.com/jquery-2.1.4.min.js"></script><![endif]-->
+  
+    <!-- flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="../css/aos.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+  <link rel="stylesheet" type="text/css" href="../css/twentytwenty.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script src="/js/jquery.cookie.js"></script> <!-- popup cookie -->
+  <script src="/js/common.js"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f574feada6cfc8a9b320223bef0b9f8&libraries=services"></script>
+  <script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+
+<!-- peters - Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VNK6MTLTSP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VNK6MTLTSP');
+</script>
+
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5WLS8JBB');</script>
+  <!-- End Google Tag Manager -->
+
+
+  <!-- Meta Pixel Code -->
+
+  <script>
+
+  !function(f,b,e,v,n,t,s)
+
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+
+  n.queue=[];t=b.createElement(e);t.async=!0;
+
+  t.src=v;s=b.getElementsByTagName(e)[0];
+
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '1792123808431467');
+
+  fbq('track', 'PageView');
+
+  </script>
+
+  <noscript><img height="1" width="1" style="display:none"
+
+  src="https://www.facebook.com/tr?id=1792123808431467&ev=PageView&noscript=1"
+
+  /></noscript>
+
+  <!-- End Meta Pixel Code -->
+
+  <!-- 250625 네이버 연관채널 마크업 -->
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "익산탑플란트치과",
+    "url": "https://www.topplant.kr/",
+    "sameAs": [
+        "https://blog.naver.com/8512275"
+    ]
+}
+</script>  
+</head>
+
+<body>

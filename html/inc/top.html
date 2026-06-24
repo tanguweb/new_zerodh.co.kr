@@ -1,0 +1,303 @@
+<!-- #include virtual = "/Include/Config.asp" -->
+ <%
+If LCase(Request.ServerVariables("HTTPS")) = "off" Then
+    Dim sUrl, sQS
+    sUrl = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
+    sQS = Request.ServerVariables("QUERY_STRING")
+    If Len(sQS) > 0 Then sUrl = sUrl & "?" & sQS
+    Response.Status = "301 Moved Permanently"
+    Response.AddHeader "Location", sUrl
+    Response.End
+End If
+%>
+<!DOCTYPE html>
+<!--
+//////////////////////////////////////////////////////
+
+DESIGNED & DEVELOPED by peters.co.kr
+
+Website:    http://www.peters.co.kr/
+
+//////////////////////////////////////////////////////
+ -->
+
+<html lang="ko">
+<html lang="ko">
+ <%
+    '// ===============================
+    '// SEO 변수 일괄 선언 (다른 페이지의 변수명과 충돌 방지 위해 seo_ 접두어 사용)
+    '// ===============================
+    Dim objADO_seo, seo_iLoop, SQL_seo, aryBoard_seo
+    Dim seoPageUrlCheck, seoPageFullUrl
+    Dim seoPageTitle, seoPageKeywords, seoPageDesc, seoPage_preview
+    Dim seoIgnoreKeys
+    Dim seo_rowUrl, seo_matched
+    Dim seo_qsPos, seo_regPath, seo_regQs, seo_curQs, seo_regPairs, seo_jLoop, seo_pair, seo_eqPos, seo_pairKey, seo_pairVal, seo_pairOk
+
+    '// ===============================
+    '// 어드민에서 등록한 페이지별 SEO 데이터 조회 (보드코드 1012)
+    '// NM_FIELD_1=URL, NM_FIELD_2=Title, NM_FIELD_3=Keywords,
+    '// NM_FIELD_4=Description, NM_FIELD_5=Preview
+    '// ===============================
+    Set objADO_seo = new clsADO
+    SQL_seo = ""
+    SQL_seo = SQL_seo & "SELECT CD_BOARDID, NM_TITLE, DT_INSYSDATE, NM_FIELD_1, NM_FIELD_2, NM_FIELD_3, NM_FIELD_4, NM_FIELD_5 "
+    SQL_seo = SQL_seo & "FROM T_BOARDDETAIL "
+    SQL_seo = SQL_seo & "WHERE YN_USE = 'Y' AND YN_DISPLAY = 'Y' "
+    SQL_seo = SQL_seo & "  AND CD_BOARDCD = '1012' "
+    SQL_seo = SQL_seo & "  AND NO_BOARD_DEPTH = '1' AND NO_BOARD_SEQ = '1' "
+    SQL_seo = SQL_seo & "ORDER BY CD_BOARDID DESC "
+    objADO_seo.setSql(SQL_seo)
+    aryBoard_seo = objADO_seo.getArrRs()
+    Set objADO_seo = Nothing
+
+    '// 현재 URL (경로) / 풀URL
+    seoPageUrlCheck = LCase(Request.ServerVariables("URL"))
+    seoPageFullUrl  = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
+    If Request.ServerVariables("QUERY_STRING") <> "" Then
+      seoPageFullUrl = seoPageFullUrl & "?" & Request.ServerVariables("QUERY_STRING")
+    End If
+
+	'// 페이징/검색 등 매칭에서 무시할 공통 쿼리 키
+	seoIgnoreKeys = "|page|searchtype|keyword|search|sort|order|orderby|p|pagesize|"
+
+	'// ===============================
+	'// 1단계: 기본값
+	'// ===============================
+	seoPageTitle    = "제로치과병원"
+	seoPageKeywords = "대구 수면치과, 수면 임플란트, 월성동 치과, 달서구 치과, 의식하진정요법, 무삭제 라미네이트, 소아치과, 구강내과, 심미보철, 자연치아살리기, 컴퓨터분석임플란트"
+	seoPageDesc     = "나의 인생 치과! 제로치과병원 불편함, 아쉬움, 과잉진료, 불만족, 치아 이질감 0에 도전합니다. 평생 여러분 치아를 책임지겠습니다."
+	seoPage_preview = "../images/preview2.jpg"
+
+	'// ===============================
+	'// 2단계: 하드코딩 페이지 기본값 (어드민 미등록 대비)
+	'// ===============================
+	Select Case seoPageUrlCheck
+		Case "/", "/index.html", "/html/main/", "/html/main/index.html"
+			seoPageTitle    = "제로치과병원"
+			seoPageKeywords = "대구 수면치과, 수면 임플란트, 월성동 치과, 달서구 치과, 의식하진정요법, 무삭제 라미네이트, 소아치과, 구강내과, 심미보철, 자연치아살리기, 컴퓨터분석임플란트"
+			seoPageDesc     = "나의 인생 치과! 제로치과병원 불편함, 아쉬움, 과잉진료, 불만족, 치아 이질감 0에 도전합니다. 평생 여러분 치아를 책임지겠습니다."
+			seoPage_preview = "../images/preview2.jpg"
+	End Select
+
+    '// ===============================
+    '// 3단계: 어드민 등록 SEO가 있으면 덮어쓰기 (최우선)
+    '// 매칭 규칙:
+    '//  - 등록 URL에 '?' 없음 → 현재 경로와 정확히 같으면 매칭
+    '//  - 등록 URL에 '?' 있음 → 경로가 같고, "값이 있는" 의미있는 key=value 쌍이 모두
+    '//    현재 쿼리스트링에 존재해야 매칭
+    '//  - 빈 값 파라미터(searchType=) / 페이징·검색 공통 키는 매칭 조건에서 제외
+    '// ===============================
+    seo_curQs = LCase(Request.ServerVariables("QUERY_STRING"))
+
+    If IsArray(aryBoard_seo) Then
+      For seo_iLoop = 0 To UBound(aryBoard_seo, 2)
+        seo_rowUrl = LCase(Trim("" & aryBoard_seo(3, seo_iLoop)))
+        seo_matched = False
+
+        '// 등록 URL에 프로토콜+도메인이 포함돼 있으면 잘라내기 (예: https://www.harueimplant.co.kr/foo → /foo)
+        If Left(seo_rowUrl, 7) = "http://" Then
+          seo_rowUrl = Mid(seo_rowUrl, 8)
+          seo_qsPos = InStr(seo_rowUrl, "/")
+          If seo_qsPos > 0 Then seo_rowUrl = Mid(seo_rowUrl, seo_qsPos) Else seo_rowUrl = "/"
+        ElseIf Left(seo_rowUrl, 8) = "https://" Then
+          seo_rowUrl = Mid(seo_rowUrl, 9)
+          seo_qsPos = InStr(seo_rowUrl, "/")
+          If seo_qsPos > 0 Then seo_rowUrl = Mid(seo_rowUrl, seo_qsPos) Else seo_rowUrl = "/"
+        End If
+
+        If seo_rowUrl <> "" Then
+          seo_qsPos = InStr(seo_rowUrl, "?")
+          If seo_qsPos = 0 Then
+            If seo_rowUrl = seoPageUrlCheck Then
+              ' path-only 등록은 CD_BOARDID 없는 페이지에만 적용 (view 페이지는 Stage 4가 담당)
+              If InStr(1, "&" & seo_curQs & "&", "&cd_boardid=", 1) = 0 Then
+                seo_matched = True
+              End If
+            End If
+          Else
+            seo_regPath = Left(seo_rowUrl, seo_qsPos - 1)
+            seo_regQs   = Mid(seo_rowUrl, seo_qsPos + 1)
+            If seo_regPath = seoPageUrlCheck Then
+              seo_pairOk = True
+              seo_regPairs = Split(seo_regQs, "&")
+              For seo_jLoop = 0 To UBound(seo_regPairs)
+                seo_pair = Trim(seo_regPairs(seo_jLoop))
+                If seo_pair <> "" Then
+                  seo_eqPos = InStr(seo_pair, "=")
+                  If seo_eqPos > 0 Then
+                    seo_pairKey = Left(seo_pair, seo_eqPos - 1)
+                    seo_pairVal = Mid(seo_pair, seo_eqPos + 1)
+                  Else
+                    seo_pairKey = seo_pair
+                    seo_pairVal = ""
+                  End If
+                  If seo_pairVal <> "" And InStr(seoIgnoreKeys, "|" & seo_pairKey & "|") = 0 Then
+                    If InStr(1, "&" & seo_curQs & "&", "&" & seo_pair & "&", 1) = 0 Then
+                      seo_pairOk = False
+                    End If
+                  End If
+                End If
+              Next
+              If seo_pairOk Then seo_matched = True
+            End If
+          End If
+        End If
+
+        If seo_matched Then
+          If Trim("" & aryBoard_seo(4, seo_iLoop)) <> "" Then seoPageTitle    = aryBoard_seo(4, seo_iLoop)
+          If Trim("" & aryBoard_seo(5, seo_iLoop)) <> "" Then seoPageKeywords = aryBoard_seo(5, seo_iLoop)
+          If Trim("" & aryBoard_seo(6, seo_iLoop)) <> "" Then seoPageDesc     = aryBoard_seo(6, seo_iLoop)
+          If Trim("" & aryBoard_seo(7, seo_iLoop)) <> "" Then seoPage_preview = "/file/board/" & aryBoard_seo(7, seo_iLoop)
+          Exit For
+        End If
+      Next
+    End If
+
+    '// ===============================
+    '// 4단계: 게시물 상세 페이지 자동 SEO
+    '// _view.html?CD_BOARDID=xxx 형태이고 3단계 어드민 등록 SEO가 없을 때만 동작
+    '// ===============================
+    Dim seo_viewBid : seo_viewBid = Trim(Request.QueryString("CD_BOARDID"))
+    If seo_viewBid <> "" And InStr(seoPageUrlCheck, "_view.html") > 0 And Not seo_matched Then
+      Dim objADO_view, arySeoView, SQL_view
+      Set objADO_view = new clsADO
+      SQL_view = "SELECT TOP 1 NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_14, NM_FIELD_15 " & _
+                "FROM T_BOARDDETAIL " & _
+                "WHERE YN_USE='Y' AND YN_DISPLAY='Y' " & _
+                "AND CD_BOARDID='" & Replace(seo_viewBid, "'", "''") & "'"
+      objADO_view.setSql(SQL_view)
+      arySeoView = objADO_view.getArrRs()
+      Set objADO_view = Nothing
+
+      If IsArray(arySeoView) Then
+        ' 제목
+        If Trim("" & arySeoView(0,0)) <> "" Then
+          seoPageTitle = Trim(arySeoView(0,0)) 
+        End If
+
+        ' 키워드: NM_FIELD_14
+        If Trim("" & arySeoView(3,0)) <> "" Then
+          seoPageKeywords = arySeoView(3,0)
+        End If
+
+        ' 설명: NM_FIELD_15 우선, 비어있으면 본문 앞 160자
+        Dim seo_summary : seo_summary = Trim("" & arySeoView(4,0))
+        If seo_summary <> "" Then
+          seoPageDesc = seo_summary
+        Else
+          Dim seo_con : seo_con = seo_stripHtml("" & arySeoView(1,0))
+          If Len(seo_con) > 160 Then seo_con = Left(seo_con, 157) & "..."
+          If seo_con <> "" Then seoPageDesc = seo_con
+        End If
+
+        ' 썸네일
+        If Trim("" & arySeoView(2,0)) <> "" Then
+          seoPage_preview = "/file/board/" & arySeoView(2,0)
+        End If
+      End If
+    End If
+
+    '// preview가 비어 있으면 기본 이미지로 폴백
+    If Trim("" & seoPage_preview) = "" Then seoPage_preview = "/preview.jpg"
+
+    Function seo_stripHtml(s)
+        Dim reH
+        Set reH = New RegExp
+        reH.Global = True : reH.IgnoreCase = True
+        reH.Pattern = "<style[^>]*>[\s\S]*?</style>"
+        s = reH.Replace(s, " ")
+        reH.Pattern = "<script[^>]*>[\s\S]*?</script>"
+        s = reH.Replace(s, " ")
+        reH.Pattern = "<[^>]*>"
+        s = reH.Replace(s, " ")
+        Set reH = Nothing
+        s = Replace(s, "&nbsp;", " ")
+        s = Replace(s, "&amp;",  "&")
+        s = Replace(s, "&lt;",   "<")
+        s = Replace(s, "&gt;",   ">")
+        s = Replace(s, "&quot;", """")
+        s = Replace(s, "&apos;", "'")
+        Do While InStr(s, "  ") > 0 : s = Replace(s, "  ", " ") : Loop
+        seo_stripHtml = Trim(s)
+    End Function
+
+    ' HTML 속성값 이스케이프 (한글은 그대로, &<>"만 변환)
+    Function seoAttr(s)
+        s = Replace(s, "&", "&amp;")
+        s = Replace(s, "<", "&lt;")
+        s = Replace(s, ">", "&gt;")
+        s = Replace(s, """", "&#34;")
+        seoAttr = s
+    End Function
+  %>
+
+<head>
+<!-- SEO 메타 태그 (페이지별) -->
+  <meta charset="UTF-8">
+	<title><%=seoPageTitle%></title>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=.5, maximum-scale=5" user-scaleable="yes">
+	<meta name="robots" content="index, follow">
+	<meta name="description" content="<%=seoAttr(seoPageDesc)%>">
+	<meta name="keywords" content="<%=seoAttr(seoPageKeywords)%>">
+  <meta name="author" content="<%=m_client_name%>">
+	<meta name="publisher" content="<%=m_client_name%>" />
+	<meta name="format-detection" content="telephone=no" />
+
+	<!-- 캐노니컬 URL -->
+	<link rel="canonical" href="<%=seoPageFullUrl%>">
+
+  <!-- Open Graph 태그 -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="<%=seoAttr(seoPageTitle)%>">
+	<meta property="og:description" content="<%=seoAttr(seoPageDesc)%>">
+	<meta property="og:url" content="<%=seoPageFullUrl%>">
+	<meta property="og:image" content="<%=seoPage_preview%>">	    
+  <meta property="og:site_name" content="<%=m_client_name%>">
+
+
+
+  
+  <link rel="stylesheet" type="text/css" href="../css/aos.css" />
+  <link rel="stylesheet" type="text/css" href="../css/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="../css/twentytwenty.css" />
+  <link rel="stylesheet" type="text/css" href="../css/common.css" />
+
+
+
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!--[if lt IE 9]><script type="text/javascript" src="../js/html5shiv.js"></script><![endif]-->
+  <!--[if lt IE 9]><script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]-->
+  <script src="../js/jquery-2.1.4.min.js"></script>
+  <script src="../js/jquery.event.move.js"></script>
+  <script src="../js/jquery.twentytwenty.js"></script>
+    <script src="../js/aos.js"></script>
+  <script src="../js/owl.carousel.min.js"></script>
+  <!-- <script src="../js/easing.1.3.js"></script>-->
+  <!--[if lt IE 9]><script src="../js/ie9.min.js"></script><![endif]-->
+  <!--[if lt IE 9]><script src="https://code.jquery.com/jquery-1.12.4.min.js"></script><![endif]-->
+  <!--[if gte IE 9]><script src="https://code.jquery.com/jquery-2.1.4.min.js"></script><![endif]-->
+  
+    <!-- flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="../css/aos.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+  <link rel="stylesheet" type="text/css" href="../css/twentytwenty.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script src="/js/jquery.cookie.js"></script> <!-- popup cookie -->
+  <script src="/js/common.js"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f574feada6cfc8a9b320223bef0b9f8&libraries=services"></script>
+  <script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+
+
+
+
+
+
+</head>
+
+<body>
