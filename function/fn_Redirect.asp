@@ -12,6 +12,15 @@
 
 'Dim p___domain : p___domain = "www.peters.co.kr" ' /include/config.asp 에 정의
 
+'// ===============================
+'// https 강제전환 스위치
+'// False : 강제전환 안 함 (http 접속 허용 — 임시도메인/SSL 미발급 시 사용)
+'// True  : 실도메인 + SSL 발급 후 https 로 강제전환
+'// ===============================
+Dim p___force_ssl : p___force_ssl = False
+
+If p___force_ssl Then
+
 If Request.ServerVariables("SERVER_NAME") <> p___domain Then
 	
 	Dim p___redirect_uri : p___redirect_uri = ""
@@ -56,4 +65,6 @@ Else
 
 
 End If 
+
+End If '// p___force_ssl
 %>

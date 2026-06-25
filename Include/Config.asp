@@ -93,16 +93,16 @@
 	Dim m_naverMap_apiKey : m_naverMap_apiKey = ""
 
 	'## 카페24 SMS
-	Dim m_cafe24_sms_user_id : m_cafe24_sms_user_id = "cwoodentsms"
-	Dim m_cafe24_sms_send_phone1 : m_cafe24_sms_send_phone1 = "010"
-	Dim m_cafe24_sms_send_phone2 : m_cafe24_sms_send_phone2 = "4148"
-	Dim m_cafe24_sms_send_phone3 : m_cafe24_sms_send_phone3 = "9021"
-	Dim m_cafe24_sms_secure : m_cafe24_sms_secure = "9c6fd54e66737eb551cb4a575ff24b9c"
+	Dim m_cafe24_sms_user_id : m_cafe24_sms_user_id = ""
+	Dim m_cafe24_sms_send_phone1 : m_cafe24_sms_send_phone1 = ""
+	Dim m_cafe24_sms_send_phone2 : m_cafe24_sms_send_phone2 = ""
+	Dim m_cafe24_sms_send_phone3 : m_cafe24_sms_send_phone3 = ""
+	Dim m_cafe24_sms_secure : m_cafe24_sms_secure = ""
 
-	Const m_client_domain = "http://topplant.kr"	' 도메인
-	Const m_client_name_s = "탑플란트"	' 의료기관명칭 또는 상호명
-	Const m_client_name = "탑플란트치과"	' 의료기관명칭 또는 상호명
-	Const m_client_en = "TOPPLANT DENTAL CLINIC"	' 의료기관명칭 또는 상호명
+	Const m_client_domain = "http://dgzero2026.cafe24.com"	' 도메인
+	Const m_client_name_s = "제로치과"	' 의료기관명칭 또는 상호명
+	Const m_client_name = "제로치과병원"	' 의료기관명칭 또는 상호명
+	Const m_client_en = "ZERO DENTAL CLINIC"	' 의료기관명칭 또는 상호명
 	Const m_client_address1 = "전라북도 익산시 남중동 375-201"	' 기업 주소
 	Const m_client_address2 = ""	' 기업 주소
 	Const m_client_owner = "한수일"	' 기업 대표자명

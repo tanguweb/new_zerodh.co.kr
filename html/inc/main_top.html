@@ -1,15 +1,4 @@
 <!-- #include virtual = "/Include/Config.asp" -->
- <%
-If LCase(Request.ServerVariables("HTTPS")) = "off" Then
-    Dim sUrl, sQS
-    sUrl = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
-    sQS = Request.ServerVariables("QUERY_STRING")
-    If Len(sQS) > 0 Then sUrl = sUrl & "?" & sQS
-    Response.Status = "301 Moved Permanently"
-    Response.AddHeader "Location", sUrl
-    Response.End
-End If
-%>
 <!DOCTYPE html>
 <!--
 //////////////////////////////////////////////////////
@@ -24,23 +13,28 @@ Website:    http://www.peters.co.kr/
 <html lang="ko">
 
 <head>
-  <title>익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과</title>
+<%
+    Dim mtScheme : mtScheme = "http://"
+    If LCase("" & Request.ServerVariables("HTTPS")) = "on" Then mtScheme = "https://"
+    Dim mtFullUrl : mtFullUrl = mtScheme & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
+  %>
+  <title>대구 수면치과 | 제로치과병원</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=.5, maximum-scale=5" user-scaleable="yes">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
-  <meta name="description" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
-  <meta name="author" content="" />
-  <meta name="publisher" content="" />
+  <meta name="keywords" content="대구 수면치과, 수면 임플란트, 월성동 치과, 달서구 치과, 의식하진정요법, 무삭제 라미네이트, 소아치과, 구강내과, 심미보철, 자연치아살리기, 컴퓨터분석임플란트" />
+  <meta name="description" content="나의 인생 치과! 제로치과병원 불편함, 아쉬움, 과잉진료, 불만족, 치아 이질감 0에 도전합니다. 평생 여러분 치아를 책임지겠습니다." />
+  <meta name="author" content="제로치과병원" />
+  <meta name="publisher" content="제로치과병원" />
   <meta name="format-detection" content="telephone=no" />
   <!-- 네이버 웹표준 코딩  -->
-  <link rel="canonical" href="https://www.topplant.kr/html/main/">
+  <link rel="canonical" href="<%=mtFullUrl%>">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과" />
-  <meta property="og:description" content="익산치과, 임플란트 전문 치과, 진료과목별 전담의 진료, 전악 임플란트, 내비게이션 임플란트, 틀니 임플란트, 익산시 북부시장 사거리" />
+  <meta property="og:title" content="대구 수면치과 | 제로치과병원" />
+  <meta property="og:description" content="나의 인생 치과! 제로치과병원 불편함, 아쉬움, 과잉진료, 불만족, 치아 이질감 0에 도전합니다. 평생 여러분 치아를 책임지겠습니다." />
   <meta property="og:image" content="../images/preview2.jpg" />
-  <meta property="og:site_name" content="익산 임플란트는 탑플란트치과 | 익산치과, 익산임플란트, 남중동치과" />
-  <meta property="og:url" content="https://www.topplant.kr/" />
+  <meta property="og:site_name" content="제로치과병원" />
+  <meta property="og:url" content="<%=mtFullUrl%>" />
   <!-- 네이버 웹표준 코딩  end -->
   <link rel="stylesheet" type="text/css" href="../css/aos.css" />
   <link rel="stylesheet" type="text/css" href="../css/owl.carousel.min.css" />
@@ -76,56 +70,7 @@ Website:    http://www.peters.co.kr/
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f574feada6cfc8a9b320223bef0b9f8&libraries=services"></script>
   <script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
 
-<!-- peters - Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VNK6MTLTSP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-VNK6MTLTSP');
-</script>
-
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5WLS8JBB');</script>
-  <!-- End Google Tag Manager -->
-
-
-  <!-- Meta Pixel Code -->
-
-  <script>
-
-  !function(f,b,e,v,n,t,s)
-
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-
-  n.queue=[];t=b.createElement(e);t.async=!0;
-
-  t.src=v;s=b.getElementsByTagName(e)[0];
-
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-
-  'https://connect.facebook.net/en_US/fbevents.js');
-
-  fbq('init', '1792123808431467');
-
-  fbq('track', 'PageView');
-
-  </script>
-
-  <noscript><img height="1" width="1" style="display:none"
-
-  src="https://www.facebook.com/tr?id=1792123808431467&ev=PageView&noscript=1"
-
-  /></noscript>
 
   <!-- End Meta Pixel Code -->
 
@@ -134,10 +79,10 @@ Website:    http://www.peters.co.kr/
 {
     "@context": "http://schema.org",
     "@type": "Organization",
-    "name": "익산탑플란트치과",
-    "url": "https://www.topplant.kr/",
+    "name": "제로치과병원",
+    "url": "<%=mtFullUrl%>",
     "sameAs": [
-        "https://blog.naver.com/8512275"
+        "<%=m_client_naver_blog%>"
     ]
 }
 </script>  

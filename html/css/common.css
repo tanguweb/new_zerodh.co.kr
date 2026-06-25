@@ -15,12 +15,11 @@
 @import url('https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald:200,300,400,500,600,700|Roboto:100,300,400,500,700,900|Arizonia|Roboto+Condensed:300,400,700');
 
 :root {
-  --main-color: #3bb5aa;
+  --main-color: #197f92;
   --sub-color: #197f92;
   --bg-color:#f1f7f6;
   --p-border-color: #b4e6e1;
   --font-color: #000;
-
 }
 body {
   font-size: 18px;
@@ -59,7 +58,7 @@ b {
 }
 
 p {
-  font-weight: 300;
+  /* font-weight: 300; */
   /* color: #555; */
   line-height: 1.45;
 }
@@ -6273,7 +6272,7 @@ ul.circle_list_2 li p.bg {
 .box_list li p {
   margin-bottom: 0;
   margin-top: 0;
-  font-weight: 300;
+  /* font-weight: 300; */
 }
 
 .box_list li p.small {
@@ -6464,7 +6463,7 @@ ul.circle_list_2 li p.bg {
   padding-left: 98px;
   color: #666;
   margin: .5em 0;
-  font-weight: 300;
+  /* font-weight: 300; */
 }
 
 .round_box_list li:nth-child(3n+0) .round_box>.num {}
@@ -6967,7 +6966,7 @@ ul.num_list dt p.box>em:after {
 ul.num_list dd {
   padding-left: 80px;
   text-align: left;
-  font-weight: 300;
+  /* font-weight: 300; */
 }
 
 ul.num_list dd>span {
@@ -7126,7 +7125,7 @@ ul.num_list.img_list li:last-child {
 .center_icon_list>li .round_box p {
   margin-bottom: 0;
   margin-top: 0;
-  font-weight: 300;
+  /* font-weight: 300; */
 }
 
 .center_icon_list>li .num2 {

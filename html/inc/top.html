@@ -1,15 +1,5 @@
 <!-- #include virtual = "/Include/Config.asp" -->
- <%
-If LCase(Request.ServerVariables("HTTPS")) = "off" Then
-    Dim sUrl, sQS
-    sUrl = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
-    sQS = Request.ServerVariables("QUERY_STRING")
-    If Len(sQS) > 0 Then sUrl = sUrl & "?" & sQS
-    Response.Status = "301 Moved Permanently"
-    Response.AddHeader "Location", sUrl
-    Response.End
-End If
-%>
+
 <!DOCTYPE html>
 <!--
 //////////////////////////////////////////////////////
@@ -53,7 +43,10 @@ Website:    http://www.peters.co.kr/
 
     '// 현재 URL (경로) / 풀URL
     seoPageUrlCheck = LCase(Request.ServerVariables("URL"))
-    seoPageFullUrl  = "https://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
+    '// 실제 접속 프로토콜(http/https)에 맞춰 동적 생성 (https 하드코딩 제거)
+    Dim seoScheme : seoScheme = "http://"
+    If LCase("" & Request.ServerVariables("HTTPS")) = "on" Then seoScheme = "https://"
+    seoPageFullUrl  = seoScheme & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("URL")
     If Request.ServerVariables("QUERY_STRING") <> "" Then
       seoPageFullUrl = seoPageFullUrl & "?" & Request.ServerVariables("QUERY_STRING")
     End If

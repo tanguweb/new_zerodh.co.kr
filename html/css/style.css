@@ -272,7 +272,7 @@ table.line img {
   font-size: 1.5em;
 }
 
-.intro {
+.doctor .intro {
   position: relative;
   overflow: hidden;
   background-image: url("../introduce/images/intro_bg.jpg");
@@ -286,28 +286,28 @@ table.line img {
   -moz-box-sizing: border-box;
 }
 
-.intro .intro_tit {
+.doctor .intro .intro_tit {
   background-image: url("../introduce/images/clock_img.png");
   background-repeat: no-repeat;
   padding: 20px 180px 70px;
 }
 
-.intro .intro_tit h2,
-.intro .intro_tit h5 {
+.doctor .intro .intro_tit h2,
+.doctor .intro .intro_tit h5 {
   color: #fff
 }
 
-.intro h6 {
+.doctor .intro h6 {
   color: #fff;
   line-height: 1.8em;
   font-weight: 300;
 }
 
-.intro p {
+.doctor .intro p {
   opacity: 0.5;
 }
 
-.intro2 p {
+.doctor .intro2 p {
   letter-spacing: 0
 }
 
@@ -327,24 +327,24 @@ table.line img {
     font-size: 15px;
   }
 
-  .intro {
+ .doctor  .intro {
     padding: 30px;
   }
 
-  .intro .intro_tit {
+  .doctor .intro .intro_tit {
     padding: 0 0 0 70px;
     background-size: contain;
     margin-bottom: 20px;
   }
 
-  .intro h6 {
+ .doctor .intro h6 {
     line-height: 1.6;
     text-align: justify
   }
 }
 
 @media screen and (max-width: 320px) {
-  .intro {
+ .doctor  .intro {
     padding: 20px;
   }
 }
