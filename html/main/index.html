@@ -100,93 +100,7 @@
 %>
 
 
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10999320768"></script> -->
-<script>
-  window.dataLayer = window.dataLayer || [];
 
-</script>
-
-<script>
-	function naver_(){
-
-	}
-</script>
-<style>
-.Item-list{width:100%;display:flex;position:absolute;z-index:-1;overflow:scroll;}
-.List-item{flex:1 1 0;}
-.List-item img{width:400px;}
-</style>
-<ul itemscope itemtype="https://schema.org/ItemList" class="Item-list">
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-	<a itemprop="url" href="https://www.topplant.kr/html/introduce/doctor.html">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/1.jpg" alt="전문의 의료진 소개" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">전문의 의료진 소개</div>
-	</a>
-	<meta itemprop="position" content="1" />
-  </li>
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-	<a itemprop="url" href="https://www.topplant.kr/html/implant/computer.html">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/2.jpg" alt="고난이도 임플란트" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">고난이도 임플란트</div>
-	</a>
-	<meta itemprop="position" content="2" />
-  </li>
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-    <a itemprop="url" href="https://www.topplant.kr/html/reason/reason.html">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/3.jpg" alt="진료철학 및 특별함" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">진료철학 및 특별함</div>
-	</a>
-	<meta itemprop="position" content="3" />
-  </li>
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-	<a itemprop="url" href="https://www.topplant.kr/html/introduce/time.html">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/4.jpg" alt="제로치과병원 진료안내" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">제로치과병원 진료안내</div>
-	</a>
-	<meta itemprop="position" content="4" />
-  </li>
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-	<a itemprop="url" href="https://www.topplant.kr/html/introduce/contact.html">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/5.jpg" alt="제로치과병원 오시는길" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">제로치과병원 오시는길</div>
-	</a>
-	<meta itemprop="position" content="5" />
-</li>
-  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="List-item">
-	<a itemprop="url" href="https://map.naver.com/p/entry/place/37107117?placePath=/home">
-		<div class="img"><img src="https://akcdn-deaz.cafe24img.com/topplant/carousel/6.jpg" alt="네이버예약 바로가기" itemprop="image"></div>
-		<div itemprop="name" class="ev_tit">네이버예약 바로가기</div>
-	</a>
-	<meta itemprop="position" content="6" />
-  </li>
-</ul>
-
-<script>
-  window.addEventListener('load', function(event) {
-	// 빠른상담
-	document.querySelector("#quick_counsel")?.addEventListener("click", function() {
-
-	});
-  });
-</script>
-<script>
-  window.addEventListener('load', function(event) {
-	// 온라인상담우측
-	document.querySelector("a[href='../board/counsel.html']")?.addEventListener("click", function() {
-
-	});
-  });
-</script>
-
-<script>
-  window.addEventListener('load', function(event) {
-	// 제로치과병원_카톡상담 
-	document.querySelector("a[href='https://pf.kakao.com/_WAmZxl']")?.addEventListener("click", function() {
-
-	});
-  });
-</script>
 
 <!-- 레이어팝업시작 -->
 <script type="text/javascript">
@@ -340,515 +254,476 @@ End If
 %>
 
 <div id="main">
-	<link rel="stylesheet" type="text/css" href="../css/main_style.css" />
+	<link rel="stylesheet" type="text/css" href="../css/main_style.css?v=260629" />
 
-	<!-- S : main_visual -->
+	<!-- Swiper (zerodh 메인 슬라이드용) -->
+	<link rel="stylesheet" href="../css/swiper-bundle.min.css?v=11" />
+	<script src="../js/swiper-bundle.min.js?v=11"></script>
 
-	<section>
-		<!--  -->
-		<div class="main_visual">
-			<div class="owl-carousel owl-theme">
-        <!-- 영상 -->
-				<div class="item  ">
-	        <div class="video_visual">
-            <div class="no_hover ">
+	<!-- S : 메인 컨텐츠 -->
+    <div class="swiper main_visual">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide swiper-slide1">
+                <div class="block_main_visual">
+                    <div class="lab_main_visual">ZERO DENTAL HOSPITAL</div>
+                    <div class="tit_main_visual">0세부터 평생 치아 걱정 ZERO</div>
+                    <div class="txt_main_visual">어린이 치료부터 임플란트까지 환자 맞춤식 치료로<br />태어나 그리고 평생 여러분 치아를 책임지는 주치의가 되겠습니다.</div>
+                </div>
+                <div class="bg_main_visual"></div>
             </div>
-            <div class="auto_height" >
-              <iframe class="pc" src="https://player.vimeo.com/video/884693048?h=25dd0a1385&autoplay=1&loop=1&muted=1&controls=false&background=true"  frameborder="0"webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-              <iframe class="mobile" src="https://player.vimeo.com/video/884695731?h=c49b11fc9a&autoplay=1&loop=1&muted=1&controls=false&background=true"  frameborder="0"webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            <div class="swiper-slide swiper-slide2">
+                <div class="block_main_visual">
+                    <div class="lab_main_visual">ZERO DENTAL HOSPITAL</div>
+                    <div class="tit_main_visual">편안하게 긴장감은 ZERO</div>
+                    <div class="txt_main_visual">치료에 대한 공포와 긴장을 줄여주는 의식하진정요법을 활용하여<br />편안하고 안정적인 치료가 가능합니다.</div>
+                </div>
+                <div class="bg_main_visual"></div>
             </div>
-            
-          </div>
-	      </div>
-				<!-- 협진진료 -->
-				<div class="item visual_04">
-					<a href="">
-						<div class="text ">
-							<h3><span class="fontw_100">보건복지부 인증</span></h3>
-							<h2><span>치과 전문의 </span> 협력진료</h2>
-							<!-- <h5>모두 다 같은 치과의사는 아닙니다. <br>
-									보건복지부 인증 전문의 2인 원장이 항상 함께합니다.
-							</h5> -->
-							<h6>&nbsp;<%=m_client_en%></h6>
-						</div>
-						<ul>
-							<li><img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_05_07.jpg" alt="">
-								<h6>한수일 원장<span>통합치의학과 전문의</span></h6>
-							</li>
-							<!-- <li><img src="images/visual_05_02.jpg" alt="">
-								<h6>박준영 원장<span>통합치의학과 전문의</span></h6>
-							</li> -->
+            <div class="swiper-slide swiper-slide3">
+                <div class="block_main_visual">
+                    <div class="lab_main_visual">ZERO DENTAL HOSPITAL</div>
+                    <div class="tit_main_visual">진료 시간과 예약 걱정은 ZERO</div>
+                    <div class="txt_main_visual">건강보험과 의료보험 적용으로 비용 부담은 낮추고,<br />토요일 진료와 온라인 예약으로 바쁜 일상 속 기다림을 줄여드립니다.</div>
+                </div>
+                <div class="bg_main_visual"></div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
 
-							<!-- <li><img src="images/visual_05_04.jpg" alt="">
-								<h6>손준요 원장<span>통합치의학과 전문의</span></h6>
-							</li> -->
-							<!-- <li><img src="images/visual_05_05.jpg" alt="">
-								<h6>강준호 원장<span>치주과 전문의</span></h6>
-							</li> -->
-							<li><img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_05_03.jpg" alt="">
-								<h6>오유진 원장<span>통합치의학과 전문의</span></h6>
-							</li>
-						</ul>
+    <!-- 내 인생 치과를 찾았다. -->
+    <div class="main_sect1">
+        <div class="inner_wrap">
+            <div class="block_main_sect scroll_on type_bottom">
+                <div class="tit_main_sect">내 인생 치과를 찾았다.</div>
+                <div class="sub_main_sect">항상 환자분들의 편안함과 안전을 가장 먼저 생각합니다.    </div>
+                <div class="txt_main_sect">제로치과병원은 병원의 이익만을 위한 과잉진료를 절대 하지 않습니다.<br />최신 의료장비를 활용한 정밀검사로 환자의 구강상태를 정확히 진단하고<br />반드시 동의를 얻은 후 정직하게 시술을 진행합니다.</div>
+            </div>
+            <div class="block_main_slide">
+                <!-- Swiper -->
+                <div class="swiper main_sect1_slide">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide swiper-slide1"><a href="https://zerodh.co.kr/bbs/content.php?co_id=implant1" class="img_scale"><span><i></i><strong>임플란트</strong></span><em></em></a></div>
+                        <div class="swiper-slide swiper-slide2"><a href="https://zerodh.co.kr/bbs/content.php?co_id=prosthetics1" class="img_scale"><span><i></i><strong>보철치료</strong></span><em></em></a></div>
+                        <div class="swiper-slide swiper-slide3"><a href="https://zerodh.co.kr/bbs/content.php?co_id=conservative1" class="img_scale"><span><i></i><strong>보존치료</strong></span><em></em></a></div>
+                        <div class="swiper-slide swiper-slide4"><a href="https://zerodh.co.kr/bbs/content.php?co_id=aesthetic1" class="img_scale"><span><i></i><strong>심미치료</strong></span><em></em></a></div>
+                        <div class="swiper-slide swiper-slide5"><a href="https://zerodh.co.kr/bbs/content.php?co_id=oral1" class="img_scale"><span><i></i><strong>구강내과</strong></span><em></em></a></div>
+                        <div class="swiper-slide swiper-slide6"><a href="https://zerodh.co.kr/bbs/content.php?co_id=pediatric1" class="img_scale"><span><i></i><strong>소아치료</strong></span><em></em></a></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-						<div class="img">
-							<div style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_08.jpg)"></div>
-						</div>
-					</a>
-				</div>
-				<!-- 재수술임플란트 -->
-				<div class="item visual_05">
-					<a href="../implant/sub_09.html">
-						<div class="text ">
-							<h3><span class="fontw_100">더 어렵고 더 까다로운</span></h3>
-							<h2><span  class="color_gold">재수술</span> <span>임플란트</span></h2>
-							<h5 >기존임플란트 제거 후 새로운 임플란트를 식립!<br>
-								재수술 임플란트의 핵심은 <br class="mobile"> 실패원인 분석과 정확한 치료계획!
-							</h5>
-							<h6<%=m_client_en%></h6>
-						</div>
+    <div class="main_sect2">
+        <div class="inner_wrap">
+            <div class="block_main_sect scroll_on type_bottom">
+                <div class="lab_main_sect">PAIN ZERO</div>
+                <div class="tit_main_sect">의식하진정요법</div>
+                <div class="txt_main_sect">기존 마취와는 다르게 불안과 두려움을 줄이기 위해<br />가수면 상태에서 의식을 보존하는 요법으로,<br />치료 과정을 기억하지 못하는 심리적인 스트레스를<br />줄일 수 있습니다.</div>
+                <a href="https://zerodh.co.kr/bbs/content.php?co_id=surgery1" class="btn_main_sect"><span>more view</span><i></i></a>
+            </div>
+        </div>
+    </div>
 
-						<div class="img">
-							<div style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_04.jpg)"></div>
-						</div>
+    <div class="main_sect3">
+        <!-- Swiper -->
+        <div class="swiper main_sect3_slide">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide swiper-slide1">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor1_3.png" alt="" />
+                            <div>
+                                <strong>구본철</strong>
+                                <p>경북대학교 치의학전문대학원</p>
+                                <p>보건복지부인증 통합치의학전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>구본철</strong> 대표원장</div>
+                            <ul class="txt_main_sect">
+                                <li>경북대학교 치의학전문대학원 졸업</li>
+                                <li>경북대학교 치의학대학원 치과보철학 박사</li>
+                                <li>보건복지부인증 통합치의학전문의</li>
+                                <li>대한치과보철학회 우수보철치과의사</li>
+                                <li>대한치과마취과학회 인정의</li>
+                                <li>대한턱관절교합학회 인정의</li>
+                                <li>대한통합치과학회 정회원</li>
+                                <li>대한치과보철학회 정회원</li>
+                                <li>대한턱관절교합학회 정회원</li>
+                                <li>대한치과마취과학회 정회원</li>
+                                <li>(전)경북대학교 첨단치과의료기기연구소 연구원</li>
+                                <li>(전)신세계치과 원장</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>- 학술지 Nature cienticfic reports 'Prediction of learning curves of wired and wireless intraoral scanners' 논문 제1저자</li>
+                                <li>- 학술지 JPD 'A concept to detect a subgingival finish line using an intraoral optical coherence tomography system' 논문 제2저자</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide2">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor2_2.png" alt="" />
+                            <div>
+                                <strong>최민수</strong>
+                                <p>경북대학교 치의학전문대학원</p>
+                                <p>보건복지부인증 치과보존과전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>최민수</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>경북대학교 치의학 전문 대학원 졸업</li>
+                                <li>경북대학교 치과대학 인턴수료</li>
+                                <li>경북대학교 치과대학 치과보존과 레지던트 수료</li>
+                                <li>보건복지부 인증 치과 보존과 전문의</li>
+                                <li>치과 보존과 인정의</li>
+                                <li>대한치과보존학회 정회원</li>
+                                <li>대한근관치료학회 정회원</li>
+                                <li>대한심미치과학회 정회원</li>
+                                <li>(전)범어라온치과병원 원장</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>경북대학교 치과병원 치과보존과 겸임교수</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide3">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor3_2.png" alt="" />
+                            <div>
+                                <strong>장서희</strong>
+                                <p>경북대학교 치의학전문대학원</p>
+                                <p>보건복지부인증 구강내과 전문의</p>
+                                <p>보건복지부인증 통합치의학과 전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>장서희</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>보건복지부 인증 구강내과 전문의</li>
+                                <li>구강내과 인정의</li>
+                                <li>보건복지부 인증 통합치의학과 전문의</li>
+                                <li>경북대학교 치의학전문대학원 석사</li>
+                                <li>경북대학교 치과대학 구강내과학 박사 수료</li>
+                                <li>경북대학교 치과병원 인턴 수료</li>
+                                <li>경북대학교 치과병원 구강내과 레지던트 수료</li>
+                                <li>경북대학교 치과병원 구강내과 임상교수(전임의) 역임</li>
+                                <li>대한안면통증·구강내과학회 정회원</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="swiper-slide swiper-slide4">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect"><img src="images/img_main_doctor4_2.png" alt="" /></div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>변지웅</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>부산대학교 치의학전문대학원 졸업</li>
+                                <li>서울대학교 치의학대학원 박사과정</li>
+                                <li>대한치과보철학회 우수보철치과 의사과정</li>
+                                <li>대한치과의사협회 치과의료정책 전문가</li>
+                                <li>대한구강악안면임플란트학회 정회원</li>
+                                <li>대한치과마취과학회 정회원</li>
+                                <li>대한영상치의학회 정회원</li>
+                                <li>미국 치과의사 면허 취득(National Board Certificate)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="swiper-slide swiper-slide4">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor5_2.png" alt="" />
+                            <div>
+                                <strong>이학준</strong>
+                                <p>경북대학교 치의학전문대학원</p>
+                                <p>보건복지부인증 치과보철과전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>이학준</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>연세대학교 공과대학 졸업</li>
+                                <li>경북대학교 치의학전문대학원 졸업</li>
+                                <li>대한치과보철학회 정회원 및 인정의</li>
+                                <li>경북대학교 치과병원 인턴 수료</li>
+                                <li>경북대학교 치과병원 치과보철과 레지던트 수료</li>
+                                <li>보건복지부 인증 치과 보철과 전문의</li>
+                                <li>경북대학교 치의학대학원 치과보철학박사</li>
+                                <li>(전)죽전 FM치과병원 부원장</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>경북대학교 치과병원 치과보철과 겸임교수</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="swiper-slide swiper-slide5">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor6_2.png" alt="" />
+                            <div>
+                                <strong>권희재</strong>
+                                <p>경북대학교 치과대학</p>
+                                <p>보건복지부 인증 치과보존과 전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>권희재</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>보건복지부 인증 치과보존과 전문의</li>
+                                <li>대한치과보존학회 치과보존과 인정의</li>
+                                <li>대한치과보존학회 정회원</li>
+                                <li>대한치과근관치료학회 정회원</li>
+                                <li>한국접착지의학회 정회원</li>
+                                <li>경북대학교 치과대학 졸업</li>
+                                <li>경북대학교 치과대학 치과보존학 석사 졸업</li>
+                                <li>경북대학교 치과병원 인턴 수료</li>
+                                <li>경북대학교 치과병원 치과보존과 레지던트 수료</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>제 32회 대만 Asian Pacific Endodontic Confederation(아시아-태평양 근관치료연합) 학회 포스터 발표</li>
+                                <li>제 24회 일본 오카야마 한일공동보존학회 포스터 발표</li>
+                                <li>2024 대한치과보존학회 추계학술대회 연구논문구연 발표 (레진 관련)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide6">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor_7_3.png" alt="" />
+                            <div>
+                                <strong>신동주</strong>
+                                <p>조선대학교 치의학전문대학원</p>
+                                <p>보건복지부인증 통합치의학전문의</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>신동주</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>조선대학교 치의학전문대학원 석사</li>
+                                <li>보건복지부인증 통합치의학전문의</li>
+                                <li>대한통합치과학회 정회원</li>
+                                <li>대한치과보철학회 정회원</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>Harvard school of Dental Medicine multidisciplinary therapy Course 수료</li>
+                                <li>서울대학교 치의학교육연수원</li>
+                                <li>Advanced Periodontal/Implant Therapy Course 수료</li>
+                                <li>서울대학교 치의학교육연수원</li>
+                                <li>Advanced Dentistry Course 수료</li>
+                                <li>OSSTEM AIC Implant Master Course 수료</li>
+                                <li>DIO Navi navigation guide course 수료</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide7">
+                    <div class="inner_wrap">
+                        <div class="img_main_sect">
+                            <img src="images/img_main_doctor_8_2.png" alt="" />
+                            <div>
+                                <strong>이지현</strong>
+                                <p>경북대학교 치과대학</p>
+                            </div>
+                        </div>
+                        <div class="block_main_sect">
+                            <div class="lab_main_sect">ZERO DOCTOR</div>
+                            <div class="tit_main_sect"><strong>이지현</strong> 원장</div>
+                            <ul class="txt_main_sect">
+                                <li>경북대학교 치과대학 졸업</li>
+                                <li>대한통합치과학회 정회원</li>
+                                <li>대한치과보존학회 정회원</li>
+                                <li>대한심미치과학회 정회원</li>
+                            </ul>
+                            <ul class="txt_main_sect">
+                                <li>국민건강보험 구강검진교육 이수</li>
+                                <li>Micronic endodontic seminar 수료</li>
+                                <li>Dentalbean clinical academy Implant</li>
+                                <li>Course 수료</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
 
-					</a>
-				</div>
-				<!-- 풀아치임플란트 -->
-				<div class="item visual_02">
-	        <a href="../implant/full.html">
-						<div class="text ">
-							<h3><span class="fontw_100">식립 당일, 즉시 식사 가능한</span></h3>
-							<h2><span  class="color_gold">디지털 풀아치</span> <span>임플란트</span></h2>
-							<h5 class="pc">4~6개의 임플란트 식립으로 전체치아 기능을 회복 <br>
-									3D CT + 구강스캐너 + Dio navi guide + 3D 프린터 + UV임플란트를<br>
-									활용하여 식립갯수는 적게! 시술 정확도는 높게!
-							</h5>
-							<h6<%=m_client_en%></h6>
-						</div>
-						<ul>
-							<li><img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_02_01.png" alt="">
-							</li>
-							<li><img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_02_02.png" alt="">
-							</li>
-						</ul>
-						<div class="img">
-							<div style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_02.jpg)"></div>
-						</div>
+    <div class="main_sect4">
+        <div class="block_main_sect">
+            <div class="lab_main_sect">ZERO INTERIOR</div>
+            <div class="tit_main_sect">제로치과병원 내부시설</div>
+        </div>
 
-	        </a>
-	      </div>
-				<!-- 디지털치과 -->
-				<div class="item visual_03">
-	        <a href="">
-						<div class="text ">
-							<h3><span class="fontw_100">디지털치과의</span></h3>
-							<h2><span  class="color_gold">자신감</span><span>을 보여드릴게요.</span></h2>
-							<h5>전부 다 같은 디지털치과는 아닙니다. <br>
-							보다 빠르고, 정확하며 안전한 치료의 시작 <br class="mobile"><%=m_client_name%>입니다.
-							</h5>
-							<h6><%=m_client_en%></h6>
-						</div>
-						<div class="img">
-							<div style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/visual_03.jpg)"></div>
-						</div>
+        <div class="swiper gal_tour">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect1.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>로비</strong>
+                        편안하게 대기할 수 있는 안락한 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect2.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>미세현미경치료센터</strong>
+                        정교하고 세심한 치료를 위한 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect3.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>측두하악관절요법실</strong>
+                        턱관절 물리치료를 위한 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect4.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>디지털영상실</strong>
+                        꼼꼼하고 정밀한 진단을 위한 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect5.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>임플란트수술센터</strong>
+                        의식하진정법으로 진정하는 임플란트 수술공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect6.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>소아진료실</strong>
+                        어린이만을 위한 진료 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect7.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>회복실</strong>
+                        수술 후 케어까지 회복을 돕는 공간
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/img_space_sect8.jpg" alt="" />
+                    <div class="block_space">
+                        <strong>기공소</strong>
+                        디지털 기술이 접목된 제로만의 기공소
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
 
-	        </a>
-	      </div>
-			</div>
-		</div>
+	<!-- E : 메인 컨텐츠 -->
 
+	<!-- Swiper 초기화 -->
+    <script>
+      function initMainSwipers() {
+        if (typeof Swiper === "undefined") { setTimeout(initMainSwipers, 100); return; }
+        var main_visual = new Swiper(".main_visual", {
+            loop: true,
+            pagination: {
+                el: ".main_visual .swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 7000,
+                disableOnInteraction: false,
+            },
+        });
+        var main_sect1 = new Swiper(".main_sect1_slide", {
+            loop: true,
+            spaceBetween: 10,
+            slidesPerView: "auto",
+            pagination: {
+                el: ".main_sect1_slide .swiper-pagination",
+                type: "progressbar",
+            },
+            navigation: {
+                nextEl: ".main_sect1_slide .swiper-button-next",
+                prevEl: ".main_sect1_slide .swiper-button-prev",
+            },
+            autoplay: {
+                delay: 7000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
 
-		<script>
-			$('.main_visual .owl-carousel').owlCarousel({
-				items: 1,
-				loop: true,
-				margin: 0,
-				nav: true,
-				dots: true,
-				//autoplay: true,
-				autoplayTimeout: 8000
-				// onInitialized: counter,
-				// onTranslate: resetcounter,
-				// onTranslated: counter
-			});
-		</script>
-	</section>
-	<!-- E : main_visual -->
+                768: {
+                    spaceBetween: 30,
+                },
+            },
+        });
 
-	<div class="con_wrap">
+        var main_sect3 = new Swiper(".main_sect3_slide", {
+            loop: true,
+            spaceBetween: 0,
+            slidesPerView: 1,
+            navigation: {
+                nextEl: ".main_sect3_slide .swiper-button-next",
+                prevEl: ".main_sect3_slide .swiper-button-prev",
+            },
+        });
 
+        main_sect3.on('click', function () {
+            // 특정한 경로로 이동
+            location.href = 'https://zerodh.co.kr/bbs/content.php?co_id=doctor';
+        });
 
+        var gal_tour3 = new Swiper(".gal_tour", {
+            loop: true,
+            slidesPerView: 1.2,
+            spaceBetween: 10,
+            centeredSlides: true,
+            autoplay: {
+                delay: 7000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 20,
+                },
+                1200: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+            },
+        });
+      }
 
-		<!--S : Professional -->
-		<section class="center Professional"  data-aos="fade-up" >
-			<div class="inwrap pen_wrap ">
-				<div class="title " data-aos="fade-up">
-					<h2><span>P</span>rofessional</h2>
-					<h6>&nbsp;<%=m_client_en%></h6>
-				</div>
-
-				<div class="owl-carousel owl-theme"  data-aos="fade-up"  data-aos-delay="200">
-					<div class="item Prof_01"  data-hash="Prof_one" data-dot="Prof_one"  style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_01.jpg)">
-						<div class="text">
-							<h5><span>한번에 정확한 수술로 평생쓰는 임플란트 </span></h5>
-							<h2><%=m_client_name_s%>의 특별함</h2>
-							<p>풍부한 임상증례로<br class="mobile"> 실력을 인정받은 의료진이<br>
-									정확한 진단과 안전한 치료를<br class="mobile"> 약속드립니다
-							</p>
-							<a href="../reason/reason.html">VIEW</a>
-						</div>
-						<div class="img" >
-							<div >
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_01.jpg" alt="">
-							</div>
-						</div>
-					</div>
-
-					<div class="item Prof_02"  data-hash="Prof_two" data-dot="Prof_two"  style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_02.jpg)">
-						<div class="text">
-							<h5><span>좀 더 정확하고 안전한 치료를 위한</span></h5>
-							<h2>첨단의료장비</h2>
-							<p>3D CT, 3D 구강스캐너등의<br class="mobile"> 첨단 디지털 의료장비를 이용해<br>
-								오차없이 오직 한분 한분을 위한<br class="mobile"> 가장 적합한 치료방법을 제공합니다
-							</p>
-							<a href="../introduce/equipment.html">VIEW</a>
-						</div>
-						<div class="img">
-							<div>
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_02.jpg" alt="">
-							</div>
-						</div>
-					</div>
-
-					<div class="item Prof_03"  data-hash="Prof_three" data-dot="Prof_three" style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_03.jpg)">
-						<div class="text">
-							<h5><span>소중한 내 치아를 더 오래 쓸 수 있도록</span></h5>
-							<h2>자연치아살리기</h2>
-							<p>임플란트가 아무리 좋다 하지만<br class="mobile"> 자연치아보다 더 좋을 수 없습니다<br>
-									<%=m_client_name%>는 하루라도 더<br class="mobile"> 자연치아를 쓸 수 있도록 노력합니다
-							</p>
-							<a href="../tooth/sub_01.html">VIEW</a>
-						</div>
-						<div class="img">
-							<div>
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_03.jpg" alt="">
-							</div>
-						</div>
-					</div>
-
-
-					<div class="item Prof_04"  data-hash="Prof_four" data-dot="Prof_four"  style="background-image: url(https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_04.jpg)">
-						<div class="text">
-							<h5><span>감염관리 집중케어 시스템</span></h5>
-							<h2>위생적인 멸균, 소독</h2>
-							<p>구강내 사용되는 모든 기구는<br class="mobile"> 1인 사용후 멸균처리하고 있으며<br>
-								주기적인 소독과 위생 시스템 도입으로<br class="mobile"> 안전하고 청결한 환경을 제공합니다
-							</p>
-							<a href="../reason/reason.html#eight">VIEW</a>
-						</div>
-						<div class="img">
-							<div>
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/Professional_04.jpg" alt="">
-							</div>
-						</div>
-					</div>
-				</div>
-				<script>
-					$(document).ready(function() {
-
-						$('.Professional .owl-carousel').owlCarousel({
-							items: 1,
-							loop: true,
-							margin: 0,
-							nav: true,
-							dots: true,
-							autoplay: true,
-							autoplayTimeout: 8000,
-							dotsData: true,
-							URLhashListener: true,
-							// onInitialized: counter,
-							// onTranslate: resetcounter,
-							// onTranslated: counter
-						});
-
-						$('.Professional .owl-dot ').html(function(index, html) {
-							return html.replace("Prof_one", "<a href='#Prof_one'><%=m_client_name_s%>의<br class='mobile'> 특별함</a>");
-						});
-						$('.Professional .owl-dot ').html(function(index, html) {
-							return html.replace("Prof_two", "<a href='#Prof_two'>첨단<br class='mobile'>의료장비</a>");
-						});
-						$('.Professional .owl-dot ').html(function(index, html) {
-							return html.replace("Prof_three", "<a href='#Prof_three'>자연치아<br class='mobile'>살리기</a>");
-						});
-						$('.Professional .owl-dot ').html(function(index, html) {
-							return html.replace("Prof_four", "<a href='#Prof_four'>위생적인 <br class='mobile'>멸균,소독</a>");
-						});
-
-
-					});
-
-				</script>
-
-			</div>
-		</section>
-		<!--E : Professional--> 
-		<!-- S : implant -->
-		<section class="implant center">
-			<div class="title " data-aos="fade-up">
-				<h2><span>I</span>mplant Clinic</h2>
-				<h6>&nbsp;<%=m_client_en%></h6>
-			</div>
-
-				<div class="owl-carousel owl-theme"  data-aos="fade-up"  data-aos-delay="200">
-
-					<!-- 재수술 임플란트 -->
-					<div class="item ">
-						<a href="../implant/sub_09.html">
-							<div class="img">
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/implant_01.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>더욱 튼튼하게</h5>
-									<h2>재수술 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>
-					<!-- 풀아치 임플란트 -->
-					<!--<div class="item ">
-						<a href="../implant/full.html">
-							<div class="img">
-								<img src="images/implant_05.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>무치악 환자들을 위한 </h5>
-									<h2>풀아치 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>-->
-					<!-- 무치악 임플란트 -->
-					<div class="item ">
-						<a href="../implant/sub_05.html">
-							<div class="img">
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/implant_03.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>치아가 없어도 걱정말고</h5>
-									<h2>무치악 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>
-					<!-- 뼈이식 임플란트 -->
-					<div class="item ">
-						<a href="../implant/bone.html">
-							<div class="img">
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/implant_02.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>부족한 뼈를 채워서</h5>
-									<h2>뼈이식 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>
-					<!-- 즉시기능 임플란트 -->
-					<div class="item ">
-						<a href="../implant/sub_07.html">
-							<div class="img">
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/implant_04.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>하루만에 식립하자</h5>
-									<h2>즉시기능 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>
-
-					<!-- 보험 임플란트 -->
-					<div class="item ">
-						<a href="../implant/sub_06.html">
-							<div class="img">
-								<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/implant_06.jpg" alt="">
-							</div>
-							<div class="text">
-								<div>
-									<h5>치과비용의 부담을 덜고</h5>
-									<h2>보험 임플란트</h2>
-									<p>VIEW</p>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-				</div>
-				<script>
-					$(document).ready(function() {
-
-						if (screen.width <= 767) {
-
-						$('.implant .owl-carousel').owlCarousel({
-							items: 2,
-							loop: true,
-							margin: 0,
-							nav: true,
-							dots: true,
-							autoplay: true,
-							autoplayTimeout: 8000,
-							//dotsData: true,
-							//URLhashListener: true,
-						});
-
-						}
-							else {
-								$('.implant .owl-carousel').owlCarousel({
-									items: 4,
-									loop: true,
-									margin: 0,
-									nav: true,
-									dots: true,
-									//autoplay: true,
-									autoplayTimeout: 8000,
-									//dotsData: true,
-									//URLhashListener: true,
-								});
-						 }
-
-				 	});
-				</script>
-
-		</section>
-		<!--E : implant -->
-
-
-		<!-- S : full_banner -->
-		<section class="full_banner"  data-aos="fade-up" data-aos-delay="300">
-			<div class="text">
-				<h2>대한민국 <br class="mobile">임플란트의 <span class="color_gold">자존심</span></h2>
-				<h4>임플란트에서 중요한 것은 기술력입니다</h4>
-			</div>
-			<h6>&nbsp;<%=m_client_en%></h6>
-		</section>
-		<!--E : full_banner -->
-
-		<!-- S : disital -->
-		<section class="disital pc"  data-aos="fade-up" >
-
-
-			<div class="owl-carousel owl-theme owl-carousel-vertical"  data-aos="fade-up"  data-aos-delay="200">
-				<div class="item ">
-					<div class="text">
-						<div>
-							<div class="title " data-aos="fade-up">
-								<h2><span>D</span>igital implant 1</h2>
-								<h6><%=m_client_en%></h6>
-							</div>
-
-							<h4>저선량 3D CT</h4>
-							<h6>기존의 X-ray나 파노라마 보다?더 정확하고 더 정밀한<br>
-							3D CT를 이용하여?치아 뿌리의 상태,위치,잇몸뼈 등<br>
-							치아와 잇몸 상태 뿐만 아니라 얼굴 골격까지 진단합니다.</h6>
-						</div>
-					</div>
-					<div class="img">
-						<div>
-							<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/disital_01.jpg" alt="">
-						</div>
-					</div>
-				</div>
-				<div class="item ">
-					<div class="text">
-						<div>
-							<div class="title " data-aos="fade-up">
-								<h2><span>D</span>igital implant 2</h2>
-								<h6><%=m_client_en%></h6>
-							</div>
-
-							<h4>3D 디지털 구강스캐너</h4>
-							<h6>3D 디지털 구강스캐너를 사용하여 치아 상태를 정밀하게<br>
-								스캔하고 디지털 치아 제작 시스템과 연동하여<br>
-								더욱 빠르고 정확한 치료를 받을 수 있습니다.
-							</h6>
-						</div>
-					</div>
-					<div class="img">
-						<div>
-							<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/disital_02.jpg" alt="">
-						</div>
-					</div>
-				</div>
-				<div class="item ">
-					<div class="text">
-						<div>
-							<div class="title " data-aos="fade-up">
-								<h2><span>I</span>mplant Clinic 3</h2>
-								<h6><%=m_client_en%></h6>
-							</div>
-
-							<h4>3D 컴퓨터 모의수술</h4>
-							<h6>미리 분석된 자료로 골조직및 신경의 위치를 정확히 파악하고<br>
-								임플란트 식립 전 모의 수술하여 미리 계획된 방향과 위치에<br>
-							정확하게 임플란트를 식립할 수 있습니다.</h6>
-						</div>
-					</div>
-					<div class="img">
-						<div>
-							<img src="https://akcdn-deaz.cafe24img.com/topplant/main/images/disital_03.jpg" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-			<script>
-				$(document).ready(function() {
-
-					$('.disital .owl-carousel').owlCarousel({
-						items: 1,
-						loop: true,
-						margin: 0,
-						nav: true,
-						dots: true,
-						autoplay: true,
-						autoplayTimeout: 8000,
-						//dotsData: true,
-						//URLhashListener: true,
-						// animateIn: 'slideInUp',
-						// animateOut: 'slideOutUp'
-						animateOut: 'slideOutDown',
-				    animateIn: 'flipInX',
-
-					});
-
-
-				});
-
-			</script>
-
-		</section>
-		<!--E : disital -->
-
-	</div>
-
-
-	<script src="../js/waypoints.min.js"></script>
-	<script src="../js/counterup.min.js"></script>
-	<script>
-		$('.counter').countUp();
-	</script>
-	<!--E : main__review -->
-
+      if (document.readyState === "complete") {
+        initMainSwipers();
+      } else {
+        window.addEventListener("load", initMainSwipers);
+      }
+    </script>
 </div>
 
 <!-- #include virtual = "/html/inc/footer.html" -->

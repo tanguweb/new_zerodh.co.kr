@@ -1,12 +1,5 @@
 <!-- #include virtual = "/html/inc/header.html" -->
 <link rel="stylesheet" type="text/css" href="../css/style.css" />
-<!-- <style>
-  @media (max-width: 767px) {
-    #sub .content_wrap {
-      padding-top: 220px;
-    }
-  }
-</style> -->
 <!-- S : sub -->
 <div id="sub" class="info_time">
   <section>
@@ -15,7 +8,9 @@
     <div class="sub_tit">
       <div>
         <!-- <h5><%=m_client_name%>의 진료시간을 알려드립니다</h5> -->
+        <span class="v2_label">Hours</span>
         <h1><%=m_client_name_s%> <span> 진료안내</span></h1>
+        <p class="v2_desc">제로치과의 진료시간과 휴진 안내를 확인하세요.</p>
         <p class="en">&nbsp;<%=m_client_en%></p>
       </div>
     <!-- E : sub_visual -->
@@ -23,25 +18,34 @@
   <div class="content_wrap center">
     <section class="section_01  ">
       <div class="inwrap ">
-        <div class="title" data-aos="fade-up">
+        <div class="title v2_brand_title" data-aos="fade-up">
+          <i class="v2_symbol demo-icon icon-simbol-2"></i>
+          <h3 class="v2_en">Hours</h3>
           <h2>진료 시간 안내<em></em></h2>
-          <h5>환자분들의 시간을 소중하게 생각합니다</h5>
+          <p class="v2_sub">환자분들의 시간을 소중하게 생각합니다</p>
         </div>
           <div class=" time pen_wrap center ">
             <!-- <h4  data-aos="fade-up" data-aos-delay="100">늦은 시간에도 걱정 NO!<br>
             매주 <em class="pen">월,목요일 야간진료</em> <br class="mobile">(오후 8시까지)</h4> -->
 
             <dl data-aos="fade-up" data-aos-delay="200">
-              <dt>평 일 </dt> <dd> 오전 09:00 ~ 오후 06:00</dd><br class="mobile">
-               
-              <!-- <dt>목 요 일</dt> <dd> 오전 09:00 ~ 오후  08:30 <span>(야간진료)</span></dd><br> -->
-              <dt>점 심 시 간</dt>
-              <dd>오후 12:30 ~ 오후 02:00 <span>(토요일 제외)</span></dd>
-              <br>
-              
-              <dt>토 요 일</dt> <dd> 오전 09:00 ~ 오후  01:00</dd><br class="mobile">
+              <dt>월 · 목</dt> <dd> 오전 10:00 ~ 오후 08:30 <span>야간진료</span></dd><br class="mobile">
 
-              <dt class="pc"></dt> <dd class="fontw_300"><em class=" color_main fontw_500">일요일 및 공휴일 휴진</em></dd>
+              <dt>화 · 수 · 금</dt> <dd> 오전 10:00 ~ 오후 06:30</dd><br>
+
+              <dt>토 요 일</dt> <dd> 오전 10:00 ~ 오후 02:00</dd><br class="mobile">
+
+              <dt>공 휴 일</dt> <dd> 오전 10:00 ~ 오후 06:30</dd><br>
+
+              <dt>점 심 시 간</dt>
+              <dd>오후 01:00 ~ 오후 02:30</dd>
+              <br class="mobile">
+
+              <dt>저 녁 시 간</dt>
+              <dd>오후 05:30 ~ 오후 06:00</dd>
+              <br>
+
+              <dt class="pc m_t_40"></dt> <dd class="fontw_300"><em class=" color_main fontw_500">매주 일요일 휴진</em></dd>
       				<!-- <p class="m_t_20  m_b_0">
                 
                 
@@ -53,18 +57,18 @@
 
             </dl>
             <table  data-aos="fade-up" data-aos-delay="300">
-              <colgroup><col width="7%"><col width="20%"><col width="7%"><col width="7%"><col width="*"><col width="7%"> </colgroup>
+              <colgroup><col width="7%"><col width="25%"><col width="8%"><col width="4%"><col width="*"><col width="5%"><col width="5%"><col width="16%"><col width="5%"></colgroup>
               <thead>
                 <tr>
-                  <th><span>AM<br>09:00<em></em></span></th>
-                  <th><span>PM<br>12:30<em></em></span></th>
+                  <th><span>AM<br>10:00<em></em></span></th>
                   <th><span>PM<br>1:00<em></em></span></th>
                   <th><span>PM<br>2:00<em></em></span></th>
-                  <!-- <th><span>PM<br>2:30<em></em></span></th> -->
+                  <th><span>PM<br>2:30<em></em></span></th>
+                  <th><span>PM<br>5:30<em></em></span></th>
                   <th><span>PM<br>6:00<em></em></span></th>
-                  <!-- <th><span>PM<br>8:30<em></em></span></th> -->
+                  <th><span>PM<br>6:30<em></em></span></th>
+                  <th><span>PM<br>8:30<em></em></span></th>
                   <th></th>
-                 
                 </tr>
               </thead>
               <tbody>
@@ -73,35 +77,45 @@
                   <td><p class="day"></p></td>
                   <td rowspan="5" colspan="2" class="break">점<br>심<br>시<br>간</td>
                   <td ><p class="day"></p></td>
+                  <td class="break">저<br>녁</td>
+                  <td colspan="2"><p class="day"></p></td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>화</td>
                   <td><p class="day"></p></td>
-                  <td ><p class="day"></p></td>
+                  <td colspan="3"><p class="day"></p></td>
+                  <td></td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>수</td>
                   <td><p class="day"></p></td>
-                  <td><p class="day"></p></td>
+                  <td colspan="3"><p class="day"></p></td>
+                  <td></td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>목</td>
                   <td><p class="day"></p></td>
                   <td ><p class="day"></p></td>
+                  <td class="break">저<br>녁</td>
+                  <td colspan="2"><p class="day"></p></td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>금</td>
                   <td><p class="day"></p></td>
-                  <td><p class="day"></p></td>
+                  <td colspan="3"><p class="day"></p></td>
+                  <td></td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>토</td>
                   <td colspan="2"><p class="day"></p></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>

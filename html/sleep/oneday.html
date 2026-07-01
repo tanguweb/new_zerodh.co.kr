@@ -1,12 +1,5 @@
 <!-- #include virtual = "/html/inc/header.html" -->
 <link rel="stylesheet" type="text/css" href="../css/style.css" />
-<!-- <style>
-  @media (max-width: 767px) {
-    #sub .content_wrap {
-      padding-top: 220px;
-    }
-  }
-</style> -->
 <!-- S : sub -->
 <div id="sub" class="sleep_01">
   <section>
@@ -15,7 +8,9 @@
     <div class="sub_tit">
       <div>
         <!-- <h5>최대한 빠르게 정확하게</h5> -->
+      	<span class="v2_label">One-day Treatment</span>
       	<h1><%=m_client_name_s%>  <span> 당일(원데이)보철</span></h1>
+      	<p class="v2_desc">여러 번 올 필요 없이 하루 만에 끝내는 보철 치료</p>
         <p class="en">&nbsp;<%=m_client_en%></p>
       </div>
     </div>
@@ -27,9 +22,11 @@
   <!-- ===== 당일(원데이)보철이란? ===== -->
   <section class="section_01 center">
     <div class="inwrap pen_wrap ">
-      <div class="title " data-aos="fade-up">
-        <h5><span class="pen">여러 번 올 필요 없이, 하루 만에 끝!</span></h5>
+      <div class="title v2_brand_title" data-aos="fade-up">
+        <i class="v2_symbol demo-icon icon-simbol-2"></i>
+        <h3 class="v2_en">One-day Treatment</h3>
         <h2>당일(원데이)보철이란?</h2>
+        <p class="v2_sub">여러 번 올 필요 없이, 하루 만에 끝!</p>
       </div>
 
       <p class="font_20 mobile_left  m_b_60" data-aos="fade-up" data-aos-delay="100">
@@ -37,7 +34,7 @@
         임시치아 치료 후 재방문하여 진료를 받는 번거로움이 없습니다.
       </p>
 
-      <img src="images/sub_about.jpg" alt="" data-aos="fade-up" data-aos-delay="200" class="bord_r_30 ">
+      <img src="images/oneday_visual.jpg" alt="" data-aos="fade-up" data-aos-delay="200" class="bord_r_30 ">
     </div>
   </section>
 
@@ -47,8 +44,8 @@
   <section class="section_02 center ">
     <div class="inwrap pen_wrap ">
       <div class="title " data-aos="fade-up">
-        <h5><span class="pen">why</span></h5>
-        <h2>제로치과병원 당일(원데이) 보철은<br class="mobile"> 무엇이 다른가요?</h2>
+        <!-- <h5><span class="pen">why</span></h5> -->
+        <h2>제로치과병원 <br class="mobile"> 무엇이 다른가요?</h2>
       </div>
 
       <p class="font_20 mobile_left  m_b_60" data-aos="fade-up" data-aos-delay="100">
@@ -56,6 +53,7 @@
         첨단 디지털 장비와 기술력으로 오로지 제로치과병원의 기공물만을 전담하여 보다 정확하고 빠르게 제작이 가능합니다.<span class="mobile">.</span><br>
         상담부터 수술, 보철 관리까지 <span class="color_main fontw_500">1:1 환자 맞춤형 서비스</span>를 제공합니다.
       </p>
+      <img src="images/oneday_visual_01.jpg" alt="" data-aos="fade-up" data-aos-delay="200" class="bord_r_30 ">
     </div>
   </section>
 
@@ -68,97 +66,146 @@
         <h2>당일(원데이)보철 치료과정</h2>
       </div>
 
-      <ul class="num_list" data-aos="fade-up" data-aos-delay="100">
-        <li><div><span class="num">1</span><dl>
-          <dt><em class="color_sub">STEP.01</em> 정밀검진</dt>
-          <dd>디지털 의료장비를 활용한 스캔과 정밀검진</dd></dl></div></li>
-        <li><div><span class="num">2</span><dl>
-          <dt><em class="color_sub">STEP.02</em> 치아치료</dt>
-          <dd>개개인에게 최적화된 충치치료 및 치아 다듬기</dd></dl></div></li>
-        <li><div><span class="num">3</span><dl>
-          <dt><em class="color_sub">STEP.03</em> 보철물 제작</dt>
-          <dd>자체 기공소에서 자연치아와 유사한 보철물 제작</dd></dl></div></li>
-        <li><div><span class="num">4</span><dl>
-          <dt><em class="color_sub">STEP.04</em> 보철물 장착</dt>
-          <dd>임시 치료 없이 보철물 장착 및 조정</dd></dl></div></li>
-      </ul>
+<ul class="four box_list" data-aos="fade-up" data-aos-delay="100">
+  <li>
+    <div>
+      <h4 class="num">1</h4>
+      <img src="images/oneday_step01.jpg" alt="">
+      <div class="text">
+        <h5>정밀검진</h5>
+        <p>디지털 의료장비를 <br class="pc">활용한 스캔과 <br class="mobile">정밀검진</p>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div>
+      <h4 class="num">2</h4>
+      <img src="images/oneday_step02.jpg" alt="">
+      <div class="text">
+        <h5>치아치료</h5>
+        <p>개개인에게 최적화된 <br class="pc">충치치료 및 <br class="mobile">치아 다듬기</p>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div>
+      <h4 class="num">3</h4>
+      <img src="images/oneday_step03.jpg" alt="">
+      <div class="text">
+        <h5>보철물 제작</h5>
+        <p>자체 기공소에서 <br class="pc">자연치아와 유사한 <br class="mobile">보철물 제작</p>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div>
+      <h4 class="num">4</h4>
+      <img src="images/oneday_step04.jpg" alt="">
+      <div class="text">
+        <h5>보철물 장착</h5>
+        <p>임시 치료 없이 <br class="pc">보철물 장착 및 조정</p>
+      </div>
+    </div>
+  </li>
+</ul>
     </div>
   </section>
 
   <hr data-aos="fade-up">
 
   <!-- ===== 특장점 ===== -->
-  <section class="section_04 center ">
-    <div class="inwrap pen_wrap ">
-      <div class="title " data-aos="fade-up">
-        <h5><span class="pen">pros</span></h5>
-        <h2>당일(원데이)보철의 특장점</h2>
-      </div>
-
-      <p class="font_20 mobile_left  m_b_60" data-aos="fade-up" data-aos-delay="100">
-        당일 보철물 제작이 가능하기에 임플란트 치료 과정에서 임시치아 장착으로 생길 수 있는 <span class="color_main fontw_500">변형과 감염 위험성을 줄여</span>줄 수 있습니다.<span class="mobile">.</span><br>
-        또한 외부기공소로 보내지 않고 제로치과병원 내부 자체 디지털 기공소에서 보철물을 제작하기에 <span class="color_main fontw_500">치료 시간과 내원 횟수가 감소</span>합니다.
-      </p>
+<section class="section_04 center ">
+  <div class="inwrap pen_wrap ">
+    <div class="title " data-aos="fade-up">
+      <!-- <h5><span class="pen">pros</span></h5> -->
+      <h2>당일(원데이)보철의 특장점</h2>
     </div>
-  </section>
+
+    <div class="img_left" data-aos="fade-up" data-aos-delay="100">
+      <div>
+        <!-- <span class="num">1</span> -->
+        <div class="sub_title ">
+          <h4>당일(원데이)보철</h4>
+          <h2>하루 만에 <span class="pen">정확하게!</span></h2>
+        </div>
+        <p>당일 보철물 제작이 가능하기에 임플란트 치료 과정에서 <br class="pc">
+          임시치아 장착으로 생길 수 있는 <span class="color_main fontw_500">변형과 감염 위험성을 줄여</span>줄 수 있습니다.</p>
+        <p>또한 외부기공소로 보내지 않고 제로치과병원 내부 <br class="pc">
+          자체 디지털 기공소에서 보철물을 제작하기에 <br class="pc">
+          <span class="color_main fontw_500">치료 시간과 내원 횟수가 감소</span>합니다.</p>
+      </div>
+      <div>
+        <img src="images/oneday_visual_04.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</section>
 
   <hr data-aos="fade-up">
 
   <!-- ===== 추천대상 ===== -->
-  <section class="section_05 center">
-    <div class="inwrap pen_wrap ">
-      <div class="title " data-aos="fade-up">
-        <h5><span class="pen">당일(원데이)보철</span></h5>
-        <h2>이런 분들에게 추천</h2>
-      </div>
-      <ul class=" circle_list circle_list_2  ">
-        <li data-aos="fade-up" data-aos-delay="200">
-          <div class="circle"><h4>01</h4>
-            <p class="bg">바쁜 일상으로<br>내원 스케줄 확보가<br>어려운 경우</p>
-          </div>
-        </li>
-        <li data-aos="fade-up" data-aos-delay="300">
-          <div class="circle"><h4>02</h4>
-            <p class="bg">일과 시간이 정해진<br>직장인 및<br>해외거주자의 경우</p>
-          </div>
-        </li>
-        <li data-aos="fade-up" data-aos-delay="400">
-          <div class="circle"><h4>03</h4>
-            <p class="bg">신속한 치료를<br>원하시는 경우</p>
-          </div>
-        </li>
-        <li data-aos="fade-up" data-aos-delay="500">
-          <div class="circle"><h4>04</h4>
-            <p class="bg">다수의 보철물을<br>제작 후<br>적용하는 경우</p>
-          </div>
-        </li>
-        <li data-aos="fade-up" data-aos-delay="600">
-          <div class="circle"><h4>05</h4>
-            <p class="bg">심미적으로 우수한<br>보철 치료를<br>원하는 경우</p>
-          </div>
-        </li>
-      </ul>
+<section class="section_05 ">
+  <div class="inwrap pen_wrap ">
+    <div class="title " data-aos="fade-up">
+      <h5><span class="pen">당일(원데이)보철</span></h5>
+      <h2>이런 분들에게 추천</h2>
     </div>
-  </section>
+    <ul class=" circle_list five ">
+      <li data-aos="fade-up" data-aos-delay="100">
+        <div class="circle"><h4><em class="num">01</em></h4>
+          <p class="bg">바쁜 일상으로 <br>내원 스케줄 확보가 <br>어려운 경우</p>
+        </div>
+      </li>
+      <li data-aos="fade-up" data-aos-delay="200">
+        <div class="circle"><h4><em class="num">02</em></h4>
+          <p class="bg">일과 시간이 정해진 <br>직장인 및 <br>해외거주자의 경우</p>
+        </div>
+      </li>
+      <li data-aos="fade-up" data-aos-delay="300">
+        <div class="circle"><h4><em class="num">03</em></h4>
+          <p class="bg">신속한 치료를 <br>원하시는 경우</p>
+        </div>
+      </li>
+      <li data-aos="fade-up" data-aos-delay="400">
+        <div class="circle"><h4><em class="num">04</em></h4>
+          <p class="bg">다수의 보철물을 <br>제작 후 <br>적용하는 경우</p>
+        </div>
+      </li>
+      <li data-aos="fade-up" data-aos-delay="500">
+        <div class="circle"><h4><em class="num">05</em></h4>
+          <p class="bg">심미적으로 우수한 <br>보철 치료를 <br>원하는 경우</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
 
   <hr data-aos="fade-up">
 
   <!-- ===== 주의사항 ===== -->
-  <section class="section_06 center ">
-    <div class="inwrap pen_wrap ">
-      <div class="title " data-aos="fade-up">
-        <h5><span class="pen">당일(원데이)보철</span></h5>
-        <h2>주의사항</h2>
+<section class="section_06 ">
+  <div class="inwrap pen_wrap m_t_60 " data-aos-delay="200">
+    <div class="endo_caution_box" data-aos="fade-up">
+      <div class="caution_head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="4" width="16" height="18" rx="2"></rect>
+          <path d="M9 4a3 3 0 0 1 6 0"></path>
+          <path d="M9 4h6v2H9z"></path>
+          <line x1="8" y1="11" x2="16" y2="11"></line>
+          <line x1="8" y1="15" x2="16" y2="15"></line>
+          <line x1="8" y1="19" x2="13" y2="19"></line>
+        </svg>
+        <h3>당일(원데이)보철 후<br><em class="color_main ">주의사항</em></h3>
       </div>
-
-      <ul class="num_list" data-aos="fade-up" data-aos-delay="100">
-        <li><div><span class="num">1</span><dl><dd>오랜 시간이 경과하면 접착제 수명이 다해 탈락하거나 물리적으로 강한 힘에 파절될 수 있습니다. 어금니의 경우 양쪽으로 균형 있게 사용하시는 것이 좋습니다.</dd></dl></div></li>
-        <li><div><span class="num">2</span><dl><dd>자연치아를 삭제한 이후 민감한 증상이 남아있을 수 있습니다. 길게는 6주 정도 지속되기도 하지만, 불편함이 지속되는 경우 참기보다 내원을 통해 진료를 받으시면 좋습니다.</dd></dl></div></li>
-        <li><div><span class="num">3</span><dl><dd>치료한 부위로는 당일 단단한 음식이나 끈적이는 음식 섭취를 삼가시는 것이 좋습니다.</dd></dl></div></li>
-        <li><div><span class="num">4</span><dl><dd>치료한 부위 주변으로 2차 충치가 생기지 않게 양치 관리가 필요하며, 정기적인 검진이 필요합니다.</dd></dl></div></li>
+      <ul class="caution_list">
+        <li>1. 오랜 시간이 경과하면 접착제 수명이 다해 탈락하거나 물리적으로 강한 힘에 파절될 수 있습니다. 어금니의 경우 양쪽으로 균형 있게 사용하시는 것이 좋습니다.</li>
+        <li>2. 자연치아를 삭제한 이후 민감한 증상이 남아있을 수 있습니다. 길게는 6주 정도 지속되기도 하지만, 불편함이 지속되는 경우 참기보다 내원을 통해 진료를 받으시면 좋습니다.</li>
+        <li>3. 치료한 부위로는 당일 단단한 음식이나 끈적이는 음식 섭취를 삼가시는 것이 좋습니다.</li>
+        <li>4. 치료한 부위 주변으로 2차 충치가 생기지 않게 양치 관리가 필요하며, 정기적인 검진이 필요합니다.</li>
       </ul>
     </div>
-  </section>
+  </div>
+</section>
 
 </div>
 

@@ -103,25 +103,25 @@
 	Const m_client_name_s = "제로치과"	' 의료기관명칭 또는 상호명
 	Const m_client_name = "제로치과병원"	' 의료기관명칭 또는 상호명
 	Const m_client_en = "ZERO DENTAL CLINIC"	' 의료기관명칭 또는 상호명
-	Const m_client_address1 = "전라북도 익산시 남중동 375-201"	' 기업 주소
-	Const m_client_address2 = ""	' 기업 주소
-	Const m_client_owner = "한수일"	' 기업 대표자명
-	Const m_client_business_no = "628-98-00047"	' 기업 사업자등록번호
-	Const m_client_tel = "063.851.2275"	' 기업 연락처
+	Const m_client_address1 = "대구광역시 달서구 월성동 1858"	' 기업 주소
+	Const m_client_address2 = "수메디컬빌딩 5층"	' 기업 주소
+	Const m_client_owner = "구본철"	' 기업 대표자명
+	Const m_client_business_no = "306-06-53824"	' 기업 사업자등록번호
+	Const m_client_tel = "053.642.2200"	' 기업 연락처
 	Const m_client_fax = ""	' 기업 연락처
-	Const m_client_kakao = "https://pf.kakao.com/_WAmZxl"	' 카톡주소
+	Const m_client_kakao = "https://pf.kakao.com/_xeMMmG"	' 카톡주소
 	Const m_client_utube = ""	' 네이버블로그
-	Const m_client_naver_blog = "https://blog.naver.com/fade803742"	' 네이버블로그
+	Const m_client_naver_blog = "https://blog.naver.com/prevent10756"	' 네이버블로그
 	Const m_client_insta = ""	' 인스타그램
 	Const m_client_facebook = ""	' 페이스북
-	Const m_client_naver = "https://naver.me/xbnuoHSf"	' 네이버예약
+	Const m_client_naver = "https://booking.naver.com/booking/13/bizes/1099395/items/5717093?startDate=2026-06-30"	' 네이버예약
 	Const m_main_color = "#ff823e"	' 메인컬러
 
 
-	Const m_client_site_copyright = "COPYRIGHTⓒ TOPPLANT DENTAL CLINIC. ALL RIGHTS RESERVED."	' 기업 연락처
+	Const m_client_site_copyright = "COPYRIGHTⓒ ZERO DENTAL CLINIC. ALL RIGHTS RESERVED."	' 기업 연락처
 	Const m_client_counsel_pw = "dgzero123!!"	'퀵 상담 디폴트 비밀번호
-	Const m_client_counsel_regist_email_title = "탑플란트치과"	' 상담글 등록시 발송하는 이메일의 제목에 포함되는 상호
-	Const m_client_counsel_regist_sms_title = "탑플란트치과"	' 상담글 등록시 발송하는 SMS에 포함되는 상호
+	Const m_client_counsel_regist_email_title = "제로치과병원"	' 상담글 등록시 발송하는 이메일의 제목에 포함되는 상호
+	Const m_client_counsel_regist_sms_title = "제로치과병원"	' 상담글 등록시 발송하는 SMS에 포함되는 상호
 
 	Const m_client_counsel_footer_send_email = false	' 푸터 상담 등록 메일발송 여부(True: 발송, False: 발송 안함)
 	Const m_client_counsel_footer_send_sms = true	' 푸터 상담 등록 SMS발송 여부(True: 발송, False: 발송 안함)

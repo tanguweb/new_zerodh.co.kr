@@ -1,12 +1,5 @@
 <!-- #include virtual = "/html/inc/header.html" -->
 <link rel="stylesheet" type="text/css" href="../css/style.css" />
-<!-- <style>
-  @media (max-width: 767px) {
-    #sub .content_wrap {
-      padding-top: 220px;
-    }
-  }
-</style> -->
 <!-- S : sub -->
 <div id="sub" class="interior">
   <section>
@@ -15,7 +8,9 @@
     <div class="sub_tit">
       <div>
         <!-- <h5><%=m_client_name_s%>의 <span class="pen">아늑한 공간에서 <br class="mobile">편안하게 진료</span>받으세요</h5> -->
+        <span class="v2_label">Our Space</span>
         <h1><%=m_client_name_s%> <span> 진료공간</span></h1>
+        <p class="v2_desc">아늑한 공간에서 편안하게 진료받으실 수 있는 제로치과를 둘러보세요.</p>
         <p class="en">&nbsp;<%=m_client_en%></p>
       </div>
     </div>
@@ -24,47 +19,53 @@
   <div class="content_wrap center">
     <section class="section_01">
       <div class="inwrap pen_wrap">
-        <div class="title" data-aos="fade-up">
-          <h5><span class="pen"><%=m_client_name%>를</span></h5>
+        <div class="title v2_brand_title" data-aos="fade-up">
+          <i class="v2_symbol demo-icon icon-simbol-2"></i>
+          <h3 class="v2_en">Our Space</h3>
           <h2> 미리 만나보세요!</h2>
-
+          <p class="v2_sub">수준 높은 진료를 위해 청결한 공간과 정밀한 디지털 장비를 준비하였습니다.</p>
         </div>
 
 <script type="text/javascript">
 
 </script>
 <div id="tab"  data-aos="fade-up" data-aos-delay="100">
-    <ul class="tabs">
-        <li class="active" rel="tab1">3층</li>
-        <li rel="tab2">4층</li>
-    </ul>
+
     <div class="tab_container">
         <div id="tab1" class="tab_content">
           <div class="photo" id="photo_1" >
             <div id="sync1" class="owl-carousel owl-theme">
               <div class="item" data-hash="photo_one" data-dot="photo_one">
-              <img src="images/photo_01.jpg" alt="">
+              <img src="images/space_01.jpg" alt="로비">
+              <div class="space_caption"><h4>로비</h4><p>편안하게 대기할 수 있는 안락한 공간</p></div>
               </div>
               <div class="item" data-hash="photo_two" data-dot="photo_two">
-              <img src="images/photo_02.jpg" alt="">
+              <img src="images/space_02.jpg" alt="미세현미경치료센터">
+              <div class="space_caption"><h4>미세현미경치료센터</h4><p>정교하고 세심한 치료를 위한 공간</p></div>
               </div>
               <div class="item" data-hash="photo_three" data-dot="photo_three">
-              <img src="images/photo_03.jpg" alt="">
+              <img src="images/space_03.jpg" alt="측두하악관절요법실">
+              <div class="space_caption"><h4>측두하악관절요법실</h4><p>턱관절 물리치료를 위한 공간</p></div>
               </div>
               <div class="item" data-hash="photo_four" data-dot="photo_four">
-              <img src="images/photo_04.jpg" alt="">
+              <img src="images/space_04.jpg" alt="디지털영상실">
+              <div class="space_caption"><h4>디지털영상실</h4><p>꼼꼼하고 정밀한 진단을 위한 공간</p></div>
               </div>
               <div class="item" data-hash="photo_five" data-dot="photo_five">
-              <img src="images/photo_05.jpg" alt="">
+              <img src="images/space_05.jpg" alt="임플란트수술센터">
+              <div class="space_caption"><h4>임플란트수술센터</h4><p>의식하진정법으로 진정하는 임플란트 수술공간</p></div>
               </div>
               <div class="item" data-hash="photo_six" data-dot="photo_six">
-              <img src="images/photo_06.jpg" alt="">
+              <img src="images/space_06.jpg" alt="소아진료실">
+              <div class="space_caption"><h4>소아진료실</h4><p>어린이만을 위한 진료 공간</p></div>
               </div>
               <div class="item" data-hash="photo_seven" data-dot="photo_seven">
-              <img src="images/photo_07.jpg" alt="">
+              <img src="images/space_07.jpg" alt="회복실">
+              <div class="space_caption"><h4>회복실</h4><p>수술 후 케어까지 회복을 돕는 공간</p></div>
               </div>
               <div class="item" data-hash="photo_eight" data-dot="photo_eight">
-              <img src="images/photo_08.jpg" alt="">
+              <img src="images/space_08.jpg" alt="기공소">
+              <div class="space_caption"><h4>기공소</h4><p>디지털 기술이 접목된 제로만의 기공소</p></div>
               </div>
             </div>
           </div>
@@ -84,110 +85,39 @@
           });
 
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_one", "<a href='#photo_one'><img src='images/photo_01.jpg'></a>");
+              return html.replace("photo_one", "<a href='#photo_one'><img src='images/space_01.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_two", "<a href='#photo_two'><img src='images/photo_02.jpg'></a>");
+              return html.replace("photo_two", "<a href='#photo_two'><img src='images/space_02.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_three", "<a href='#photo_three'><img src='images/photo_03.jpg'></a>");
+              return html.replace("photo_three", "<a href='#photo_three'><img src='images/space_03.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_four", "<a href='#photo_four'><img src='images/photo_04.jpg'></a>");
+              return html.replace("photo_four", "<a href='#photo_four'><img src='images/space_04.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_five", "<a href='#photo_five'><img src='images/photo_05.jpg'></a>");
+              return html.replace("photo_five", "<a href='#photo_five'><img src='images/space_05.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_six", "<a href='#photo_six'><img src='images/photo_06.jpg'></a>");
+              return html.replace("photo_six", "<a href='#photo_six'><img src='images/space_06.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_seven", "<a href='#photo_seven'><img src='images/photo_07.jpg'></a>");
+              return html.replace("photo_seven", "<a href='#photo_seven'><img src='images/space_07.jpg'></a>");
             });
             $('#photo_1 .owl-dot ').html(function(index, html) {
-              return html.replace("photo_eight", "<a href='#photo_eight'><img src='images/photo_08.jpg'></a>");
+              return html.replace("photo_eight", "<a href='#photo_eight'><img src='images/space_08.jpg'></a>");
             });
         });
         // -->
         </script>
 
         <!-- #tab1 -->
-        <div id="tab2" class="tab_content">
-          <div class="photo" id="photo2">
-            <div id="sync1" class="owl-carousel owl-theme">
-              <div class="item" data-hash="photo2_one" data-dot="photo2_one">
-              <img src="images/photo2_01.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_two" data-dot="photo2_two">
-              <img src="images/photo2_02.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_three" data-dot="photo2_three">
-              <img src="images/photo2_03.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_four" data-dot="photo2_four">
-              <img src="images/photo2_04.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_five" data-dot="photo2_five">
-              <img src="images/photo2_05.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_six" data-dot="photo2_six">
-              <img src="images/photo2_06.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_seven" data-dot="photo2_seven">
-              <img src="images/photo2_07.jpg" alt="">
-              </div>
-              <div class="item" data-hash="photo2_eight" data-dot="photo2_eight">
-              <img src="images/photo2_08.jpg" alt="">
-              </div>
-            </div>
-          </div>
 
-        </div>
-        <!-- #tab2 -->
     </div>
     <!-- .tab_container -->
 </div>
 
-<script type="text/javascript">
-<!--
-$(document).ready(function() {
-    $('#photo2 .owl-carousel').owlCarousel({
-      items: 1,
-  		loop: true,
-  		margin: 0,
-  		nav:true,
-  		dotsData: true,
-  		URLhashListener: true,
-    });
-
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_one", "<a href='#photo2_one'><img src='images/photo2_01.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_two", "<a href='#photo2_two'><img src='images/photo2_02.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_three", "<a href='#photo2_three'><img src='images/photo2_03.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_four", "<a href='#photo2_four'><img src='images/photo2_04.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_five", "<a href='#photo2_five'><img src='images/photo2_05.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_six", "<a href='#photo2_six'><img src='images/photo2_06.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_seven", "<a href='#photo2_seven'><img src='images/photo2_07.jpg'></a>");
-      });
-      $('#photo2 .owl-dot ').html(function(index, html) {
-        return html.replace("photo2_eight", "<a href='#photo2_eight'><img src='images/photo2_08.jpg'></a>");
-      });
-
-});
-// -->
-</script>
 
 
       </div>
