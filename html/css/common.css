@@ -4154,14 +4154,15 @@ footer .copy ul.sns li span {display:none;} */
 }
 
 .charge table {
-  border: 1px solid #ccc;
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
   width: 100%;
 }
 
 .charge table th,
 .charge table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  border: 1px solid #e5e5e5;
+  padding: 10px 12px;
   vertical-align: middle;
   line-height: 1.4em;
   text-align: center;
@@ -4176,7 +4177,65 @@ footer .copy ul.sns li span {display:none;} */
 }
 
 .charge table td {
-  border: 1px solid #ccc;
+  border: 1px solid #e5e5e5;
+  color: #333;
+}
+
+/* 분류(임플란트/보존 …) 구분 헤더 행 */
+.charge table tr.sect th {
+  background: var(--main-color);
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 13px 10px;
+}
+
+/* 대분류(외산/국산/레진 …) */
+.charge table th.cat {
+  background: #afafaf;
+  color: #fff;
+  font-weight: 500;
+  width: 20%;
+}
+
+/* 세부 항목명 */
+.charge table td.item {
+  background: #fff;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 비용 */
+.charge table td.cost {
+  white-space: nowrap;
+  width: 1%;
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+/* 보증기간·비고 */
+.charge table td.note {
+  color: #888;
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+
+.charge table th.cat small {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.charge table td.cost small {
+  color: #888;
+  font-weight: 400;
+  font-size: 0.82em;
+}
+
+.charge table tbody tr:hover td {
+  background: #fff8ef;
 }
 
 @media (max-width: 1200px) {}
@@ -5401,7 +5460,7 @@ footer .copy ul.sns li span {display:none;} */
   box-sizing: border-box;
   float: right;
   overflow: hidden;
-  padding: 80px 40px;
+  padding: 60px 40px;
   /* background: #f2f2f2; */
 }
 
@@ -6209,6 +6268,7 @@ ul.padding_box>li h6 {
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .circle_list li {
@@ -6217,9 +6277,9 @@ ul.padding_box>li h6 {
   box-sizing: border-box;
   /* padding: 0 10px; */
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
 .circle_list li>div {
@@ -6313,7 +6373,7 @@ ul.padding_box>li h6 {
 
 ul.circle_list_2 {
   text-align: center;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   margin: 0 auto;
 }
 
@@ -6443,6 +6503,7 @@ ul.circle_list_2 li p.bg {
   margin-right: -10px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .box_list li {

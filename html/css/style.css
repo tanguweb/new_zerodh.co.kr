@@ -427,6 +427,92 @@ table.line th{padding: 10px 5px;line-height: 1em;}
   .digital .section_05 img {margin-top:20px;}
 }
 
+/* 기공센터 보철물 제작과정 (원형 스텝) */
+.digital_lab{
+  .section_02{
+    .circle_list{
+      flex-wrap: nowrap;
+       li p.bg{
+        height: 150px;
+       }
+    }
+  }
+  .section_03 {
+    .round_box_list{
+      max-width:940px;
+    }
+  }
+  .section_04{
+    .num_list {
+      max-width:1000px;
+      li{
+        > div{
+          display:flex;
+          align-items: center;
+          
+          span.img{
+            img{
+              border-radius:20px;
+              max-width: 300px;
+            }
+          } 
+          dl {
+            dt{
+              padding-top: 0;
+              margin-bottom: 20px;
+              
+              
+              
+              
+              
+              
+              
+              p{
+                margin:0;
+              }
+            }
+            dd{
+              padding:0;
+            }
+          }
+        }
+       
+      }
+
+    }
+  }
+}
+/* .digital_lab .section_02 .circle_list.lab_process {max-width: 1160px; margin: 0 auto; gap: 16px;}
+.digital_lab .section_02 .circle_list.lab_process li {margin-top: 16px;}
+.digital_lab .section_02 .circle_list.lab_process li > div.circle {
+  width: 216px; height: auto; min-height: 260px; border-radius: 28px; padding: 0;
+  display: flex; flex-direction: column;
+}
+.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 {
+  margin: 0; padding: 32px 15px; line-height: 1.2;
+}
+.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .num {
+  display: block; font-size: 1.9em; line-height: 1; margin-bottom: 12px; opacity: .95;
+}
+.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .tit {
+  display: block; font-size: 21px; font-weight: 700;
+}
+.digital_lab .section_02 .circle_list.lab_process li p.bg {
+  flex: 1; width: 100%; height: auto; display: flex; align-items: center; justify-content: center;
+  padding: 24px 22px; font-size: 15px; line-height: 1.55; word-break: keep-all;
+}
+@media screen and (max-width: 767px) {
+  .digital_lab .section_02 .circle_list.lab_process {gap: 14px 10px;}
+  .digital_lab .section_02 .circle_list.lab_process li {width: 47% !important; margin-top: 12px;}
+  .digital_lab .section_02 .circle_list.lab_process li > div.circle {
+    width: 100%; min-height: 0; border-radius: 18px;
+  }
+  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 {padding: 20px 10px;}
+  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .num {font-size: 1.6em; margin-bottom: 8px;}
+  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .tit {font-size: 16px;}
+  .digital_lab .section_02 .circle_list.lab_process li p.bg {padding: 16px 12px; font-size: 14px;}
+} */
+
 
 /* ///////////////////////////////////// 임플란트  /////////////////////////////////////*/
 
@@ -495,7 +581,7 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .implant_01 .section_04 ul.two>li>div {
   border: 2px solid #999;
   border-radius: 30px;
-  padding: 70px 50px 50px;
+  padding: 70px 40px 50px;
 }
 
 .implant_01 .section_04 ul.two>li>div h3 {
@@ -573,12 +659,12 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .implant_02 .section_01 ul.two li {padding:0 0 0 10px ; -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
 .implant_02 .section_01 ul.two li:first-child {padding: 0 10px 0 0 ; }
 .implant_02 .section_01 ul.two li h4{margin-top: -50px;}
-.implant_02 .section_01 ul.two li h4 > span{background: #626eb7;color: #fff;padding: 10px 20px;line-height: 1em;display: inline-block;border-radius: 10px;}
+.implant_02 .section_01 ul.two li h4 > span{background: var(--main-color);color: #fff;padding: 10px 20px;line-height: 1em;display: inline-block;border-radius: 10px;}
 .implant_02 .section_01 ul.two li:first-child h4 > span{background: #6d6d6d;}
 .implant_02 .section_01 ul.two li h6 {font-weight:400}
-.implant_02 .section_03 ul.num_list{max-width: 1130px;}
+.implant_02 .section_03 ul.num_list{max-width: 1180px;}
 .implant_02 .section_03 ul.num_list li {border: 0;padding: 10px;}
-.implant_02 .section_05 ul.num_list {max-width: 800px;}
+.implant_02 .section_05 ul.num_list {max-width: 807px;}
 .implant_02 .section_07 .round_box {margin-top: 100px;background: #f5f6f9;}
 .implant_02 .section_07 .round_box .step_list {margin-bottom: 20px;}
 .implant_02 .section_07 h4 {margin-top:-45px;}
@@ -609,20 +695,25 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .implant_07 .section_01 .inwrap > ul {margin-top: -106px;}
 .implant_07 .section_02 .inwrap > ul li {display: inline-block;}
 .implant_07 .section_02 .inwrap > ul > li > h5 {background: #aaa;margin:0 10px 20px;padding: 10px;color: #fff; border-radius: 50px;}
-.implant_07 .section_02 .inwrap > ul > li:last-child > h5{background: #2b3990 ;}
+.implant_07 .section_02 .inwrap > ul > li:last-child > h5{background: var(--main-color);}
 .implant_07 .section_02 .inwrap > ul > li:first-child > ul > li{position:relative;}
 .implant_07 .section_02 .inwrap > ul > li > ul > li >  div {width: 150px;height: 150px;border: 5px solid #aaa;margin: 0 20px;border-radius: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;padding: 42px 0px;}
 .implant_07 .section_02 .inwrap > ul > li:first-child > ul > li:after{content: '\E85A';font-family:'icon_font';position: absolute;right: -9px;top: 50%;font-size: 2em;margin-top: -24px;color: #aaa;}
-.implant_07 .section_02 .inwrap > ul > li:last-child > ul > li > div{border-color:#2b3990 ;}
+.implant_07 .section_02 .inwrap > ul > li:last-child > ul > li > div{border-color: var(--main-color);}
 .implant_07 .section_02 .inwrap > ul > li > ul > li >  div h5 {line-height:1.2;}
 .implant_07 .section_02 .inwrap > ul > li > ul > li >  div p {margin-top: 0;}
 .implant_07 .section_03 table{width: 100%;}
 .implant_07 .section_03 table th {padding: 10px;font-size: 1em;}
 .implant_07 .section_03 table tr td{text-align: center;padding: 10px;font-weight: 400;}
 .implant_07 .section_03 table tr td:first-child{font-size: 1.2em;font-weight: 400;background: #282828;color: #fff;border: 1px solid #282828;}
-.implant_07 .section_03 table tr.day td:first-child {border: 3px solid #626eb7;background: #626eb7;border-right: 0;}
-.implant_07 .section_03 table tr.day td:nth-child(2) {border: 3px solid #2b3990 ;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 1px solid #2b3990 ;}
+.implant_07 .section_03 table tr.day td:first-child {border: 3px solid var(--main-color);background: var(--main-color);border-right: 0;}
+.implant_07 .section_03 table tr.day td:nth-child(2) {border: 3px solid var(--main-color);-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 1px solid var(--main-color);}
 .implant_07 .section_04 ul.num_list{max-width: 1090px;}
+.implant_07 .section_06 {
+  .circle_list {
+    display: block;
+  }
+}
 
 
 @media screen and (max-width:  767px) {
@@ -653,11 +744,11 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .implant_05 .section_05 ul.two {overflow: hidden;position: relative;}
 .implant_05 .section_05 ul.two > li h4{margin-bottom: -25px;}
 .implant_05 .section_05 ul.two > li h4 > span {margin-bottom: 0;position: relative;}
-.implant_05 .section_05 ul.two > li h4 >span {margin-bottom: 0;position: relative;background: #626eb7;color: #fff;padding: 10px 20px;line-height: 1em;display: inline-block;border-radius: 10px;}
-.implant_05 .section_05 ul.two > li:first-child h4 >span {background: #6d6d6d;}
+.implant_05 .section_05 ul.two > li h4 >span {margin-bottom: 0;position: relative;background: var(--main-color);color: #fff;padding: 10px 20px;line-height: 1em;display: inline-block;border-radius: 10px;}
+.implant_05 .section_05 ul.two > li:first-child h4 >span {background: var(--sub-color);}
 .implant_05 .section_05 ul.two > li > div{margin: 0 20px;}
-.implant_05 .section_05 ul.two > li:first-child:after {content: 'vs';position: absolute;left: 50%;margin-left: -50px;top: 50%;margin-top: -50px;font-size: 4em;background: #9fa8e1;display: block;color: #fff;width: 100px;height: 100px;line-height: 81px;border-radius: 100px;letter-spacing: -1px;padding-right: 0px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
-.implant_05 .section_05 ul.two > li > div{border: 2px solid #999;border-radius: 30px;padding: 70px 40px 50px;}
+.implant_05 .section_05 ul.two > li:first-child:after {content: 'vs';position: absolute;left: 50%;margin-left: -50px;top: 50%;margin-top: -50px;font-size: 4em;background: #6d6d6d;display: block;color: #fff;width: 100px;height: 100px;line-height: 81px;border-radius: 100px;letter-spacing: -1px;padding-right: 0px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.implant_05 .section_05 ul.two > li > div{border: 2px solid #999;border-radius: 30px;padding: 70px 30px 50px;}
 .implant_05 .section_05 ul.two > li > div h3 {padding-bottom: 10px;border-bottom: 2px dashed #ccc;margin-bottom: 30px;margin-top: 10px;}
 .implant_05 .section_05 ul.two > li > div img {margin-bottom: 20px;}
 .implant_05 .section_06 .circle_list {max-width: 860px;margin-left: auto;margin-right: auto;}
@@ -757,8 +848,16 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 /* 임플란트 틀니 */
 .implant_04 .section_02 table td img{max-width: 350px;}
 .implant_04 .section_02 table thead th:nth-child(2) {background: #525252;}
-.implant_04 .section_02 table thead th:nth-child(3) {background: #626eb7;}
-.implant_04 .section_05 .num_list {max-width: 1050px; overflow: hidden;}
+.implant_04 .section_02 table thead th:nth-child(3) {background: var(--main-color);}
+.implant_04 .section_04 {
+  .circle_list {
+    display:block;
+    li{
+      display:block;
+    }
+  }
+}
+.implant_04 .section_05 .num_list {max-width: 1056px;overflow: hidden;}
 .implant_04 .section_05 .num_list .round_box {overflow: hidden;display: flex;align-items: center;
                                              dt{
                                                margin-bottom:0;
@@ -782,8 +881,8 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 /* uv임플란트 */
 .implant_10 .section_04 table.line thead th:nth-child(2)  ,.implant_10 .section_04 table.line  td:nth-child(2) {background: #a4a4a4;/* border: 1px solid #888; */color:#fff;}
 .implant_10 .section_04 table.line  td:nth-child(1){border-right: #888;}
-.implant_10 .section_04 table.line thead th:nth-child(1){background: #382c2c;}
-.implant_10 .section_04 table.line thead th:nth-child(3) {background: #a4825d;border-color: #a4825d;}
+.implant_10 .section_04 table.line thead th:nth-child(1){background: var(--sub-color);}
+.implant_10 .section_04 table.line thead th:nth-child(3) {background: var(--main-color);border-color: var(--main-color);}
 @media screen and (max-width:  767px) {
   .implant_10 .section_04 table.line thead th:nth-child(2){width: 50px;}
   .implant_10 .section_04 table.line td{padding: 10px 5px;}
@@ -1061,9 +1160,9 @@ table.line th{padding: 10px 5px;line-height: 1em;}
   .beauty_01 .section_06 .step_list.four li {width:100% !important;}
 }
 /* 올세라믹 */
-.beauty_02 .section_03 .circle_list {max-width: 1000px; margin: 0 auto;}
+.beauty_02 .section_03 .circle_list_2 {max-width: 970px;margin: 0 auto;/* flex-wrap: nowrap; */}
 .beauty_02 .section_04 table.line thead th:nth-child(2){background: #6d6d6d;border-color: #6d6d6d;}
-.beauty_02 .section_04 table.line thead th:nth-child(1){background: #626eb7;border-color: #626eb7;}
+.beauty_02 .section_04 table.line thead th:nth-child(1){background: var(--main-color);border-color: var(--main-color);}
 .beauty_02 .section_05 .circle_list {margin-top: -105px;}
 .beauty_02 .section_06 .box_list li {float: none; display: inline-block;}
 
@@ -1072,10 +1171,13 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 }
 
 /* 치아미백 */
-.beauty_03 .section_04 table thead th{/* color: #222; */padding:20px 0;text-align: center;border-bottom: 1px solid #888;vertical-align: middle;font-weight: 500;background: #4d4d4d;border: 0;}
-.beauty_03 .section_04 table thead td{color: #fff;text-align: center;border-bottom: 1px solid #8a96de;vertical-align: middle;font-weight: 500;background: #626eb7;}
+.beauty_03 .section_04 table thead th{/* color: #222; */padding:20px 0;text-align: center;border-bottom: 1px solid #888;vertical-align: middle;font-weight: 500;background: var(--sub-color);border: 0;}
+.beauty_03 .section_04 table thead th:last-child{
+  background: var(--main-color);
+}
+.beauty_03 .section_04 table thead td{color: #fff;text-align: center;/* border-bottom: 1px solid #8a96de; */vertical-align: middle;font-weight: 500;background: #818181;}
 .beauty_03 .section_04 table tbody td{border-bottom: 1px solid #ddd;padding: 20px 0px;}
-.beauty_03 .section_04 table tbody th{padding: 20px 10px;border-bottom: 1px solid var(--p-border-color);background: var(--sub-color);color: #fff;font-weight: 500;vertical-align: middle;}
+.beauty_03 .section_04 table tbody th{padding: 20px 10px;border-bottom: 1px solid #fff;background: #afafaf;color: #fff;font-weight: 500;vertical-align: middle;}
 @media screen and (max-width:  767px) {
   .beauty_03 .section_04 table thead th {padding: 10px 0}
   .beauty_03 .section_04 table tbody td {padding: 10px 5px;line-height: 1.3em;border-left: 0;}
@@ -1220,7 +1322,7 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 /* 잇몸미백 */
 /* .beauty_05 .section_01 .circle_list {margin-top: -105px;} */
 .beauty_05 .section_01 ul.circle_list_2 li{padding:0 5px;}
-.beauty_05 .section_01 ul.circle_list_2 li div.circle {width: 175px;height: 175px;padding-top: 15px;}
+.beauty_05 .section_01 ul.circle_list_2 li div.circle {width: 175px;height: 175px;padding-top: 3px;}
 .beauty_05 .section_01 ul.circle_list_2 li div.circle i {padding-bottom:15px;display: block;}
 .beauty_05 .section_01 ul.circle_list_2 li p.bg{height: 77px;}
 
@@ -1850,53 +1952,82 @@ flex: 2;
 #sub.intro .life_phil .phil_logo {display: inline-flex;width: 120px;height: 120px;margin-top: 36px;background: var(--main-color);border-radius: 10px;align-items: center;justify-content: center;}
 #sub.intro .life_phil .phil_logo img {width: 74px;height: auto;}
 #sub.intro .life_phil .phil_img {flex: 1;position: relative;}
-#sub.intro .life_phil .phil_img img {width: 100%;display: block;border-radius: 12px;box-shadow: 0 22px 45px rgba(0, 0, 0, .14);position: relative;z-index: 2;}
-#sub.intro .life_phil .phil_img:after {content: '';position: absolute;right: -28px;bottom: -28px;width: 70%;height: 75%;background: #e7f1f3;border-radius: 12px;z-index: 1;}
+#sub.intro .life_phil .phil_img img {width: 100%;display: block;border-radius: 12px;position: relative;z-index: 2;}
+#sub.intro .life_phil .phil_img:after {content: '';position: absolute;right: -28px;bottom: -28px;width: 70%;height: 75%;background: #fdf2e2;border-radius: 12px;z-index: 1;}
 
 /* 2. ZERO'S CHALLENGE */
-#sub.intro .life_challenge .ch_list {max-width: 860px;margin: 0 auto;display: grid;grid-template-columns: repeat(2, 1fr);gap: 14px;}
-#sub.intro .life_challenge .ch_list li {display: flex;align-items: center;justify-content: center;gap: 8px;padding: 22px 24px;background: #fff;border: 1px solid #e5edee;border-radius: 12px;box-shadow: 0 6px 16px rgba(0, 0, 0, .04);transition: all .3s;}
-#sub.intro .life_challenge .ch_list li:hover {border-color: var(--main-color);transform: translateY(-4px);box-shadow: 0 12px 24px rgba(0, 0, 0, .07);}
+#sub.intro .life_challenge .ch_list {max-width: 900px;margin: 0 auto;display: grid;grid-template-columns: repeat(2, 1fr);gap: 16px;}
+#sub.intro .life_challenge .ch_list li {display: flex;align-items: center;justify-content: center;padding: 26px 28px;background: #fff;border: 1px solid #eee3d3;border-radius: 16px;transition: transform .3s ease, border-color .3s ease;}
+#sub.intro .life_challenge .ch_list li:hover {border-color: var(--main-color);transform: translateY(-5px);}
 #sub.intro .life_challenge .ch_list li:last-child {grid-column: 1 / -1;}
+#sub.intro .life_challenge .ch_list li p {margin: 0;text-align: center;font-size: 23px;font-weight: 500;color: #333;line-height: 1.35;}
+#sub.intro .life_challenge .ch_zero {font-family: 'Noto Sans KR', sans-serif;font-size: 1.5em;font-weight: 700;color: var(--main-color);vertical-align: -0.04em;margin: 0 2px;}
 
-/* 3. 5가지 핵심가치 */
-#sub.intro .life_value .val_list {display: flex;flex-wrap: wrap;justify-content: center;row-gap: 30px;}
-#sub.intro .life_value .val_list li {width: 25%;box-sizing: border-box;text-align: center;padding: 0 15px;}
-#sub.intro .life_value .circle {position: relative;width: 195px;height: 195px;margin: 0 auto 26px;border-radius: 50%;border: 2px solid #cdd7d9;display: flex;flex-direction: column;align-items: center;justify-content: center;transition: all .3s;}
-#sub.intro .life_value .val_list li:nth-child(2n) .circle {border-color: var(--main-color);}
-#sub.intro .life_value .circle:hover {border-color: var(--main-color);transform: translateY(-6px);box-shadow: 0 14px 30px rgba(0, 0, 0, .08);}
-#sub.intro .life_value .circle .label {margin-bottom: 8px;}
+/* 3. 진료 가치 (CORE VALUE) */
+#sub.intro .life_value .val_list {display: flex;flex-wrap: wrap;justify-content: center;row-gap: 40px;}
+#sub.intro .life_value .val_list li {width: 25%;box-sizing: border-box;text-align: center;padding: 0 18px;}
+#sub.intro .life_value .circle {position: relative;width: 200px;height: 200px;margin: 14px auto 24px;border-radius: 50%;border: 2px solid #e6ddcf;background: #fff;display: flex;flex-direction: column;align-items: center;justify-content: center;transition: transform .35s ease, border-color .35s ease, background .35s ease;}
+#sub.intro .life_value .circle:before {content: attr(data-idx);position: absolute;top: -20px;left: 50%;transform: translateX(-50%);width: 46px;height: 46px;border-radius: 50%;background: var(--main-color);color: #fff;font-family: 'Noto Sans KR', sans-serif;font-size: 18px;font-weight: 700;display: flex;align-items: center;justify-content: center;}
+#sub.intro .life_value .circle .label {margin-bottom: 8px;font-weight: 600;letter-spacing: .06em;transition: color .35s ease;}
+#sub.intro .life_value .circle h5 {transition: color .35s ease;}
+#sub.intro .life_value .circle:hover {border-color: var(--main-color);background: var(--main-color);transform: translateY(-8px);}
+#sub.intro .life_value .circle:hover .label {color: #fff !important;}
+#sub.intro .life_value .circle:hover h5 {color: #fff;}
+#sub.intro .life_value .val_list li > p {font-size: 16px;color: #666;line-height: 1.6;}
 
 /* 4. 5가지 강점 */
-#sub.intro .life_strength {background: #f6fafb;}
+#sub.intro .life_strength {background: #faf7f2;}
 #sub.intro .life_strength .st_inner {display: flex;gap: 60px;align-items: center;text-align: left;}
 #sub.intro .life_strength .st_left {flex: 1;min-width: 0;}
 #sub.intro .life_strength .st_left .title {text-align: left;margin-bottom: 36px;}
-#sub.intro .life_strength .st_list li {display: flex;gap: 20px;align-items: flex-start;background: #fff;border-radius: 12px;padding: 22px 26px;margin-bottom: 14px;box-shadow: 0 6px 18px rgba(0, 0, 0, .05);}
-#sub.intro .life_strength .st_list li .no {flex: 0 0 auto;width: 44px;height: 44px;border-radius: 50%;background: var(--main-color);color: #fff;display: flex;align-items: center;justify-content: center;}
+#sub.intro .life_strength .st_left .title:before, #sub.intro .life_strength .st_left .title:after{
+  display:none;
+}
+#sub.intro .life_strength .st_list li {display: flex;gap: 22px;align-items: flex-start;background: #fff;border-radius: 16px;padding: 24px 28px;margin-bottom: 16px;border: 1px solid #eee3d3;transition: transform .3s ease, border-color .3s ease;}
+#sub.intro .life_strength .st_list li:hover {transform: translateX(6px);border-color: var(--main-color);}
+#sub.intro .life_strength .st_list li .no {flex: 0 0 auto;width: 58px;height: 58px;border-radius: 50%;background: var(--main-color);color: #fff;font-family: 'Noto Sans KR', sans-serif;font-size: 26px;font-weight: 700;display: flex;align-items: center;justify-content: center;}
 #sub.intro .life_strength .st_list li h4 {margin-bottom: 6px;}
 #sub.intro .life_strength .st_img {flex: 0 0 360px;}
-#sub.intro .life_strength .st_img img {width: 100%;display: block;border-radius: 14px;box-shadow: 0 18px 36px rgba(0, 0, 0, .15);}
+#sub.intro .life_strength .st_img img {width: 100%;display: block;border-radius: 14px;}
+#sub.intro .life_strength .st_list li:nth-child(2n) {
+  .no{
+    background: var(--sub-color);
+  }  
+  h4{
+    color: var(--sub-color);
+  }
 
+}
 @media screen and (max-width: 767px) {
   #sub.intro .life_phil .phil_inner {flex-direction: column;gap: 36px;text-align: center;}
   #sub.intro .life_phil .phil_img:after {display: none;}
-  #sub.intro .life_challenge .ch_list {grid-template-columns: 1fr;gap: 10px;}
-  #sub.intro .life_value .val_list {row-gap: 36px;}
-  #sub.intro .life_value .val_list li {width: 50%;}
-  #sub.intro .life_value .circle {width: 150px;height: 150px;}
+  #sub.intro .life_challenge .ch_list {grid-template-columns: 1fr;gap: 12px;}
+  #sub.intro .life_challenge .ch_list li {padding: 20px;}
+  #sub.intro .life_challenge .ch_list li p {font-size: 19px;}
+  #sub.intro .life_value .val_list {row-gap: 40px;}
+  #sub.intro .life_value .val_list li {width: 50%;padding: 0 10px;}
+  #sub.intro .life_value .circle {width: 155px;height: 155px;}
   #sub.intro .life_strength .st_inner {flex-direction: column;gap: 34px;}
   #sub.intro .life_strength .st_left .title {text-align: center;}
+  #sub.intro .life_strength .st_list li:hover {transform: none;}
   #sub.intro .life_strength .st_img {flex: none;width: 100%;order: -1;}
+}
+
+/* 접근성 : 모션 최소화 설정 존중 */
+@media (prefers-reduced-motion: reduce) {
+  #sub.intro .life_challenge .ch_list li,
+  #sub.intro .life_value .circle,
+  #sub.intro .life_strength .st_list li {transition: none;}
+  #sub.intro .life_challenge .ch_list li:hover,
+  #sub.intro .life_value .circle:hover,
+  #sub.intro .life_strength .st_list li:hover {transform: none;}
 }
 
 
 .bruxism{
-  .section_04{
-    .box_list{
-      p{
-        
-      }
+  .section_06{
+    .circle_list{
+      flex-wrap: nowrap;
     }
   }
 }
@@ -1918,7 +2049,97 @@ flex: 2;
       }
     }
   }
+  .section_05 {
+    .circle_list {
+     flex-wrap: nowrap;
+    }
+  }
+  .section_06 {
+    .circle_list {
+      flex-wrap: nowrap;
+      }
+    }
 }
+
+.resin{
+  .section_03 {
+    .box_list {
+      li{
+        > div{
+          img{
+
+            border:1px solid #e5e5e5;
+            border-bottom: 0;
+            border-radius: 20px  20px 0 0;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+          }
+        }
+      }
+    }
+  }
+}
+
+.prf{
+  .section_03 {
+    .circle_list{
+      display:flex;
+      flex-wrap: nowrap;
+      
+      li{
+        display:block;
+      }
+    }
+  }
+}
+
+.uv{
+  .section_06 {
+    .circle_list{
+    
+      flex-wrap: nowrap;
+      li{
+        display:block;
+      }
+    }
+  }
+}
+
+.sleep_01{
+  .section_08{
+    .circle_list{
+      flex-wrap: nowrap;
+      
+    }
+  }
+}
+
+.botox{
+  .section_06 {
+    .circle_list{
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+.pediatric{
+  .section_04 {
+    .circle_list {
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+.oneday{
+  .section_05  {
+    .circle_list {
+      flex-wrap: nowrap;
+    }
+  }
+}
+
 
   /* ///////////////////////////////////// END  /////////////////////////////////////*/
 
