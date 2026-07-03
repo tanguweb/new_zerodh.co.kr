@@ -3,7 +3,7 @@
 
 
 /* table.line */
-table.line{max-width: 1000px;margin:0 auto;background: #fff;width: 100%;}
+table.line{max-width: 1000px;margin:0 auto;background: #fff;width: 100%;/* border-left: 1px solid #ddd; */}
 table.line th {background: #aaa;border: 1px solid #ccc;padding: 15px;font-weight: 400;color: #fff;vertical-align: middle;}
 table.line tr td{border: 1px solid #ccc;text-align: center;padding: 20px;font-weight: 400;vertical-align: middle;}
 table.line thead th {border-color: #cacaca;font-size: 1.2em;font-weight: 500;font-family: 'S-CoreDream';}
@@ -159,8 +159,8 @@ table.line th{padding: 10px 5px;line-height: 1em;}
   .time table tr th:nth-child(1) span em {height:88px}
   .time table tr td p{height:30px;line-height:30px;margin: 5px -1px;text-align:center;font-size: 12px;}
   .time dl{font-size: 1.1em;padding: 20px 0px;margin-top: 20px;margin-bottom: 0;}
-  .time dl dt{width: 62px;margin-right: 0;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;padding-right: 10px;letter-spacing: -2px;}
-  .time dl dd{width: 189px;letter-spacing: -1px;}
+  .time dl dt{width: 62px;margin-right: 0;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;/* padding-right: 10px; */letter-spacing: -2px;}
+  .time dl dd{width: 189px;letter-spacing: -1px;margin-left: 10px;}
   .time dl dd.last {width: 197px;}
   .info_time .counsel {padding: 0;width: 270px;margin: 20px auto 0;}
   .info_time .counsel .inwrap {margin:0 20px}
@@ -173,12 +173,12 @@ table.line th{padding: 10px 5px;line-height: 1em;}
   .info_time .section_01 .center_icon_list{margin-top:0}
 }
 
-.price table.line {border-top: 3px solid #2b3990 ;}
+.price table.line {border-top: 3px solid var(--main-color);}
 .price .inwrap {max-width: 1000px;}
-.price .section_02 h5 {color:#2b3990 ; font-size:1.4em;}
+.price .section_02 h5 {color: var(--main-color);font-size:1.4em;}
 .price .section_02 h6{font-weight: 500;}
 .price dl dt {font-size: 1.2em;margin-bottom: 5px;font-weight: 500;padding-left: 20px;position: relative;}
-.price dl dt:before {content:'*';color:#2b3990 ;font-size: 1.3em;position: absolute;top: 5px;left:0;}
+.price dl dt:before {content:'*';color: var(--main-color);font-size: 1.3em;position: absolute;top: 5px;left:0;}
 .price dl dd {padding-left: 20px;    position: relative;}
 .price dl dd:before {content:'·';color:#181818;font-size: 1.3em;position: absolute;top: 1px;left: 3px;line-height: 1.0em;}
 
@@ -482,38 +482,98 @@ table.line th{padding: 10px 5px;line-height: 1em;}
     }
   }
 }
-/* .digital_lab .section_02 .circle_list.lab_process {max-width: 1160px; margin: 0 auto; gap: 16px;}
-.digital_lab .section_02 .circle_list.lab_process li {margin-top: 16px;}
-.digital_lab .section_02 .circle_list.lab_process li > div.circle {
-  width: 216px; height: auto; min-height: 260px; border-radius: 28px; padding: 0;
-  display: flex; flex-direction: column;
-}
-.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 {
-  margin: 0; padding: 32px 15px; line-height: 1.2;
-}
-.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .num {
-  display: block; font-size: 1.9em; line-height: 1; margin-bottom: 12px; opacity: .95;
-}
-.digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .tit {
-  display: block; font-size: 21px; font-weight: 700;
-}
-.digital_lab .section_02 .circle_list.lab_process li p.bg {
-  flex: 1; width: 100%; height: auto; display: flex; align-items: center; justify-content: center;
-  padding: 24px 22px; font-size: 15px; line-height: 1.55; word-break: keep-all;
-}
+
 @media screen and (max-width: 767px) {
-  .digital_lab .section_02 .circle_list.lab_process {gap: 14px 10px;}
-  .digital_lab .section_02 .circle_list.lab_process li {width: 47% !important; margin-top: 12px;}
-  .digital_lab .section_02 .circle_list.lab_process li > div.circle {
-    width: 100%; min-height: 0; border-radius: 18px;
+  .digital_lab{
+    #dg_one{
+      img + .title{
+        margin-bottom: 80px;
+      }
+
+    }
   }
-  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 {padding: 20px 10px;}
-  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .num {font-size: 1.6em; margin-bottom: 8px;}
-  .digital_lab .section_02 .circle_list.lab_process li > div.circle h4 .tit {font-size: 16px;}
-  .digital_lab .section_02 .circle_list.lab_process li p.bg {padding: 16px 12px; font-size: 14px;}
-} */
+} 
 
+@media (max-width: 767px) {
 
+.digital_lab{
+  .section_02{
+    .circle_list{
+      flex-wrap: wrap;
+       li {
+         .circle{
+           height:auto;
+           width: 100%;
+           
+           
+           
+           
+           p.bg{
+            height: auto;
+            padding: 15px;
+            }  
+         }
+         
+       }
+    }
+  }
+  .section_03 {
+    .round_box_list{
+      max-width:940px;
+    }
+  }
+  .section_04{
+    .num_list {
+      max-width:1000px;
+      li{
+        padding: 30px 0;
+        
+        
+        > div{
+          display:flex;
+          align-items: center;
+          flex-direction: column;
+          
+          
+          span.img{
+            margin:0;
+            img{
+              border-radius:20px;
+              max-width: 300px;
+              margin: 0 auto;
+            }
+          } 
+          dl {
+            dt{
+              padding-top: 20px;
+              margin-bottom: 20px;
+              padding-left: 0;
+              text-align: center;
+              
+              
+              
+              
+              
+              
+              
+              
+
+              p{
+                margin:0;
+              }
+            }
+            dd{
+              padding:0;
+            }
+          }
+        }
+       
+      }
+
+    }
+  }
+}
+}
 /* ///////////////////////////////////// 임플란트  /////////////////////////////////////*/
 
 
@@ -717,10 +777,11 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 
 
 @media screen and (max-width:  767px) {
-  .implant_07 .section_01 .inwrap > ul.circle_list_2{margin-top: -46px;}
-  .implant_07 .section_01 .inwrap > ul.circle_list_2 li div.circle {width:90px; height:90px;}
-  .implant_07 .section_01 .inwrap > ul.circle_list_2 li div.circle h4{margin:0 0 5px;}
-  .implant_07 .section_01 .inwrap > ul.circle_list_2 li p.bg{height:50px}
+  .implant_07 .section_01 .inwrap > ul.circle_list_2{margin-top: 4px;gap: 5px;}
+  .implant_07 .section_01 .inwrap > ul.circle_list_2 li {width: auto !important;}
+  .implant_07 .section_01 .inwrap > ul.circle_list_2 li div.circle {width:90px;height:90px;padding: 0;}
+  .implant_07 .section_01 .inwrap > ul.circle_list_2 li div.circle h4{margin: 0;}
+  .implant_07 .section_01 .inwrap > ul.circle_list_2 li p.bg{height: 70px;margin-top: 7px;padding-top: 5px;}
   .implant_07 .section_02 .inwrap > ul {max-width:300px; margin:0 auto;}
   .implant_07 .section_02 .inwrap > ul > li {display: block;}
   .implant_07 .section_02 .inwrap > ul > li > h5{display: block;margin: 0;}
@@ -732,10 +793,16 @@ table.line th{padding: 10px 5px;line-height: 1em;}
   .implant_07 .section_03 table tr td{padding: 5px 0;}
   .implant_07 .section_03 table tr td:first-child{font-size: 1em;}
   .implant_07 .section_04 ul.num_list.two > li > div{padding:8px;}
+  .implant_07 .section_06 .circle_list {
+    > li{
+      width: 48% !important;
+    }
+    
+  }
 }
 
 @media screen and (max-width:  375px) {
-  .implant_07 .section_01 ul.circle_list_2 li:last-child {margin-top: -15px}
+  .implant_07 .section_01 ul.circle_list_2 li:last-child {/* margin-top: -15px; */}
 }
 
 /* 무치악 임플란트 */
@@ -866,7 +933,7 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .implant_04 .section_05 ul.num_list dt{line-height: 60px;}
 @media screen and (max-width:  767px) {
 .implant_04 .section_02 table td img{max-width:100%; }
-.implant_04 .section_05 ul.num_list dt{line-height: 1.4em; margin-top: 5px;}
+.implant_04 .section_05 ul.num_list dt{line-height: 1.4em;margin-top: 5px;padding: 0;}
 }
 
 
@@ -886,7 +953,7 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 @media screen and (max-width:  767px) {
   .implant_10 .section_04 table.line thead th:nth-child(2){width: 50px;}
   .implant_10 .section_04 table.line td{padding: 10px 5px;}
-  .implant_10 .section_06 ul.five li {width: 50% !important;float: none;padding: 0 5px;}
+  .implant_10 .section_06 ul.five li {/* width: 50% !important; *//* float: none; *//* padding: 0 5px; */}
 }
 
 /* 네비게이션 임플란트 */
@@ -1167,7 +1234,12 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .beauty_02 .section_06 .box_list li {float: none; display: inline-block;}
 
 @media screen and (max-width:  767px) {
-  .beauty_02 .section_05 .circle_list {margin-top: 10px;}
+  .beauty_02 .section_05 .circle_list {
+    margin-top: 10px;
+    > li {
+      width: 48% !important;
+    }
+  }
 }
 
 /* 치아미백 */
@@ -1179,8 +1251,8 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .beauty_03 .section_04 table tbody td{border-bottom: 1px solid #ddd;padding: 20px 0px;}
 .beauty_03 .section_04 table tbody th{padding: 20px 10px;border-bottom: 1px solid #fff;background: #afafaf;color: #fff;font-weight: 500;vertical-align: middle;}
 @media screen and (max-width:  767px) {
-  .beauty_03 .section_04 table thead th {padding: 10px 0}
-  .beauty_03 .section_04 table tbody td {padding: 10px 5px;line-height: 1.3em;border-left: 0;}
+  .beauty_03 .section_04 table thead th {padding: 10px 0;}
+  .beauty_03 .section_04 table tbody td {padding: 10px 5px;line-height: 1.3em;border-left: 0;border-left: 1px solid #ddd;}
   .beauty_03 .section_04 table tbody th {padding: 10px 5px}
 }
 
@@ -1315,7 +1387,12 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 }
 
 @media screen and (max-width:  767px) {
-  .beauty_04 .section_03 .circle_list {margin-top: 10px;}
+  .beauty_04 .section_03 .circle_list {
+    margin-top: 10px;
+    li {
+      width:48% !important;
+    }
+  }
 
 }
 
@@ -1331,9 +1408,10 @@ table.line th{padding: 10px 5px;line-height: 1em;}
 .beauty_05 .section_04 .num_list span.num {height: 40px;width: 40px;font-size: 30px;line-height: 40px;vertical-align: middle;}
 .beauty_05 .section_04 ul.num_list p{margin-top:0}
 @media screen and (max-width:  767px) {
-  .beauty_05 .section_01 ul.circle_list_2 li div.circle{width:125px;height:125px;padding: 10px 0 0;}
-  .beauty_05 .section_01 ul.circle_list_2 li div.circle i{padding-bottom:10px}
-  .beauty_05 .section_01 ul.circle_list_2 li p.bg{height: 57px;}
+  .beauty_05 .section_01 ul.circle_list_2 li{width:auto !important;}
+  .beauty_05 .section_01 ul.circle_list_2 li div.circle{width: 130px;height:125px;padding: 0;}
+  .beauty_05 .section_01 ul.circle_list_2 li div.circle i{padding-bottom: 0;}
+  .beauty_05 .section_01 ul.circle_list_2 li p.bg{height: 57px;padding: 15px 0;}
   .beauty_05 .section_04 ul.num_list p{line-height:1.4}
 
 }
@@ -1663,6 +1741,24 @@ flex: 2;
   .general_05 .section_02 .round_box_list li .round_box .img_wrap img {margin-bottom: 15px;}
   .general_05 .section_02 .round_box_list li .round_box > ul li{display:block;margin: 10px 0;}
   .general_05 .round_box_list li .round_box h5 {text-align:center;}
+  .general_05 .section_03, .general_05 .section_04  {
+  .round_box_list {
+    li{
+      .round_box{
+        display:flex;
+        flex-direction: column;
+        .img_wrap{
+
+           margin: 0;
+           max-width: 100%;
+
+        }    
+      }
+    }
+    
+  }
+}
+  
   .general_05 .section_05 .round_box_list.two li {width:100% !important;}
   .general_05 .section_05 .round_box_list li .round_box .img_wrap{max-width: 100%;margin-right: 0;width: 100%;}
   .general_05 .section_05 .round_box_list li .round_box .img_wrap img {width:100%;margin-bottom: 15px;}
@@ -2005,12 +2101,13 @@ flex: 2;
   #sub.intro .life_challenge .ch_list li {padding: 20px;}
   #sub.intro .life_challenge .ch_list li p {font-size: 19px;}
   #sub.intro .life_value .val_list {row-gap: 40px;}
-  #sub.intro .life_value .val_list li {width: 50%;padding: 0 10px;}
-  #sub.intro .life_value .circle {width: 155px;height: 155px;}
+  #sub.intro .life_value .val_list li {width: 50%;padding: 0;}
+  #sub.intro .life_value .circle {width: 125px;height: 125px;margin-bottom: 10px;}
   #sub.intro .life_strength .st_inner {flex-direction: column;gap: 34px;}
   #sub.intro .life_strength .st_left .title {text-align: center;}
   #sub.intro .life_strength .st_list li:hover {transform: none;}
   #sub.intro .life_strength .st_img {flex: none;width: 100%;order: -1;}
+  #sub.intro .life_value .val_list li > p{font-size:14px;}
 }
 
 /* 접근성 : 모션 최소화 설정 존중 */
@@ -2139,7 +2236,91 @@ flex: 2;
     }
   }
 }
+@media (max-width: 767px) {
+.pediatric{
+  .section_04 {
+    .circle_list {
+      flex-wrap: wrap;
+    }
+  }
+}
+.sleep_01 {
+  & .section_08 {
+    .circle_list {
+      flex-wrap: wrap;
+    }
+  }
+}
+.oneday{
+  .section_05  {
+    .circle_list {
+      flex-wrap: wrap;
+    }
+  }
+}
 
+  .prf{
+  .section_03 {
+    .circle_list{
+      flex-wrap:wrap;
+    }
+  }
+}
+
+.uv{
+  .section_06 {
+    .circle_list{
+      flex-wrap:wrap;
+    }
+  }
+}
+.layer{
+  .section_02 {
+    table {
+      thead{
+        th{
+          background: var(--main-color);
+          &:first-child{
+            background: var(--sub-color);
+          }
+          &:nth-child(2){
+            background:#cacaca;
+          }
+          
+        }
+      }
+    }
+  }
+  .section_05 {
+    .circle_list {
+     flex-wrap: wrap;
+    }
+  }
+  .section_06 {
+    
+    .circle_list {
+      
+      flex-wrap: wrap;
+      }
+    }
+}
+.botox{
+  .section_06 {
+    .circle_list{
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.bruxism{
+  .section_06{
+    .circle_list{
+      flex-wrap: wrap;
+    }
+  }
+}
+  
+}
 
   /* ///////////////////////////////////// END  /////////////////////////////////////*/
 

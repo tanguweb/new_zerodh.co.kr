@@ -2,6 +2,7 @@
 <!-- #include virtual = "/function/fn_AdminLoginCheck.asp" -->
 <!-- #include virtual = "/function/fn_FileSave.asp" -->
 <!-- #include virtual = "/function/fn_XMLpath.asp" -->
+<!-- #include virtual = "/manager/inc/inc.seogen.asp" -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%	
 	Dim CD_BOARDCD : CD_BOARDCD = 1004
@@ -136,6 +137,11 @@
 
 
 	If dbErrorCount = 0 Then
+		' --- SEO: 치료전후(1004) 수정 성공 시 sitemap.xml / rss.xml 자동 재생성 ---
+		On Error Resume Next
+		Call SeoGenSitemap()
+		Call SeoGenRss()
+		On Error GoTo 0
 		Response.write "<script>alert('게시글이 수정되었습니다.');document.location.href='BeforeAfterList.asp?CD_BOARDCD="&CD_BOARDCD&"';</script>"
 	Else
 		Response.write "<script>alert('게시글 수정에 실패하였습니다.');document.location.href='BeforeAfterList.asp?CD_BOARDCD="&CD_BOARDCD&"';</script>"

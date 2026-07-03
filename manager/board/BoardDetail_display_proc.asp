@@ -1,5 +1,6 @@
 <!-- #include virtual = "/Include/Config.asp" -->
 <!-- #include virtual = "/function/fn_AdminLoginCheck.asp" -->
+<!-- #include virtual = "/manager/inc/inc.seogen.asp" -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%
 	'########################################################################################
@@ -30,6 +31,11 @@
 	Set adoCmd = Nothing
 	
 	If Result = "SUCCESS" Then 
+		' --- SEO: 전시여부 변경 시 sitemap.xml / rss.xml 자동 재생성 ---
+		On Error Resume Next
+		Call SeoGenSitemap()
+		Call SeoGenRss()
+		On Error GoTo 0
 		Response.Write "<script>alert('게시글이 수정되었습니다.');parent.document.location.reload();</script>"
 		Response.End
 	ElseIf Result = "900" Then 

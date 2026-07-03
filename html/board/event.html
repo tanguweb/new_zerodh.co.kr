@@ -6,7 +6,7 @@
 <!-- #include virtual = "/function/fn_PageNavigation.asp"-->
 <%
 	Dim iloop, jloop, SQL
-	Dim CD_BOARDCD : CD_BOARDCD = 1002
+	Dim CD_BOARDCD : CD_BOARDCD = 1013
 	Dim aryBoard, arrRsBest
 	Dim CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, DT_INSYSDATE, DT_INSYSDATE_to_int, VIEW_CNT, RowNo
 	Dim searchType : searchType = ReqQ("searchType")
@@ -77,7 +77,7 @@
 	SQL = ""
 	SQL = SQL & "SELECT CD_BOARDID, NM_TITLE, NM_CONTENTS, NM_FIELD_1, NM_FIELD_2, NM_FIELD_3, NM_FIELD_4, NM_FIELD_5, NM_FIELD_6, NM_FIELD_7, NM_FIELD_8, DT_INSYSDATE, NO_VIEWCNT	"
 	SQL = SQL & "FROM T_BOARDDETAIL	"
-	SQL = SQL & "WHERE CD_BOARDCD = '1002' AND YN_USE = 'Y' AND YN_DISPLAY = 'Y' AND NO_VIEWORDER = 0 "
+	SQL = SQL & "WHERE CD_BOARDCD = '1013' AND YN_USE = 'Y' AND YN_DISPLAY = 'Y' AND NO_VIEWORDER = 0 "
 	SQL = SQL & "ORDER BY CD_BOARDID DESC	"
 
 	objADO.setSql(SQL)
@@ -257,7 +257,7 @@
 
         <ul class="paging m_t_50">
           <%If IsArray(aryBoard) Then%>
-          <%Call PageNavigation_front("/html/board/news.html","searchType="&clearXSSdefault(searchType)&"&keyword="&clearXSSdefault(keyword), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
+          <%Call PageNavigation_front("/html/board/event.html","searchType="&clearXSSdefault(searchType)&"&keyword="&clearXSSdefault(keyword), tn, pgcount, startpage, page, setsize, prevpage, nextpage)%>
           <%End If%>
         </ul>
 
@@ -290,7 +290,7 @@
     });
 
     function goView(CD_BOARDID) {
-      document.location.href = "news_view.html?CD_BOARDID=" + CD_BOARDID + "&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>";
+      document.location.href = "event_view.html?CD_BOARDID=" + CD_BOARDID + "&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>";
     }
 
     function doSearch() {

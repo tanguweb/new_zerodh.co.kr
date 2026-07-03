@@ -9,7 +9,7 @@
 	Dim arybefore
 	Dim aryafter
 
-	Dim CD_BOARDCD : CD_BOARDCD = 1009
+	Dim CD_BOARDCD : CD_BOARDCD = 1013
 	Dim CD_BOARDID : CD_BOARDID = Req("CD_BOARDID")
 	Dim page : page = Req("page")
 	Dim searchType : searchType =Req("searchType")
@@ -33,34 +33,31 @@
 	fn_BoardCnt (CD_BOARDID)
 %>
 
+<link rel="stylesheet" type="text/css" href="../css/board_style.css" />
+
+
 <!-- S : sub -->
-<div id="sub" class="column_view">
+<div id="sub" class="news">
   <section>
     <!-- S : sub_visual -->
 		<!-- #include virtual = "/html/inc/board_left.html" -->
-    <div class="sub_tit">
+		<div class="sub_tit">
 			<div>
-			<span class="v2_label">Column</span>
-			<h1><%=m_client_name_s%> <span>칼럼</span></h1>
-			<p class="v2_desc">제로치과 원장님이 직접 알려드리는 치과 정보 칼럼입니다.</p>
-			<p class="en">&nbsp;<%=m_client_en%></p>
+				<span class="v2_label">Event</span>
+				<h1><%=m_client_name_s%> <span>이벤트</span></h1>
+				<p class="v2_desc">제로치과의 다양한 이벤트와 새로운 소식을 확인하세요.</p>
+				<p class="en">&nbsp;<%=m_client_en%></p>
 			</div>
     </div>
 		<script type="text/javascript">
-			$('.sub_nav li:nth-child(3)').addClass('active');
+			$('.sub_nav li:nth-child(6) ').addClass('active');
 		</script>
   <!-- E : sub_visual -->
   </section>
   <div class="content_wrap ">
 
-    <section class="">
+    <section class="section_01">
       <div class="inwrap">
-				<!-- <div class="title">
-					<h2><span>원장님 </span>칼럼 <em></em></h2>
-					<h3><%=m_client_name_s%> <br class="mobile">원장님이 직접 알려드립니다</h3>
-				</div> -->
-
-
 
         <table class="line view">
 			<!-- <colgroup><col width="100"><col width="140"><col width="*"><col width="100"><col width="140"><col width="120"></colgroup> -->
@@ -69,7 +66,7 @@
 			</tr>
 			<tr>
 				<td class="board_con">
-					<%=aryList(9,0)%>
+				<%=aryList(9,0)%>
 				</td>
 			</tr>
 		</tbody>
@@ -78,29 +75,28 @@
   <p class="btn_wrap m_t_40">
   			<a href="javascript:goList()" class="btn btn_green">목록</a>
   		</p>
-      <table class="line m_t_50">
+      <table class="line m_t_50" style="border-top:1px solid #cecece">
       			<tbody><tr>
-				<th><i class="icon-up-open-big-1 "></i> 이전글</th>
+				<th><i class="icon-up-open-big-1 "></i> 이전글  </th>
 				<td class="TextL">
 				<%If isarray(arybefore) Then%>
-					<a href="column_view.html?CD_BOARDID=<%=arybefore(0, 0)%>"><%=clearXSSdefault(arybefore(8, 0))%></a> <span class="right pc"><%=Replace(Left(arybefore(21,0), 10), "-", ".")%></span>
+					<a href="event_view.html?CD_BOARDID=<%=arybefore(0, 0)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(arybefore(8, 0))%></a> <span class="right pc"><%=clearXSSdefault(Replace(Left(arybefore(21,0), 10), "-", "."))%></span>
 				<%Else%>
 					이전 게시글이 없습니다.
 				<%End If%>
 				</td>
 			</tr>
 			<tr>
-				<th><i class="icon-down-open-big-1 "></i> 다음글</th>
+				<th> <i class="icon-down-open-big-1 "></i> 다음글 </th>
 				<td class="TextL">
 				<%If isarray(aryafter) Then%>
-					<a href="column_view.html?CD_BOARDID=<%=aryafter(0, 0)%>"><%=clearXSSdefault(aryafter(8, 0))%></a> <span class="right pc"><%=Replace(Left(aryafter(21,0), 10), "-", ".")%></span>
+					<a href="event_view.html?CD_BOARDID=<%=aryafter(0, 0)%>&page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>"><%=clearXSSdefault(aryafter(8, 0))%></a> <span class="right pc"><%=clearXSSdefault(Replace(Left(aryafter(21,0), 10), "-", "."))%></span>
 				<%Else%>
 					다음 게시글이 없습니다.
 				<%End If%>
 				</td>
 			</tr>
-		</tbody></table>
-
+      		</tbody></table>
 
 
 
@@ -110,12 +106,12 @@
 
 
   </div>
-  <!-- #include virtual = "/html/inc/foot_banner.html" -->
+	<!-- #include virtual = "/html/inc/foot_banner.html" -->
 
 <!-- #include virtual = "/html/inc/footer.html" -->
 
 <script>
 function goList() {
-	document.location.href = "column.html";
+	document.location.href = "event.html?page=<%=clearXSSdefault(page)%>&searchType=<%=clearXSSdefault(searchType)%>&keyword=<%=clearXSSdefault(keyword)%>";
 }
 </script>

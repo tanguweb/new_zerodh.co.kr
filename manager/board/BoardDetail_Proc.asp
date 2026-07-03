@@ -2,6 +2,7 @@
 <!-- #include virtual = "/function/fn_AdminLoginCheck.asp" -->
 <!-- #include virtual = "/function/fn_FileSave.asp" -->
 <!-- #include virtual = "/function/fn_XMLpath.asp" -->
+<!-- #include virtual = "/manager/inc/inc.seogen.asp" -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%
 	'########################################################################################
@@ -151,6 +152,13 @@ End If
 
 '	if Result1 = "SUCCESS" and instr(Result2,"ERROR") = 0 then 
 	if Result1 = "SUCCESS" then 
+		' --- SEO: 콘텐츠 게시판(SeoBoardMap) 변경 시 sitemap.xml / rss.xml 자동 재생성 ---
+		If SeoIsContentBoard(CD_BOARDCD) Then
+			On Error Resume Next
+			Call SeoGenSitemap()
+			Call SeoGenRss()
+			On Error GoTo 0
+		End If
 		If MODE = "I" Then	' 등록
 			Rtn_string = "<script>alert('게시글이 저장되었습니다.');document.location.href='BoardDetail.asp?CD_BOARDCD="&CD_BOARDCD&"';</script>" 
 		ElseIf MODE = "U" Then	' 수정

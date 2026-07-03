@@ -7,14 +7,14 @@
 /* 공통 레이아웃 */
 #main .inner_wrap { position:relative; width:100%; max-width:1204px; margin:auto;}
 @media screen and (max-width:768px) {
-#main .inner_wrap { padding-left:20px; padding-right:20px;}
+#main .inner_wrap {padding-left:20px;padding-right:20px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
 }
 
 /* 메인 섹션 */
 
 .main_visual {height: calc( 100vh - 94px);}
 .main_visual .swiper-slide {position:relative;padding-top: 50px;display:flex;align-items:center;justify-content:center;}
-.main_visual .swiper-slide .bg_main_visual { position:absolute; top:0; left:0; width:100%; height:100%;}
+.main_visual .swiper-slide .bg_main_visual {position:absolute;top:0;left:0;width:100%;height: calc( 100vh - 94px);}
 .main_visual .swiper-slide1 .bg_main_visual { background:#8e8d8b url(../main/images/ban_main_visual1.png) no-repeat 50%; background-size:cover;}
 .main_visual .swiper-slide2 .bg_main_visual { background:#8e8d8b url(../main/images/ban_main_visual2.png) no-repeat 50%; background-size:cover;}
 .main_visual .swiper-slide3 .bg_main_visual { background:#8e8d8b url(../main/images/ban_main_visual3.png) no-repeat 50%; background-size:cover;}
@@ -28,8 +28,8 @@
 .txt_main_visual { line-height:1.5; font-size:20px; color:#fff; font-weight:200;}
 
 @media screen and (max-width:768px) {
-.main_visual { height:400px;}
-.main_visual .swiper-slide { padding-top:45px;}
+.main_visual {height: calc( 100vh - 111px);margin-top: 61px;}
+.main_visual .swiper-slide {padding-top: 0;}
 
 .main_visual .swiper-pagination-bullet { width:12px; height:12px;}
 .main_visual .swiper-pagination-bullet-active { border:1px solid #fff;}
@@ -112,7 +112,7 @@
 /* 메인의 첫 사진만 변경 */
 .main_sect3_slide .inner_wrap .img_main_sect img:first-child { scale: 0.9;}
 
-.main_sect3_slide .inner_wrap .block_main_sect { display:block; margin-left:auto; width:40%;}
+.main_sect3_slide .inner_wrap .block_main_sect {display:block;margin-left:auto;width: 42%;}
 .main_sect3_slide .lab_main_sect { margin-bottom:20px; line-height:1; font-size:16px; font-family:'S-CoreDream', 'Barlow', 'Noto Sans KR', sans-serif; color:#f5a200; letter-spacing:0.05em;}
 .main_sect3_slide .tit_main_sect { margin-bottom:20px; line-height:1; font-size:34px; font-weight:500; color:#fff;}
 .main_sect3_slide .txt_main_sect { margin-bottom:20px; font-size:18px; line-height:1.6; color:#fff;}

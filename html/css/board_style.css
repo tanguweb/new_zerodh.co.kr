@@ -15,7 +15,7 @@
 
 #sub table.list td {text-align: center;}
 #sub table.list td i {color: #614e31;margin-left: 5px;font-size: 20px;vertical-align: text-top;line-height: 23px;}
-#sub table.list td b {font-size: 12px;color: #fff;font-weight: 400;margin-left: 10px;background: #3bb5aa;padding: 0 10px;border-radius: 100px;line-height: 20px;display: inline-block;vertical-align: text-top;}
+#sub table.list td b {font-size: 12px;color: #fff;font-weight: 400;margin-left: 10px;background: var(--main-color);padding: 0 10px;border-radius: 100px;line-height: 20px;display: inline-block;vertical-align: text-top;}
 #sub table.list td span.best {background:#7784bb;color:#fff;padding: 4px 10px;font-size: 12px;}
 #sub table.list tr:hover td, #sub table.list tr.notice td {background: #fafafa;}
 
@@ -80,7 +80,7 @@ colgroup .answer {width: 130px;}
 
 /* Before After */
 .bf_list .bf_box ul li:last-child div{position:relative;}
-.bf_list .bf_box ul li:last-child div:before{content: '연세하이브치과';font-family:'icon_font','Noto Sans KR';color: #fff;position: absolute;font-size: 1.2em;z-index: 3;left: 0;top: 54%;right: 0;text-align: center;}
+.bf_list .bf_box ul li:last-child div:before{content: '제로치과병원';font-family:'icon_font','Noto Sans KR';color: #fff;position: absolute;font-size: 1.2em;z-index: 3;left: 0;top: 54%;right: 0;text-align: center;}
 .bf_list .bf_box ul li:last-child div:after{content:'';background: #000;opacity: .75;display:block;position:absolute;z-index:1;left: 0;right: 0;top: 0;bottom: 0;width: 100%;line-height: 100%;text-align: center;border-radius: 0 10px 0 0;}
 #sub table.bf_list_2 td {vertical-align: middle;}
 #sub table.bf_list_2 td img{margin-bottom: 0; display: block; max-width: 210px; width: 100%;}

@@ -148,7 +148,7 @@
 			<input type="hidden" id="keyword" name="keyword" value="<%=clearXSSdefault(keyword)%>" />
 			<input type="hidden" id="page" name="page" value="<%=clearXSSdefault(page)%>" />
 
-			<p><input type="text" id="tempId" name="tempId" placeholder="아이디입력" autocomplete="off" value="mybarun" ></p>
+			<p><input type="text" id="tempId" name="tempId" placeholder="아이디입력" autocomplete="off" value="zerodh" ></p>
 			<p><a href="javascript:goView();" class="btn btn_green">동의합니다</a><a href="javascript:$('.layer_pop').hide();" class="btn btn_gray">동의하지 않습니다</a></p>
 
 			<h5><span>본 정보는 임시회원 아이디 동의 후</span> <span>열람하실 수 있습니다.</span></h5>
@@ -175,7 +175,13 @@
               $(".layer_pop,.dim_bg").fadeOut();
           });
 
-		  $(".layer_pop, button.btn_gray").click(function(){
+		  // 팝업 배경(오버레이) 자체를 클릭했을 때만 닫기 (내부 입력창 클릭 시 닫힘 방지)
+		  $(".layer_pop").click(function(e){
+              if (e.target === this) {
+                  $(".layer_pop,.dim_bg").fadeOut();
+              }
+          });
+          $("a.btn_gray, button.btn_gray").click(function(){
               $(".layer_pop,.dim_bg").fadeOut();
           });
 
