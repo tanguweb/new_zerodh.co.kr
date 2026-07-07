@@ -187,7 +187,7 @@ input[type=checkbox]+label:before {
 /* unchecked icon */
 input[type=checkbox]:checked+label:before {
   content: "\E8A0";
-  color: var(--sub-color);
+  color: var(--main-color);
 }
 
 input:focus::-webkit-input-placeholder,
@@ -2438,23 +2438,6 @@ ul.nine>li {
   /* margin-bottom:10px */
 }
 
-.quick_menu>ul>li:before {
-  content: '\E8A7';
-  font-family: 'icon_font';
-  color: var(--main-color);
-  position: absolute;
-  font-size: 5em;
-  opacity: 0;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  -ms-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-.quick_menu>ul>li:hover:before {
-  /* opacity:1 */
-}
 
 .quick_menu>ul>li a {
   /* background: #939393; */
@@ -2501,7 +2484,7 @@ ul.nine>li {
 
 .quick_menu > ul > li:nth-child(1) a::before{content: '\E861'; }/*온라인상담*/
 .quick_menu > ul > li:nth-child(2) a::before{content: '\E846';} /*카카오톡*/
-.quick_menu > ul > li:nth-child(3) a::before{content: url('../main/images/qr_calendar_icon.svg'); }/*빠른예약*/
+.quick_menu > ul > li:nth-child(3) a::before{content: '\E862';}/*빠른예약*/
 .quick_menu > ul > li:nth-child(4) a::before{content: '\E846';} /*카카오톡*/
 .quick_menu > ul > li:nth-child(5) a::before{content: '\E861'; }/*온라인상담*/
 
@@ -3873,7 +3856,7 @@ footer {
 .foot_board ul.three>li:nth-child(2) button {
   width: 25%;
   font-size: 30px;
-  background: var(--sub-color);
+  background: var(--main-color);
   color: #fff;
   border: 0;
   padding: 47px 0;
@@ -9854,4 +9837,118 @@ span.flatpickr-day.flatpickr-disabled {
 }
 
   
+}
+
+/* ===== 퀵메뉴 리디자인 (데스크톱, 전체 페이지) - 심플/무채색 ===== */
+@media (min-width: 768px) {
+  body .quick_menu {
+    top: 280px;
+    right: 24px;
+  }
+
+  body .quick_menu > ul {
+    float: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  body .quick_menu > ul > li {
+    margin: 0;
+    height: auto;
+    background: none;
+  }
+
+  /* 색 제거 → 화이트 카드 + 차콜 */
+  body .quick_menu > ul > li:nth-child(1) > a,
+  body .quick_menu > ul > li:nth-child(2) > a,
+  body .quick_menu > ul > li:nth-child(3) > a,
+  body .quick_menu > ul > li:nth-child(4) > a,
+  body .quick_menu > ul > li:nth-child(5) > a {
+    background: #fff;
+    color: #333;
+  }
+
+  body .quick_menu > ul > li > a {
+    width: 74px;
+    height: 74px;
+    margin: 0;
+    padding: 0;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    overflow: visible;
+    border: 1px solid #ededed;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .07);
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s, background-color .3s, color .3s, border-color .3s;
+  }
+
+  body .quick_menu > ul > li > a::before {
+    font-size: 26px;
+    line-height: 1;
+    margin: 0;
+    transition: filter .3s;
+  }
+
+  /* 흰색 SVG 아이콘(빠른예약) → 차콜 */
+  body .quick_menu > ul > li:nth-child(3) > a::before {
+    /* width: 25px; */
+    /* height: 25px; */
+    filter: brightness(0.22);
+  }
+
+  body .quick_menu > ul > li > a span {
+    width: auto;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: inherit;
+  }
+
+  /* 호버: 차콜 반전 */
+  body .quick_menu > ul > li > a:hover {
+    background: #2b2b2b;
+    color: #fff;
+    border-color: #2b2b2b;
+    transform: translateY(-5px);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, .2);
+  }
+
+  body .quick_menu > ul > li:nth-child(3) > a:hover::before {
+    filter: none;
+  }
+}
+
+/* ===== 헤더: 상단(배너 위)에선 투명 배경 + 흰색(로고 포함), 호버·스크롤 시 흰 배경 ===== */
+@media (min-width: 768px) {
+  header > .inwrap:before {
+    transition: background .3s ease;
+  }
+
+  header:not(.f_nav):not(.sub_nav_hover):not(:hover) > .inwrap {
+    background: transparent;
+  }
+
+  header:not(.f_nav):not(.sub_nav_hover):not(:hover) > .inwrap:before {
+    background: transparent;
+  }
+
+  header:not(.f_nav):not(.sub_nav_hover):not(:hover) h1 img {
+    content: url('../images/foot_logo.png');
+    filter: drop-shadow(0 1px 8px rgba(0, 0, 0, .28));
+  }
+
+  header:not(.f_nav):not(.sub_nav_hover):not(:hover) .lnb > li > a {
+    color: #fff;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, .35);
+  }
+
+  header:not(.f_nav):not(.sub_nav_hover):not(:hover) .top_call {
+    color: #fff;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, .35);
+  }
 }
